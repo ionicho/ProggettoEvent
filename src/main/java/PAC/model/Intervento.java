@@ -1,4 +1,4 @@
-package PAC;
+package PAC.model;
 
 class Intervento {
     private String titolo;

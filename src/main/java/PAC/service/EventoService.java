@@ -1,7 +1,10 @@
-package PAC;
+package PAC.service;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+
+import PAC.model.Evento;
+
 import org.springframework.stereotype.Service;
 
 import java.io.*;

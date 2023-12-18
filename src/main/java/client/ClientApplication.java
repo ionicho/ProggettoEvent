@@ -1,4 +1,4 @@
-package PAC;
+package client;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -7,7 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import org.springframework.web.client.RestTemplate;
+
+import PAC.model.Evento;
 
 public class ClientApplication extends Application {
 

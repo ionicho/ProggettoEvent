@@ -1,7 +1,10 @@
-package PAC;
+package PAC.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import PAC.model.Evento;
+import PAC.service.EventoService;
 
 import java.util.*;
 

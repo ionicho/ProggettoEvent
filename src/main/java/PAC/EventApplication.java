@@ -2,6 +2,8 @@ package PAC;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import client.ClientApplication;
 import javafx.application.Application;
 
 @SpringBootApplication
