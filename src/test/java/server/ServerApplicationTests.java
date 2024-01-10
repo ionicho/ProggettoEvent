@@ -1,10 +1,10 @@
-package PAC;
+package server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EventApplicationTests {
+class ServerApplicationTests {
 
 	@Test
 	void contextLoads() {

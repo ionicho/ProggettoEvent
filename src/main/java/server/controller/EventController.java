@@ -1,46 +1,50 @@
-package PAC.controller;
+package server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import PAC.model.Evento;
-import PAC.service.EventoService;
+import server.model.Event;
+import server.service.EventService;
 
 import java.util.*;
 
+/**
+ * Questa classe intercetta le richieste relative agli eventi
+ */
+
 @RestController
 @RequestMapping("/api")
-public class Controller {
+public class EventController {
 
-    private final EventoService eventoService;
+    private final EventService eventoService;
 
     @Autowired
-    public Controller(EventoService eventoService) {
+    public EventController(EventService eventoService) {
         this.eventoService = eventoService;
     }
 
     // Metodo GET per ottenere un singolo evento
     @GetMapping("/eventi/{id}")
-    public Evento getEvento(@PathVariable String id) {
+    public Event getEvento(@PathVariable String id) {
         return eventoService.getEvento(id);
     }
 
     // Metodo GET per ottenere tutti gli eventi
     @GetMapping("/eventi")
-    public List<Evento> getEventi() {
+    public List<Event> getEventi() {
         return eventoService.getEventi();
     }
 
     // Metodo POST per aggiungere un evento
     @PostMapping("/eventi")
-    public String addEvento(@RequestBody Evento evento) {
+    public String addEvento(@RequestBody Event evento) {
         eventoService.addEvento(evento);
         return "Evento aggiunto con successo.";
     }
 
     // Metodo PUT per aggiornare un evento
     @PutMapping("/eventi/{id}")
-    public String updateEvento(@PathVariable String id, @RequestBody Evento evento) {
+    public String updateEvento(@PathVariable String id, @RequestBody Event evento) {
         eventoService.updateEvento(id, evento);
         return "Evento con ID: " + id + " aggiornato con successo.";
     }

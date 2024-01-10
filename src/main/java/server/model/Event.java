@@ -1,19 +1,20 @@
-package PAC.model;
+package server.model;
 
 import java.util.*;
+import java.time.LocalDate;
 
-public class Evento {
+public class Event {
 	private String id;
     private String data;
     private String oraInizio;
     private String oraFine;
     private String nomeOrganizzatore;
-    private List<Intervento> elencoInterventi;
+    private List<Speech> elencoInterventi;
     private double costoPartecipazione;
 
     // Costruttore, getter e setter
 
-    public Evento(String id, String data, String oraInizio, String oraFine, String nomeOrganizzatore, List<Intervento> elencoInterventi, double costoPartecipazione) {
+    public Event(String id, String data, String oraInizio, String oraFine, String nomeOrganizzatore, List<Speech> elencoInterventi, double costoPartecipazione) {
         this.id= id;
     	this.data = data;
         this.oraInizio = oraInizio;
@@ -47,7 +48,7 @@ public class Evento {
         return nomeOrganizzatore;
     }
 
-    public List<Intervento> getElencoInterventi() {
+    public List<Speech> getElencoInterventi() {
         return elencoInterventi;
     }
 
@@ -59,7 +60,7 @@ public class Evento {
     public String toString() {
         return "Evento{" +
                 "id='" + id + '\'' +
-                ", data='" + data + '\'' +
+                ", data=" + data +
                 ", oraInizio='" + oraInizio + '\'' +
                 ", oraFine='" + oraFine + '\'' +
                 ", nomeOrganizzatore='" + nomeOrganizzatore + '\'' +

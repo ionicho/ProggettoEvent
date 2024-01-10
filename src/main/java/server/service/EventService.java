@@ -1,37 +1,41 @@
-package PAC.service;
+package server.service;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
-import PAC.model.Evento;
+import server.model.Event;
 
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
 
+/**
+ * Classe che esegue le richieste relative agli eventi
+ */
+
 @Service
-public class EventoService {
+public class EventService {
 
-    private static final String DATABASE_FILE = "D:\\UniBG\\Event\\DataBase\\ElencoEventi.json";
-    private List<Evento> eventi;
+    private static final String DATABASE_FILE = "D:\\UniBG\\Event\\DataBase\\Eventi.json";
+    private List<Event> eventi;
 
-    public EventoService() {
+    public EventService() {
         this.eventi = caricaEventiDaDatabase();
     }
 
     // Metodo GET per ottenere tutti gli eventi
-    public List<Evento> getEventi() {
+    public List<Event> getEventi() {
         return eventi;
     }
     
  // Metodo GET per ottenere un singolo evento
-    public Evento getEvento(String id) {
-    	Evento e=null;
-        for (Evento evento : eventi) {
-        	e= evento;
-            if (evento.getId().equals(id)) {
-                return evento;
+    public Event getEvento(String id) {
+    	Event e=null;
+        for (Event curr : eventi) {
+        	e= curr;
+            if (curr.getId().equals(id)) {
+                return curr;
             }
         }
         return e;
@@ -40,13 +44,13 @@ public class EventoService {
     }
 
     // Metodo POST per aggiungere un evento
-    public void addEvento(Evento evento) {
+    public void addEvento(Event evento) {
         eventi.add(evento);
         salvaEventiSuDatabase();
     }
 
     // Metodo PUT per aggiornare un evento
-    public void updateEvento(String id, Evento evento) {
+    public void updateEvento(String id, Event evento) {
         for (int i = 0; i < eventi.size(); i++) {
             if (eventi.get(i).getId().equals(id)) {
                 eventi.set(i, evento);
@@ -63,11 +67,11 @@ public class EventoService {
         salvaEventiSuDatabase();
     }
 
-    private List<Evento> caricaEventiDaDatabase() {
+    private List<Event> caricaEventiDaDatabase() {
         try {
             Gson gson = new Gson();
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
-            return gson.fromJson(br, new TypeToken<List<Evento>>(){}.getType());
+            return gson.fromJson(br, new TypeToken<List<Event>>(){}.getType());
         } catch (IOException e) {
             return new ArrayList<>();
         }

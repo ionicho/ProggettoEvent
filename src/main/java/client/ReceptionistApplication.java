@@ -7,12 +7,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import server.model.Event;
 
 import org.springframework.web.client.RestTemplate;
 
-import PAC.model.Evento;
+/**
+ * Main del client utilizzato dal Receptionist
+ */
 
-public class ClientApplication extends Application {
+public class ReceptionistApplication extends Application {
 
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -40,7 +43,7 @@ public class ClientApplication extends Application {
 
     private void searchEvent(String id, TextField responseField) {
         String url = "http://localhost:8080/api/eventi/" + id;
-        Evento evento = restTemplate.getForObject(url, Evento.class);
+        Event evento = restTemplate.getForObject(url, Event.class);
         responseField.setText(evento.toString()); // Mostra la risposta del server nel campo di testo
     }
 
