@@ -59,13 +59,13 @@ public class Event {
     @Override
     public String toString() {
         return "Evento{" +
-                "id='" + id + '\'' +
-                ", data=" + data +
-                ", oraInizio='" + oraInizio + '\'' +
-                ", oraFine='" + oraFine + '\'' +
-                ", nomeOrganizzatore='" + nomeOrganizzatore + '\'' +
-                ", elencoInterventi=" + elencoInterventi +
-                ", costoPartecipazione=" + costoPartecipazione +
+                "id:'" + id + '\'' +
+                ", data:" + data +
+                ", ora Inizio:'" + oraInizio + '\'' +
+                ", ora Fine:'" + oraFine + '\'' +
+                ", nome Organizzatore:'" + nomeOrganizzatore + '\'' +
+                ", elenco Interventi:" + elencoInterventi +
+                ", costo Partecipazione:" + costoPartecipazione +
                 '}';
     }
 

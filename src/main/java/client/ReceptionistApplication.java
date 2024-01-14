@@ -11,10 +11,14 @@ import server.model.*;
 import server.service.LocalDateTypeAdapter;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.*;
+
 
 /**
  * Main del client utilizzato dal Receptionist
@@ -28,24 +32,25 @@ public class ReceptionistApplication extends Application {
     public void start(Stage primaryStage) {
     	
     	// finestra per l'evento
-        primaryStage.setTitle("Ricerca Evento");
+        Stage eventStage = new Stage();
+        eventStage.setTitle("Ricerca Evento");
 
-        TextField idField = new TextField();
-        idField.setPromptText("Inserisci l'ID dell'evento");
+        TextField eventIdField = new TextField();
+        eventIdField.setPromptText("Inserisci l'ID dell'evento");
 
-        TextField responseField = new TextField();
-        responseField.setEditable(false); // Impedisce all'utente di modificare il campo di risposta
+        TextField eventResponseField = new TextField();
+        eventResponseField.setEditable(false); // Impedisce all'utente di modificare il campo di risposta
 
-        Button searchButton = new Button("Cerca");
-        searchButton.setOnAction(e -> searchEvent(idField.getText(), responseField));
+        Button eventSearchButton = new Button("Cerca");
+        eventSearchButton.setOnAction(e -> searchEvent(eventIdField.getText(), eventResponseField));
 
-        VBox vbox = new VBox(idField, searchButton, responseField);
-        vbox.setPadding(new Insets(10));
-        vbox.setSpacing(8);
+        VBox eventVbox = new VBox(eventIdField, eventSearchButton, eventResponseField);
+        eventVbox.setPadding(new Insets(10));
+        eventVbox.setSpacing(8);
 
-        Scene scene = new Scene(vbox, 300, 200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Scene eventScene = new Scene(eventVbox, 300, 200);
+        eventStage.setScene(eventScene);
+        eventStage.show();
 
         // finestra per la camera
 
@@ -71,20 +76,23 @@ public class ReceptionistApplication extends Application {
     }
     private void searchEvent(String id, TextField responseField) {
         String url = "http://localhost:8080/api/eventi/" + id;
+        System.out.printf("\n\n%s\n\n", url);
         Event evento = restTemplate.getForObject(url, Event.class);
         responseField.setText(evento.toString()); // Mostra la risposta del server nel campo di testo
     }
     
     private void searchRoom(String nome, TextField responseField) {
         String url = "http://localhost:8080/api/room/" + nome;
-        // Crea un'istanza di Gson registrando il TypeAdapter per LocalDate
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter()).create();
-        // Deserializza la JSON data in un ResourceRoom
-        ResourceRoom room = gson.fromJson(restTemplate.getForObject(url, String.class), ResourceRoom.class);
-        // Mostra la risposta del server nel campo di testo
-        responseField.setText("Nome: " + room.getName() + "\nCosto: " + room.getCosto() + "\nN. letti: " + room.getNLetti() + "\nTipo: " + room.getType());
-    }
+        System.out.printf("\n\n%s\n\n", url);
+        ResourceRoom room = restTemplate.getForObject(url, ResourceRoom.class);
+        //Object room = restTemplate.getForObject(url, Object.class);
+        
+        System.out.printf("\n\n%s\n\n", room.toString());
+        
+        responseField.setText(room.toString()); // Mostra la risposta del server nel campo di testo
 
+        }
+   
 
     public static void main(String[] args) {
         launch(args);
