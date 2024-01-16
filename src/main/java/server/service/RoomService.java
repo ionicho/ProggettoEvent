@@ -49,43 +49,25 @@ public class RoomService {
         return null;
     }
 
-    // Metodo POST per aggiungere una camera
+ // Metodo POST per aggiungere una camera
     public void addCamera(ResourceRoom camera) {
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-        String json = gson.toJson(camera);
-        camere.add(gson.fromJson(json, new TypeToken<ResourceRoom>(){}.getType()));
-        salvaCamereSuDatabase();
-    }
-    
-    public void updateCameraState(String nome, StateDate statoData) {
-        // Trova la camera corrispondente
-        for (ResourceRoom camera : camere) {
-            if (camera.getNome().equals(nome)) {
-                // Trova la data corrispondente e aggiorna lo stato
-                for (StateDate sd : camera.getDisponibilita()) {
-                    if (sd.getData().equals(statoData.getData())) {
-                        sd.stato = statoData.getStato();
-                        break;
-                    }
-                }
-                break;
-            }
+        if (camera != null && camera.getNome() != null && !camera.getNome().isEmpty()) {
+            camere.add(camera);
+            salvaCamereSuDatabase();
+        } else {
+            throw new IllegalArgumentException("Camera non valida.");
         }
-        // Salva le modifiche nel file JSON
-        salvaCamereSuDatabase();
     }
-
-    
-    
-    
-
-    // Metodo PUT per aggiornare una camera
+       
+ // Metodo PUT per aggiornare una camera
     public void updateCamera(String nome, ResourceRoom camera) {
-        for (int i = 0; i < camere.size(); i++) {
-            if (camere.get(i).getNome().equals(nome)) {
-                camere.set(i, camera);
-                salvaCamereSuDatabase();
-                return;
+        if (camera != null && camera.getNome() != null && !camera.getNome().isEmpty()) {
+            for (int i = 0; i < camere.size(); i++) {
+                if (camere.get(i).getNome().equals(nome)) {
+                    camere.set(i, camera);
+                    salvaCamereSuDatabase();
+                    return;
+                }
             }
         }
         throw new IllegalArgumentException("Camera con nome: " + nome + " non trovata.");
@@ -117,9 +99,12 @@ public class RoomService {
                 .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
                 .create();
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
+            // Rimuove eventuali oggetti null dalla lista prima di salvarla
+            camere.removeAll(Collections.singleton(null));
             pw.println(gson.toJson(camere));
             pw.close();
         } catch (IOException e) {
+            // Log the error or rethrow the exception
             e.printStackTrace();
         }
     }

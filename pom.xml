@@ -37,7 +37,13 @@
 	       	<groupId>org.openjfx</groupId>
 	       	<artifactId>javafx-fxml</artifactId>
 	       	<version>13</version>
-	   	</dependency> 
+	   	</dependency>
+       <!-- Dipendenze per JavaFX (lato Client)-->	   	
+		<dependency>
+		<groupId>org.apache.httpcomponents</groupId>
+		<artifactId>httpclient</artifactId>
+		<version>4.5.13</version> <!-- Usa la versione più recente disponibile -->
+		</dependency>
        <!-- Dipendenze per file Json -->	   	
 		<dependency>
 		        <groupId>com.google.code.gson</groupId>

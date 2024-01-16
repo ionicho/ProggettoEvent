@@ -1,5 +1,6 @@
 package client.Windows;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -14,9 +15,11 @@ import server.model.*;
 public class WRoom2eHandler implements EventHandler<MouseEvent> {
 
     private final RestTemplate restTemplate;
-    
-    public WRoom2eHandler() {
+    private final WRoom2 wRoom2; //Riferimento a WRoom2
+
+    public WRoom2eHandler(WRoom2 wRoom2) {
         this.restTemplate = new RestTemplate();
+        this.wRoom2= wRoom2;
     }
 
     @Override
@@ -48,21 +51,31 @@ public class WRoom2eHandler implements EventHandler<MouseEvent> {
             contextMenu.show((javafx.scene.Node) event.getSource(), event.getScreenX(), event.getScreenY());
         }
     }
-    ////////////////// inizio classe anonima /////////////////////////   
+    
+	//////////////////inizio classe anonima /////////////////////////   
     private EventHandler<ActionEvent> createMenuItemHandler(String camera, LocalDate data, State stato) {
-		   return new EventHandler<ActionEvent>() {
-		
-			@Override
-			public void handle(ActionEvent e) {
-				StateDate statoData = new StateDate(data,stato);
-				System.out.println("per la camera " + camera + " selezionato " + statoData);
-				HttpEntity<StateDate> request = new HttpEntity<>(statoData);
-				restTemplate.exchange("http://localhost:8080/api/room/" + camera, HttpMethod.PATCH, request, Void.class);
-
-			}
-		};
+        return new EventHandler<ActionEvent>() {
+        
+            @Override
+            public void handle(ActionEvent e) {
+                StateDate statoData = new StateDate(data,stato);
+                System.out.println("per la camera " + camera + " selezionato " + statoData);
+                HttpEntity<StateDate> request = new HttpEntity<>(statoData);
+                ResponseEntity<Void> response = restTemplate.exchange("http://localhost:8080/api/room/" + camera + "/state", HttpMethod.PUT, request, Void.class);
+                
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    // Aggiorna la GUI qui
+                		System.out.println("OKKKKKKKKKKKKKKKK");
+                	    Platform.runLater(() -> {
+                	    	Platform.runLater(wRoom2::aggiornaTabella);
+                	    });
+                }
+            }
+        };
     }
-    ////////////////// fine classe anonima /////////////////////////     
+	//////////////////fine classe anonima /////////////////////////
+
+  
 
 }
 

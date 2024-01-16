@@ -11,19 +11,24 @@ import server.model.*;
 
 public class WRoom2 {
 
-        public void start(Stage primaryStage, RestTemplate restTemplate) {
-            primaryStage.setTitle("Visualizzazione Camere");
+	    private TableView<ResourceRoom> table;
+	    private RestTemplate restTemplate;
+	    //private WRoom2eHandler handler;
+	
+	    public void start(Stage primaryStage, RestTemplate restTemplate) {
+	        primaryStage.setTitle("Visualizzazione Camere");
+	        this.restTemplate = restTemplate;
+	        this.table = new TableView<>(); // Inizializza table
+	        addColonneStatiche();
+	        mettiDati();
+	
+	        Scene scene = new Scene(table, 600, 400);
+	        primaryStage.setScene(scene);
+	        primaryStage.show();
+	    }
+        
 
-            TableView<ResourceRoom> table = new TableView<>();
-            addColonneStatiche(table);
-            mettiDati(table, restTemplate);
-
-            Scene scene = new Scene(table, 600, 400);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        }
-
-        private void addColonneStatiche(TableView<ResourceRoom> table) {
+        private void addColonneStatiche() {
 	        	TableColumn<ResourceRoom, String> cameraCol = StaticColumn.createColumn("Camera", "nome", "CENTER");
 	        	table.getColumns().add(cameraCol);
 	        	TableColumn<ResourceRoom, RoomType> tipoCol = StaticColumn.createColumn("Tipo", "tipo", "CENTER");
@@ -34,7 +39,7 @@ public class WRoom2 {
 	        	table.getColumns().add(lettiCol);
         }
 
-        private void addColonneDinamiche(TableView<ResourceRoom> table, Set<String> uniqueDates) {
+        private void addColonneDinamiche(Set<String> uniqueDates) {
             for (String date : uniqueDates) {
                 TableColumn<ResourceRoom, String> column = new TableColumn<>(date);
                 column.setCellValueFactory(new DinamicColumn(date));
@@ -43,7 +48,7 @@ public class WRoom2 {
             }
         }
 
-        private void mettiDati(TableView<ResourceRoom> table, RestTemplate restTemplate) {
+        private void mettiDati() {
             // Invia una richiesta GET al server per ottenere i dati di tutte le camere
             ResourceRoom[] rooms = restTemplate.getForObject("http://localhost:8080/api/room", ResourceRoom[].class);
 
@@ -56,15 +61,24 @@ public class WRoom2 {
             }
 
             // Aggiungi colonne dinamiche per le date e gli stati
-            addColonneDinamiche(table, uniqueDates);
+            addColonneDinamiche(uniqueDates);
 
             // Popola la tabella con i dati ricevuti
             ObservableList<ResourceRoom> data = FXCollections.observableArrayList(rooms);
             table.setItems(data);
         }
         
+        public void aggiornaTabella() {
+            // Rimuovi tutte le righe e colonne esistenti
+            table.getItems().clear();
+            table.getColumns().clear();
+            addColonneStatiche();
+            mettiDati();
+        }
+        
         ////////////////// inizio classe anonima /////////////////////////   
         private TableCell<ResourceRoom, String> coloraCelle(String date) {
+        		WRoom2 thisWRoom2 = this; //crea un riferimento alla classe esterna 
             return new TableCell<ResourceRoom, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -90,7 +104,7 @@ public class WRoom2 {
                             break;
                     }
                     // Aggiungo un gestore di eventi
-                    setOnMouseClicked(new WRoom2eHandler());
+                    setOnMouseClicked(new WRoom2eHandler(thisWRoom2));
                 }
             };
         }

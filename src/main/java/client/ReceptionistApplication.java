@@ -37,4 +37,3 @@ public class ReceptionistApplication extends Application {
         launch(args);
     }
 }
-

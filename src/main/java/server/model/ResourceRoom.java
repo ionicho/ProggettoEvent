@@ -3,8 +3,8 @@ package server.model;
 import java.time.LocalDate;
 import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
+//import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.google.gson.annotations.SerializedName;
 
 /**
  * Il costruttore provvede a definire gli attributi specifici di questa risorsa

@@ -42,16 +42,9 @@ public class RoomController {
         return "Evento aggiunto con successo.";
     }
 
-    // Metodo PUT per aggiornare completamente una camera
-    @PutMapping("/room/{nome}")
-    public String updateCamera(@PathVariable String nome, @RequestBody ResourceRoom camera) {
-        roomService.updateCamera(nome, camera);
-        return "Camera con nome: " + nome + " aggiornato con successo.";
-    }
-
- // Metodo PATCH per aggiornare parzialmente una camera
-    @PatchMapping("/room/{nome}")
-    public String updateCameraState(@PathVariable String nome, @RequestBody StateDate statoData) {
+ // Metodo PUT per aggiornare lo stato di una camera e poi salvare l'intero oggetto
+    @PutMapping("/room/{nome}/state")
+    public String updateCameraStateAndSave(@PathVariable String nome, @RequestBody StateDate statoData) {
         // Ottieni la camera dal RoomService
         ResourceRoom camera = roomService.getCamera(nome);
         
@@ -61,10 +54,10 @@ public class RoomController {
         // Usa il Visitor per applicare lo stato alla camera
         visitor.visit(camera, statoData);
         
-        // Salva le modifiche alla camera
+        // Aggiorna l'intera camera nel RoomService
         roomService.updateCamera(nome, camera);
         
-        return "Stato della camera con nome: " + nome + " aggiornato con successo.";
+        return "Stato della camera con nome: " + nome + " aggiornato con successo e camera salvata.";
     }
 
 
