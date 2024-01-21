@@ -1,4 +1,4 @@
-package client.Windows;
+package client.windows;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -7,6 +7,10 @@ import javafx.util.Callback;
 
 import server.model.*;
 
+/**
+ * Classe per l'aggiunta di colonne dinamiche (ovvero che il nome della colonna
+ * è ricavato da un dato) ad una tabella
+ */
 
 public class DinamicColumn implements Callback<CellDataFeatures<ResourceRoom, String>, ObservableValue<String>> {
     private String date;

@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.web.client.RestTemplate;
 
-import client.Windows.*;
+import client.windows.*;
 
 /**
  * Main del client utilizzato dal Receptionist
@@ -28,7 +28,7 @@ public class ReceptionistApplication extends Application {
         
         // finestra di tutte le camere
         Stage roomStage2 = new Stage();
-        WRoom2 wRoom2 = new WRoom2();
+        WRoom2 wRoom2 = new WRoom2(); 
         wRoom2.start(roomStage2, restTemplate);
     }
    

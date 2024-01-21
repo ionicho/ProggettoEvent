@@ -2,14 +2,17 @@ package server.service;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.stereotype.Service;
+import java.io.*;
+import java.time.LocalDate;
+import java.util.*;
 
 import server.model.*;
-import java.time.LocalDate;
 
-import org.springframework.stereotype.Service;
-
-import java.io.*;
-import java.util.*;
+/**
+ * Questa classe esegue le operazioni di lettura e scrittura
+ * del file json che funge da DB per le CAMERE.
+ */
 
 @Service
 public class RoomService {
@@ -25,7 +28,7 @@ public class RoomService {
         this.camere = caricaCamereDaDatabase();
     }
     
-    // Metodo GET per ottenere tutti le camere
+    // Metodo GET per ottenere tutte le camere
     public List<ResourceRoom> getCamere() {
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
         
@@ -39,10 +42,6 @@ public class RoomService {
             if (curr.getNome().equals(id)) {
             	ResourceRoom camera = new ResourceRoom(curr.getNome(), curr.getCosto(), curr.getNumeroLetti(), curr.getTipo(), curr.getDisponibilita());
                 Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-                String json = gson.toJson(camera);
-                
-                System.out.printf("\n\n%s\n\n", json);
-                
                 return camera; // Restituisci null se nessuna camera corrisponde al name fornito
             }
         }
@@ -73,9 +72,11 @@ public class RoomService {
         throw new IllegalArgumentException("Camera con nome: " + nome + " non trovata.");
     }
 
-    // Metodo DELETE per rimuovere una camera
+    /**
+     *  Metodo DELETE per rimuovere una camera, funz lambda imposta da Sonar Lint
+      */
     public void deleteCamera(String nome) {
-        camere.remove(nome);
+    		camere.removeIf(curr-> curr.getNome().equals(nome)); 
         salvaCamereSuDatabase();
     }
     
@@ -97,6 +98,7 @@ public class RoomService {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
                 .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
+                .setPrettyPrinting()  // inserisce i CR
                 .create();
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
             // Rimuove eventuali oggetti null dalla lista prima di salvarla
@@ -109,28 +111,7 @@ public class RoomService {
         }
     }
 }
-/*
-    private List<ResourceRoom> caricaCamereDaDatabase() {
-        try {
-            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-            BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
-            return gson.fromJson(br, new TypeToken<List<ResourceRoom>>(){}.getType());
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
-    }
 
-    private void salvaCamereSuDatabase() {
-        try {
-            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-            PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
-            pw.println(gson.toJson(camere));
-            pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-*/
 
 
         

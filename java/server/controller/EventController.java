@@ -2,14 +2,15 @@ package server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import server.model.Event;
-import server.service.EventService;
-
 import java.util.*;
 
+import server.model.*;
+import server.service.*;
+
 /**
- * Questa classe intercetta le richieste relative agli eventi
+ * Questa classe intercetta le richieste relative agli EVENTI,
+ * gestisce il modello utilizzando le classi del Model;
+ * aggiorna il DB utilizzando le classe del Service
  */
 
 @RestController
@@ -18,7 +19,6 @@ public class EventController {
 
     private final EventService eventoService;
 
-    @Autowired
     public EventController(EventService eventoService) {
         this.eventoService = eventoService;
     }
@@ -36,17 +36,18 @@ public class EventController {
     }
 
     // Metodo POST per aggiungere un evento
-    @PostMapping("/eventi")
-    public String addEvento(@RequestBody Event evento) {
+    @PostMapping("/eventi/nuovo")
+    public Event addEvento(@RequestBody Event evento) {
+    	
         eventoService.addEvento(evento);
-        return "Evento aggiunto con successo.";
+        return evento;
     }
 
     // Metodo PUT per aggiornare un evento
     @PutMapping("/eventi/{id}")
     public String updateEvento(@PathVariable String id, @RequestBody Event evento) {
-        eventoService.updateEvento(id, evento);
-        return "Evento con ID: " + id + " aggiornato con successo.";
+        eventoService.updateEvento(evento);
+        return "Evento con ID: " + evento.getId() + " aggiornato con successo.";
     }
 
     // Metodo DELETE per rimuovere un evento

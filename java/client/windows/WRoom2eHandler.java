@@ -1,16 +1,23 @@
-package client.Windows;
+package client.windows;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
-
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
-
 import java.time.LocalDate;
+
 import server.model.*;
+
+/**
+ *  Classe che gestisce gli eventi della WRoom2
+ *  Al click destro sulle celle della disponibilità delle camere fa comparire un menu
+ *  contestuale consentendo di scegliere il nuovo stato per la camera.
+ *  Invia la richesta al servere (con la classe anonima) e quando riceve l'ok aggiorna
+ *  schermata.
+ */
 
 public class WRoom2eHandler implements EventHandler<MouseEvent> {
 
@@ -24,34 +31,22 @@ public class WRoom2eHandler implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-        if (event.getButton() == MouseButton.SECONDARY) {
-            TableCell cell = (TableCell) event.getSource();
-            ResourceRoom room = (ResourceRoom) cell.getTableRow().getItem();
+        if (event.getButton() == MouseButton.SECONDARY) { //click dx del mouse
+           TableCell <ResourceRoom, State >cell = (TableCell) event.getSource();
+            ResourceRoom room = cell.getTableRow().getItem();
             String camera = room.getNome();
             LocalDate data = LocalDate.parse(cell.getTableColumn().getText());
-
-            ContextMenu contextMenu = new ContextMenu();
-
-            MenuItem disponibile = new MenuItem(State.DISPONIBILE.name());
-            disponibile.setOnAction(createMenuItemHandler(camera, data, State.DISPONIBILE));
-            contextMenu.getItems().add(disponibile);
-
-            MenuItem impegnato = new MenuItem(State.PRENOTATA.name());
-            impegnato.setOnAction(createMenuItemHandler(camera, data, State.PRENOTATA));
-            contextMenu.getItems().add(impegnato);
-
-            MenuItem inuso = new MenuItem(State.INUSO.name());
-            inuso.setOnAction(createMenuItemHandler(camera, data, State.INUSO));
-            contextMenu.getItems().add(inuso);
-
-            MenuItem pulizia = new MenuItem(State.PULIZIA.name());
-            pulizia.setOnAction(createMenuItemHandler(camera, data, State.PULIZIA));
-            contextMenu.getItems().add(pulizia);
-
-            contextMenu.show((javafx.scene.Node) event.getSource(), event.getScreenX(), event.getScreenY());
+            ContextMenu menuStati = new ContextMenu();
+            for (State stato : State.values()) {
+                MenuItem item = new MenuItem(stato.name());
+                item.setOnAction(createMenuItemHandler(camera, data, stato));
+                menuStati.getItems().add(item);
+            }
+            menuStati.show((javafx.scene.Node) event.getSource(), event.getScreenX(), event.getScreenY());
         }
     }
     
+      
 	//////////////////inizio classe anonima /////////////////////////   
     private EventHandler<ActionEvent> createMenuItemHandler(String camera, LocalDate data, State stato) {
         return new EventHandler<ActionEvent>() {
@@ -65,10 +60,7 @@ public class WRoom2eHandler implements EventHandler<MouseEvent> {
                 
                 if (response.getStatusCode() == HttpStatus.OK) {
                     // Aggiorna la GUI qui
-                		System.out.println("OKKKKKKKKKKKKKKKK");
-                	    Platform.runLater(() -> {
-                	    	Platform.runLater(wRoom2::aggiornaTabella);
-                	    });
+                	    Platform.runLater(() -> Platform.runLater(wRoom2::aggiornaTabella));
                 }
             }
         };

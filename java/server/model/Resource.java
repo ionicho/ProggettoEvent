@@ -1,18 +1,15 @@
 package server.model;
-import java.util.*;
-
-//import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
+import java.util.*;
 
 /**
+ * SuperClasse delle risporse (Implementa i metodi condivisi da tutte le Risorse)
+ * 
  * Il primo costruttore della classe consente di assegnare nome e costo a tutte le risorse
  * mette a disponibile lo stato dalla data di istanza della risorsa suno alla endDate
  * 
  * Il secondo costruttore viene utilizzato quando si recuperano i dati dal file json.
- * 
- * Implementa i metodi condivisi da tutte le Risorse
  */
 public abstract class Resource  {
 	
@@ -29,13 +26,13 @@ public abstract class Resource  {
 	    }	
 	}
 	
-	public Resource(String nome, Double costo, List<StateDate> disponibilita) {
+	protected Resource(String nome, Double costo, List<StateDate> disponibilita) {
 	    this.nome = nome;
 	    this.costo = costo;
 	    this.disponibilita = disponibilita;
 	}
 	
-	public Resource(){}
+	protected Resource(){}
 	
 
 	public abstract <T> T accept (Visitor <T> v, StateDate sd);
@@ -48,20 +45,13 @@ public abstract class Resource  {
 		return null;
 	}
 	
-	public void setDisponibile(LocalDate data) {
-		selectData(data).stato = State.DISPONIBILE;
-	}
-	
-	public void setImpegnato(LocalDate data) {
-		selectData(data).stato = State.PRENOTATA;	
-	}
-	
-	public void setInuso(LocalDate data) {
-		selectData(data).stato = State.INUSO;	
-	}
-	
-	public void setPulizia(LocalDate data) {
-		selectData(data).stato = State.PULIZIA;	
+	public void changeStato (StateDate sd) {
+
+		for (StateDate curr: disponibilita){
+			if (curr.data.compareTo(sd.data) ==0) {
+				curr.setStato(sd.stato);		
+				}
+		}
 	}
 	
 	public State getStato(LocalDate data) {

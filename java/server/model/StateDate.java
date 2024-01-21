@@ -1,13 +1,15 @@
 package server.model;
+
 import java.time.LocalDate;
 
 /**
- * Classe stato e data, nelle risorse sarà l'elemento di una collection
+ * Classe per la gestione della disponibilità nella singola giornata nel
+ * formato stato+data, nelle risorse sarà l'elemento di una collection
  */
 public class StateDate {
 	
-    public LocalDate data;
-    public State stato;
+    protected LocalDate data;
+    protected State stato;
 
     public StateDate(LocalDate data, State stato) {
         this.data = data;
@@ -30,6 +32,10 @@ public class StateDate {
     
     public State getStato() {
     		return stato;
+    }
+    
+    public void setStato(State stato) {
+    		this.stato = stato;
     }
 
 }

@@ -1,12 +1,12 @@
-package client.Windows;
-
-import org.springframework.web.client.RestTemplate;
+package client.windows;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+
+import org.springframework.web.client.RestTemplate;
 
 import server.model.*;
 
@@ -34,10 +34,15 @@ public class WRoom {
  }
 
  private void searchRoom(String nome, TextField responseField, RestTemplate restTemplate) {
-     String url = "http://localhost:8080/api/room/" + nome;
-     System.out.printf("\n\n%s\n\n", url);
-     ResourceRoom room = restTemplate.getForObject(url, ResourceRoom.class);
-     System.out.printf("\n\n%s\n\n", room.toString());
-     responseField.setText(room.toString()); // Mostra la risposta del server nel campo di testo
- }
+	    String url = "http://localhost:8080/api/room/" + nome;
+	    System.out.printf("\n\n%s\n\n", url);
+	    ResourceRoom room = restTemplate.getForObject(url, ResourceRoom.class);
+	    if (room != null) {
+	        responseField.setText(room.toString()); // Mostra la risposta del server nel campo di testo
+	    } else {
+	        responseField.setText("Stanza non trovata"); // Mostra un messaggio di errore
+	    }
+	}
+
+
 }

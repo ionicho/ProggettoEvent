@@ -3,13 +3,15 @@ package server.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+
 import server.model.*;
 import server.service.*;
 
-import java.util.*;
-
 /**
- * Questa classe intercetta le richieste relative alle camere
+ * Questa classe intercetta le richieste relative alle CAMERE,
+ * gestisce il modello utilizzando le classi del Model;
+ * aggiorna il DB utilizzando le classe del Service
  */
 
 @RestController

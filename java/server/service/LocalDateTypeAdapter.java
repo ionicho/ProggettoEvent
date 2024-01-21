@@ -1,11 +1,14 @@
 package server.service;
 
 import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-
+import com.google.gson.stream.*;
 import java.io.IOException;
 import java.time.LocalDate;
+
+/**
+ * Classe di servizio per la serializzazione e deserializzazione delle date.
+ * in formato LocalDate
+ */
 
 public class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
 
@@ -17,6 +20,11 @@ public class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
 
     @Override
     public void write(JsonWriter writer, LocalDate date) throws IOException {
-        writer.value(date.toString());
+        if (date == null) {
+            writer.nullValue();
+        } else {
+            writer.value(date.toString());
+        }
     }
+
 }

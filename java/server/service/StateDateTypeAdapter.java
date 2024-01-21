@@ -1,13 +1,16 @@
 package server.service;
 
 import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-
+import com.google.gson.stream.*;
 import java.io.IOException;
 import java.time.LocalDate;
 
 import server.model.*;
+
+/**
+ * Classe di servizio per la serializzazione e deserializzazione delle
+ * disponibilità in formato StateDate.
+ */
 
 public class StateDateTypeAdapter extends TypeAdapter<StateDate> {
 
@@ -33,6 +36,9 @@ public class StateDateTypeAdapter extends TypeAdapter<StateDate> {
                 case "stato":
                     stato = State.valueOf(in.nextString());
                     break;
+                 default:
+                	 // ERRORE nella lista delle disponibilità //
+                	 System.err.printf ("ERRORE nella lista delle disponibilità");
             }
         }
         in.endObject();

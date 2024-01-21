@@ -1,8 +1,9 @@
 package server.model;
 
 /**
- * Visito che rende il prezzo di tutte le risorse
+ * Visitor che rende il prezzo di tutte le risorse
  */
+
 public class VisitorGetPrice implements Visitor<Double> {
 
 	public Double visit(ResourceRoom o) {

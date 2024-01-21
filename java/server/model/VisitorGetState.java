@@ -1,11 +1,10 @@
 package server.model;
-import java.time.LocalDate;
+
+/**
+* Visitor che rende lo stato della risorsa ad una certa data
+*/
 
 public class VisitorGetState implements Visitor<State> {
-	
-/**
- * Visitor che rende lo stato della risorsa ad una certa data
- */
 
 	public State visit(ResourceRoom o, StateDate sd) {
 		return o.getStato(sd.data);

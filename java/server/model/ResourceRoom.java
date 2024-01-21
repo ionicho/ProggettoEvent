@@ -3,10 +3,8 @@ package server.model;
 import java.time.LocalDate;
 import java.util.*;
 
-//import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.google.gson.annotations.SerializedName;
-
 /**
+ * Classe per le risorse CAMERE
  * Il costruttore provvede a definire gli attributi specifici di questa risorsa
  * ed ad accettare tutti i Visitors
  */
@@ -39,14 +37,10 @@ public class ResourceRoom extends Resource {
         return v.visit(this);
     }
     
-    //@JsonProperty("numeroLetti")
-    //@SerializedName("numeroLetti")
     public Integer getNumeroLetti() {
     		return this.numeroLetti;
     }
   
-    //@JsonProperty("tipo")
-    //@SerializedName("tipo")
     public RoomType getTipo() {
     		return this.tipo;
     }

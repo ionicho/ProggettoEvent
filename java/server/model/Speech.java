@@ -1,9 +1,12 @@
 package server.model;
 
+/**
+ * Classe per la gestione degli Speech, un evento può avere più speech.
+ */
 class Speech {
-    private String titolo;
-    private String relatore;
-    private String descrizione;
+    protected String titolo;
+    protected String relatore;
+    protected String descrizione;
 
     // Costruttore, getter e setter
 
