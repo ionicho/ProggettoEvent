@@ -36,7 +36,7 @@ public class WRoom {
  private void searchRoom(String nome, TextField responseField, RestTemplate restTemplate) {
 	    String url = "http://localhost:8080/api/room/" + nome;
 	    System.out.printf("\n\n%s\n\n", url);
-	    ResourceRoom room = restTemplate.getForObject(url, ResourceRoom.class);
+	    Room room = restTemplate.getForObject(url, Room.class);
 	    if (room != null) {
 	        responseField.setText(room.toString()); // Mostra la risposta del server nel campo di testo
 	    } else {

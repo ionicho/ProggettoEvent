@@ -6,15 +6,22 @@ package server.model;
 
 public class VisitorGetPrice implements Visitor<Double> {
 
-	public Double visit(ResourceRoom o) {
+	public Double visit(Room o) {
 		return o.getCosto();
 	}
-
-	@Override
-	public Double visit(ResourceRoom o, StateDate sd) {
+	
+	public Double visit(Calendar o) {
 		return null;
 	}
 
+	@Override
+	public Double visit(Room o, StateDate sd) {
+		return null;
+	}
 
-
+	@Override
+	public Double visit(Calendar o, StateDate sd) {
+		return null;
+	}
+	
 }

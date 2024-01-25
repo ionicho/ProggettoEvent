@@ -6,13 +6,23 @@ package server.model;
 
 public class VisitorSetState implements Visitor<Void> {
 
-	public Void visit(ResourceRoom o, StateDate sd) {
+	public Void visit(Room o, StateDate sd) {
 		o.changeStato(sd);
 		return null;
 	}
 
+	public Void visit(Calendar o, StateDate sd) {
+		o.changeStato(sd);
+		return null;
+	}
+	
 	@Override
-	public Void visit (ResourceRoom o) {
+	public Void visit (Room o) {
+		return null;
+	}
+	
+	@Override
+	public Void visit (Calendar o) {
 		return null;
 	}
 }

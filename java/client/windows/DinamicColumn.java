@@ -12,7 +12,27 @@ import server.model.*;
  * è ricavato da un dato) ad una tabella
  */
 
-public class DinamicColumn implements Callback<CellDataFeatures<ResourceRoom, String>, ObservableValue<String>> {
+public class DinamicColumn<T extends Resource> implements Callback<CellDataFeatures<T, String>, ObservableValue<String>> {
+    private String identifier;
+
+    public DinamicColumn(String identifier) {
+        this.identifier = identifier;
+    }
+
+    @Override
+    public ObservableValue<String> call(CellDataFeatures<T, String> cellData) {
+        T currentResource = cellData.getValue();
+        for (StateDate sd : currentResource.getDisponibilita()) {
+            if (sd.getData().toString().equals(identifier)) {
+                return new SimpleStringProperty(sd.getStato().toString());
+            }
+        }
+        return new SimpleStringProperty("");
+    }
+}
+
+/*
+public class DinamicColumn implements Callback<CellDataFeatures<Room, String>, ObservableValue<String>> {
     private String date;
 
     public DinamicColumn(String date) {
@@ -20,8 +40,8 @@ public class DinamicColumn implements Callback<CellDataFeatures<ResourceRoom, St
     }
 
     @Override
-    public ObservableValue<String> call(CellDataFeatures<ResourceRoom, String> cellData) {
-        ResourceRoom currentRoom = cellData.getValue();
+    public ObservableValue<String> call(CellDataFeatures<Room, String> cellData) {
+        Room currentRoom = cellData.getValue();
         for (StateDate sd : currentRoom.getDisponibilita()) {
             if (sd.getData().toString().equals(date)) {
                 return new SimpleStringProperty(sd.getStato().toString());
@@ -30,4 +50,4 @@ public class DinamicColumn implements Callback<CellDataFeatures<ResourceRoom, St
         return new SimpleStringProperty("");
     }
 
-}
+}*/

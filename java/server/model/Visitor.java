@@ -8,7 +8,11 @@ package server.model;
 
 public interface Visitor <T>{
 	
-	public T visit (ResourceRoom o, StateDate sd);
-	public T visit (ResourceRoom o);
+	public T visit (Room o, StateDate sd);
+	public T visit (Room o);
+	
+	public T visit (Calendar o, StateDate sd);
+	public T visit (Calendar o);
+
 
 }

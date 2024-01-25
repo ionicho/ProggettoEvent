@@ -9,24 +9,24 @@ import java.util.*;
  * ed ad accettare tutti i Visitors
  */
 
-public class ResourceRoom extends Resource {
+public class Room extends Resource {
 	
 	private Integer numeroLetti;
 	private RoomType tipo;
 
-	public ResourceRoom(String nome, Double costo, Integer numeroLetti,RoomType tipo, LocalDate endDate) {
+	public Room(String nome, Double costo, Integer numeroLetti,RoomType tipo, LocalDate endDate) {
 		super(nome, costo, endDate);
 		this.numeroLetti = numeroLetti;
 		this.tipo = tipo;
 	}
 	
-	public ResourceRoom(String nome, Double costo, Integer numeroLetti, RoomType tipo, List<StateDate> disponibilita) {
+	public Room(String nome, Double costo, Integer numeroLetti, RoomType tipo, List<StateDate> disponibilita) {
 	    super(nome, costo, disponibilita);
 	    this.numeroLetti = numeroLetti;
 	    this.tipo = tipo;
 	}
 
-	public ResourceRoom() { //costruttore di default serve a Spring Boot a deseralizzare
+	public Room() { //costruttore di default serve a Spring Boot a deseralizzare
 	}
 
     public <T> T accept(Visitor<T> v, StateDate stato) {

@@ -18,53 +18,48 @@ import server.model.*;
 public class RoomService {
 
     private static final String DATABASE_FILE = "D:\\UniBG\\Event\\DataBase\\Camere.json";
-    private List<ResourceRoom> camere;
+    private List<Room> camere;
     private LocalDateTypeAdapter localDateTypeAdapter;
     private StateDateTypeAdapter stateDateTypeAdapter;
 
     public RoomService() {
         this.localDateTypeAdapter = new LocalDateTypeAdapter();
         this.stateDateTypeAdapter = new StateDateTypeAdapter();
-        this.camere = caricaCamereDaDatabase();
+        this.camere = caricaCamereDaDB();
     }
     
     // Metodo GET per ottenere tutte le camere
-    public List<ResourceRoom> getCamere() {
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-        
-        String json = gson.toJson(camere);
-        return gson.fromJson(json, new TypeToken<List<ResourceRoom>>(){}.getType());
+    public List<Room> getCamere() {
+    	return camere;
     }
 
     // Metodo GET per ottenere una singola camera
-    public ResourceRoom getCamera(String id) {
-    	for (ResourceRoom curr : camere) {
+    public Room getCamera(String id) {
+    	for (Room curr : camere) {
             if (curr.getNome().equals(id)) {
-            	ResourceRoom camera = new ResourceRoom(curr.getNome(), curr.getCosto(), curr.getNumeroLetti(), curr.getTipo(), curr.getDisponibilita());
-                Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-                return camera; // Restituisci null se nessuna camera corrisponde al name fornito
+            	return new Room(curr.getNome(), curr.getCosto(), curr.getNumeroLetti(), curr.getTipo(), curr.getDisponibilita());
             }
         }
         return null;
     }
 
  // Metodo POST per aggiungere una camera
-    public void addCamera(ResourceRoom camera) {
+    public void addCamera(Room camera) {
         if (camera != null && camera.getNome() != null && !camera.getNome().isEmpty()) {
             camere.add(camera);
-            salvaCamereSuDatabase();
+            salvaCamereSuDB();
         } else {
             throw new IllegalArgumentException("Camera non valida.");
         }
     }
        
  // Metodo PUT per aggiornare una camera
-    public void updateCamera(String nome, ResourceRoom camera) {
+    public void updateCamera(String nome, Room camera) {
         if (camera != null && camera.getNome() != null && !camera.getNome().isEmpty()) {
             for (int i = 0; i < camere.size(); i++) {
                 if (camere.get(i).getNome().equals(nome)) {
                     camere.set(i, camera);
-                    salvaCamereSuDatabase();
+                    salvaCamereSuDB();
                     return;
                 }
             }
@@ -77,23 +72,23 @@ public class RoomService {
       */
     public void deleteCamera(String nome) {
     		camere.removeIf(curr-> curr.getNome().equals(nome)); 
-        salvaCamereSuDatabase();
+        salvaCamereSuDB();
     }
     
-    private List<ResourceRoom> caricaCamereDaDatabase() {
+    private List<Room> caricaCamereDaDB() {
         try {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
                 .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
                 .create();
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
-            return gson.fromJson(br, new TypeToken<List<ResourceRoom>>(){}.getType());
+            return gson.fromJson(br, new TypeToken<List<Room>>(){}.getType());
         } catch (IOException e) {
             return new ArrayList<>();
         }
     }
 
-    private void salvaCamereSuDatabase() {
+    private void salvaCamereSuDB() {
         try {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
@@ -106,7 +101,6 @@ public class RoomService {
             pw.println(gson.toJson(camere));
             pw.close();
         } catch (IOException e) {
-            // Log the error or rethrow the exception
             e.printStackTrace();
         }
     }

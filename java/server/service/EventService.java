@@ -21,7 +21,7 @@ public class EventService {
     private List<Event> eventi;
 
     public EventService() {
-        this.eventi = caricaEventiDaDatabase();
+        this.eventi = caricaEventiDaDB();
     }
 
     // Metodo GET per ottenere tutti gli eventi
@@ -41,24 +41,24 @@ public class EventService {
 
     // Metodo POST per aggiungere un evento
     public void addEvento(Event evento) {
-    	for( int i = 0; i < eventi.size(); i++) {
-    		if (eventi.get(i).getId().compareTo(evento.getId()) !=0 ) {
+        if (evento != null && evento.getId() != null && !evento.getId().isEmpty()) {
     			eventi.add(evento);
-    			 salvaEventiSuDatabase();
+    			 salvaEventiSuDB();
     		} else {
-    			updateEvento (evento);
+                throw new IllegalArgumentException("Evento non valido.");
     		}
     	}
-    }
 
     // Metodo PUT per aggiornare un evento
-    public void updateEvento(Event evento) {
-        for (int i = 0; i < eventi.size(); i++) {
-            if (eventi.get(i).getId().compareTo(evento.getId()) ==0 ) {
-                eventi.set(i, evento);
-                salvaEventiSuDatabase();
-                return;
-            }
+    public void updateEvento(String id, Event evento) {
+        if (evento != null && evento.getId() != null && !evento.getId().isEmpty()) {
+        	for (int i = 0; i < eventi.size(); i++) {
+	            if (eventi.get(i).getId().compareTo(evento.getId()) ==0 ) {
+	                eventi.set(i, evento);
+	                salvaEventiSuDB();
+	                return;
+	            }
+        	}
         }
         throw new IllegalArgumentException("Evento con ID: " + evento.getId() + " non trovato.");
     }
@@ -68,10 +68,10 @@ public class EventService {
       */
     public void deleteEvento(String id) {
       	eventi.removeIf(curr -> curr.getId().equals(id)); 
-        salvaEventiSuDatabase();
+        salvaEventiSuDB();
     }
 
-    private List<Event> caricaEventiDaDatabase() {
+    private List<Event> caricaEventiDaDB() {
         try {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
@@ -84,7 +84,7 @@ public class EventService {
         }
     }
 
-    private void salvaEventiSuDatabase() {
+    private void salvaEventiSuDB() {
         try {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
@@ -92,6 +92,8 @@ public class EventService {
                 .setPrettyPrinting()  // inserisce i CR
                 .create();
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
+            // Rimuove eventuali oggetti null dalla lista prima di salvarla
+            eventi.removeAll(Collections.singleton(null));
             pw.println(gson.toJson(eventi));
             pw.close();
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 [
   {
-    "id": "Event1",
+    "id": "Event001",
     "data": "2023-01-01",
     "oraInizio": "09:00",
     "oraFine": "17:00",
@@ -20,7 +20,7 @@
     "costoPartecipazione": 100.0
   },
   {
-    "id": "Event2",
+    "id": "Event002",
     "data": "2023-01-02",
     "oraInizio": "09:00",
     "oraFine": "17:00",
@@ -40,72 +40,12 @@
     "costoPartecipazione": 150.0
   },
   {
-    "id": "Event4",
+    "id": "Event003",
     "elencoInterventi": [],
     "costoPartecipazione": 0.0
   },
   {
-    "id": "Event4",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event5",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event5",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event5",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event5",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
-    "elencoInterventi": [],
-    "costoPartecipazione": 0.0
-  },
-  {
-    "id": "Event9",
+    "id": "Event004",
     "elencoInterventi": [],
     "costoPartecipazione": 0.0
   }

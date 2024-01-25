@@ -1,12 +1,13 @@
 package server.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
-import server.model.*;
-import server.service.*;
+import server.model.Room;
+import server.model.StateDate;
+import server.model.VisitorSetState;
+import server.service.RoomService;
 
 /**
  * Questa classe intercetta le richieste relative alle CAMERE,
@@ -20,26 +21,25 @@ public class RoomController {
 	
     private final RoomService roomService;
 
-    @Autowired
     public RoomController(RoomService roomService) {
         this.roomService = roomService;
     }
 
     // Metodo GET per ottenere una singola camera
     @GetMapping("/room/{nome}")
-    public ResourceRoom getCamera(@PathVariable String nome) {
+    public Room getCamera(@PathVariable String nome) {
         return roomService.getCamera(nome);
     }
 
     // Metodo GET per ottenere tutte le camere
     @GetMapping("/room")
-    public List<ResourceRoom> getCamere() {
+    public List<Room> getCamere() {
         return roomService.getCamere();
     }
 
     // Metodo POST per aggiungere una camera
     @PostMapping("/room")
-    public String addCamera(@RequestBody ResourceRoom camera) {
+    public String addCamera(@RequestBody Room camera) {
         roomService.addCamera(camera);
         return "Evento aggiunto con successo.";
     }
@@ -48,7 +48,7 @@ public class RoomController {
     @PutMapping("/room/{nome}/state")
     public String updateCameraStateAndSave(@PathVariable String nome, @RequestBody StateDate statoData) {
         // Ottieni la camera dal RoomService
-        ResourceRoom camera = roomService.getCamera(nome);
+        Room camera = roomService.getCamera(nome);
         
         // Crea un'istanza del Visitor
         VisitorSetState visitor = new VisitorSetState();

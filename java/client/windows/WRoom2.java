@@ -12,12 +12,12 @@ import server.model.*;
 
 /**
  Classe per la gestione della finestra con l'elenco delle camere e la loro disponibilità.
- Con la classe WRoom2eHandler consente di inviare una request al server e quando 
+ Con la classe WRoom2Event consente di inviare una request al server e quando 
  riceve la notifica del tutto ok, aggiorna la videata.
  */
 public class WRoom2 {
 
-	    private TableView<ResourceRoom> table;
+	    private TableView<Room> table;
 	    private RestTemplate restTemplate;
 	    
 	    public void start(Stage primaryStage, RestTemplate restTemplate) {
@@ -37,21 +37,22 @@ public class WRoom2 {
 
 	    	String centrato = "CENTER";
 	    	String aDestra = "CENTER-RIGHT";
-	        TableColumn<ResourceRoom, String> cameraCol = StaticColumn.createColumn("Camera", "nome", centrato);
+	        TableColumn<Room, String> cameraCol = StaticColumn.createColumn("Camera", "nome", centrato);
 	        table.getColumns().add(cameraCol);
 
-	        TableColumn<ResourceRoom, RoomType> tipoCol = StaticColumn.createColumn("Tipo", "tipo", centrato);
+	        TableColumn<Room, RoomType> tipoCol = StaticColumn.createColumn("Tipo", "tipo", centrato);
 	        table.getColumns().add(tipoCol);
 
-	        TableColumn<ResourceRoom, Double> costoCol = StaticColumn.createColumn("Costo", "costo", aDestra);
+	        TableColumn<Room, Double> costoCol = StaticColumn.createColumn("Costo", "costo", aDestra);
 	        table.getColumns().add(costoCol);
 
-	        TableColumn<ResourceRoom, Integer> lettiCol = StaticColumn.createColumn("N. Letti", "numeroLetti", centrato);
+	        TableColumn<Room, Integer> lettiCol = StaticColumn.createColumn("N. Letti", "numeroLetti", centrato);
 	        table.getColumns().add(lettiCol);
 	    }
 
 	   
-	    private void addColonneDinamiche(Set<String> uniqueDates) {
+	    @SuppressWarnings({ "unchecked", "rawtypes" })
+		private void addColonneDinamiche(Set<String> uniqueDates) {
 	        // Converti il Set in una List
 	        List<String> dateList = new ArrayList<>(uniqueDates);
 	        
@@ -59,22 +60,21 @@ public class WRoom2 {
 	        Collections.sort(dateList);
 	        
 	        // Ora aggiungi le colonne in base all'ordine della lista
-	        for (String date : dateList) {
-	            TableColumn<ResourceRoom, String> column = new TableColumn<>(date);
-	            column.setCellValueFactory(new DinamicColumn(date));
+	        for (String date : dateList) {	
+	        	TableColumn<Room, String> column = new TableColumn<>(date);
+	        	column.setCellValueFactory(new DinamicColumn(date));        	 
 	            column.setCellFactory(col -> coloraCelle());
 	            table.getColumns().add(column);
 	        }
 	    }
 
-
         private void mettiDati() {
             // Invia una richiesta GET al server per ottenere i dati di tutte le camere
-            ResourceRoom[] rooms = restTemplate.getForObject("http://localhost:8080/api/room", ResourceRoom[].class);
+            Room[] rooms = restTemplate.getForObject("http://localhost:8080/api/room", Room[].class);
 
             // Crea un insieme di date uniche
             Set<String> uniqueDates = new HashSet<>();
-            for (ResourceRoom room : rooms) {
+            for (Room room : rooms) {
                 for (StateDate stateDate : room.getDisponibilita()) {
                     uniqueDates.add(stateDate.getData().toString());
                 }
@@ -84,7 +84,7 @@ public class WRoom2 {
             addColonneDinamiche(uniqueDates);
 
             // Popola la tabella con i dati ricevuti
-            ObservableList<ResourceRoom> data = FXCollections.observableArrayList(rooms);
+            ObservableList<Room> data = FXCollections.observableArrayList(rooms);
             table.setItems(data);
         }
         
@@ -98,9 +98,9 @@ public class WRoom2 {
         
             
         ////////////////// inizio classe anonima /////////////////////////   
-        private TableCell<ResourceRoom, String> coloraCelle() {
+        private TableCell<Room, String> coloraCelle() {
         		WRoom2 thisWRoom2 = this; //crea un riferimento alla classe esterna 
-            return new TableCell<ResourceRoom, String>() {
+            return new TableCell<Room, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -121,11 +121,11 @@ public class WRoom2 {
                         	setStyle("-fx-alignment: CENTER; -fx-background-color: #d3d3d3"); // Grigio chiaro
                             break;
                         default:
-                            setStyle("");
+                            setStyle("-fx-alignment: CENTER");
                             break;
                     }
                     // Aggiungo un gestore di eventi
-                    setOnMouseClicked(new WRoom2eHandler(thisWRoom2));
+                    setOnMouseClicked(new WRoom2Event(thisWRoom2));
                 }
             };
         }
