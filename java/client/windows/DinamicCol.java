@@ -12,16 +12,16 @@ import server.model.*;
  * è ricavato da un dato) ad una tabella
  */
 
-public class DinamicColumn implements Callback<CellDataFeatures<ResourceRoom, String>, ObservableValue<String>> {
+public class DinamicCol implements Callback<CellDataFeatures<Room, String>, ObservableValue<String>> {
     private String date;
 
-    public DinamicColumn(String date) {
+    public DinamicCol(String date) {
         this.date = date;
     }
 
     @Override
-    public ObservableValue<String> call(CellDataFeatures<ResourceRoom, String> cellData) {
-        ResourceRoom currentRoom = cellData.getValue();
+    public ObservableValue<String> call(CellDataFeatures<Room, String> cellData) {
+        Room currentRoom = cellData.getValue();
         for (StateDate sd : currentRoom.getDisponibilita()) {
             if (sd.getData().toString().equals(date)) {
                 return new SimpleStringProperty(sd.getStato().toString());

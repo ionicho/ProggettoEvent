@@ -8,5 +8,6 @@ public enum State {
 	DISPONIBILE,
 	PRENOTATA,
 	INUSO,
-	PULIZIA
+	PULIZIA,
+	CHIUSO
 }

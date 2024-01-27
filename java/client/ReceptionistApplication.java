@@ -16,6 +16,13 @@ public class ReceptionistApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+    	
+    	// finestra per il calendario
+        Stage calendarStage = new Stage();
+        WCalendar wCalendar = new WCalendar();
+        wCalendar.start(calendarStage);
+        
+    	
         // finestra per l'evento
         Stage eventStage = new Stage();
         WEvent wEvent = new WEvent();

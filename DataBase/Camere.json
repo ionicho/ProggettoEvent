@@ -16,7 +16,7 @@
         "stato": "PULIZIA"
       }
     ],
-    "nome": "Room01",
+    "nome": "Room001",
     "costo": 120.0
   },
   {
@@ -36,7 +36,7 @@
         "stato": "PRENOTATA"
       }
     ],
-    "nome": "Room02",
+    "nome": "Room002",
     "costo": 120.0
   },
   {
@@ -45,18 +45,18 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "PRENOTATA"
+        "stato": "INUSO"
       },
       {
         "data": "2024-01-02",
-        "stato": "PULIZIA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-03",
         "stato": "INUSO"
       }
     ],
-    "nome": "Room03",
+    "nome": "Room003",
     "costo": 100.0
   },
   {
@@ -69,14 +69,14 @@
       },
       {
         "data": "2024-01-02",
-        "stato": "PRENOTATA"
+        "stato": "CHIUSO"
       },
       {
         "data": "2024-01-03",
-        "stato": "INUSO"
+        "stato": "PULIZIA"
       }
     ],
-    "nome": "Room04",
+    "nome": "Room004",
     "costo": 120.0
   },
   {
@@ -96,7 +96,7 @@
         "stato": "PRENOTATA"
       }
     ],
-    "nome": "Room05",
+    "nome": "Room005",
     "costo": 120.0
   }
 ]

@@ -27,19 +27,19 @@ public class RoomController {
 
     // Metodo GET per ottenere una singola camera
     @GetMapping("/room/{nome}")
-    public ResourceRoom getCamera(@PathVariable String nome) {
+    public Room getCamera(@PathVariable String nome) {
         return roomService.getCamera(nome);
     }
 
     // Metodo GET per ottenere tutte le camere
     @GetMapping("/room")
-    public List<ResourceRoom> getCamere() {
+    public List<Room> getCamere() {
         return roomService.getCamere();
     }
 
     // Metodo POST per aggiungere una camera
     @PostMapping("/room")
-    public String addCamera(@RequestBody ResourceRoom camera) {
+    public String addCamera(@RequestBody Room camera) {
         roomService.addCamera(camera);
         return "Evento aggiunto con successo.";
     }
@@ -48,7 +48,7 @@ public class RoomController {
     @PutMapping("/room/{nome}/state")
     public String updateCameraStateAndSave(@PathVariable String nome, @RequestBody StateDate statoData) {
         // Ottieni la camera dal RoomService
-        ResourceRoom camera = roomService.getCamera(nome);
+        Room camera = roomService.getCamera(nome);
         
         // Crea un'istanza del Visitor
         VisitorSetState visitor = new VisitorSetState();

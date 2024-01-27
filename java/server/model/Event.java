@@ -7,8 +7,9 @@ import java.util.*;
 
 /**
  * Classe per la gestione degli eventi
- * 
- * TBD: modificare le date da string a LocalDate
+ * La classe ha due costruttori per evitare che Gson quando serializza e/o
+ * deserializza un'istanza, chimando il costruttore, incrementi il contatore
+ * degli eventi. 
  */
 
 public class Event {
@@ -22,34 +23,37 @@ public class Event {
 
     // Costruttore, getter e setter
     
-    public Event() {
-    	this.id = Singleton.getInstance().getNext(this.getClass().getSimpleName());
-    	elencoInterventi = new ArrayList <>();
+    public Event() {  // costruttore usato da Gson
     }
+    
+   public Event (String s) { //costruttore usato da me 
+	   this.id = Singleton.getInstance().getNext(this.getClass().getSimpleName());
+	   elencoInterventi = new ArrayList <>();
+   }
 
-   public void setNomeOrganizzatore(String nome) {
+   public void setNomeOrg(String nome) {
 	   nomeOrganizzatore = nome;
    }
    
-    public void setCostoPartecipazione(Double costo) {
+    public void setCostoPar(Double costo) {
     	costoPartecipazione = costo;
     }
     
     public void setData(LocalDate data) {
     	this.data = data;
-    };
+    }
 
     public void setOraInizio(LocalTime inizio) {
     	oraInizio = inizio;
-    };
+    }
     
     public void setOraFine(LocalTime fine) {
     	oraFine = fine;
-    };
+    }
     
     public void addIntervento(Speech intervento) {
     	elencoInterventi.add(intervento);
-    };
+    }
     
 
 

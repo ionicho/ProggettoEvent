@@ -27,4 +27,3 @@ class EventControllerTests {
                 .andExpect(status().isOk());
     }
 }
-
