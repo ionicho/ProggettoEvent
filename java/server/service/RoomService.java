@@ -40,9 +40,7 @@ public class RoomService {
     public Room getCamera(String id) {
     	for (Room curr : camere) {
             if (curr.getNome().equals(id)) {
-            	Room camera = new Room(curr.getNome(), curr.getCosto(), curr.getNumeroLetti(), curr.getTipo(), curr.getDisponibilita());
-                Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-                return camera; // Restituisci null se nessuna camera corrisponde al name fornito
+            	return new Room(curr.getNome(), curr.getCosto(), curr.getNumeroLetti(), curr.getTipo(), curr.getDisponibilita());
             }
         }
         return null;
@@ -98,7 +96,7 @@ public class RoomService {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
                 .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
-                .setPrettyPrinting()  // inserisce i CR
+               .setPrettyPrinting()  // inserisce i CR
                 .create();
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
             // Rimuove eventuali oggetti null dalla lista prima di salvarla

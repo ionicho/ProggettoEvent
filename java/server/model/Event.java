@@ -18,8 +18,8 @@ public class Event {
     private LocalTime oraInizio;
     private LocalTime oraFine;
     private String nomeOrganizzatore;
+    private Integer costoPartecipazione;
     private List<Speech> elencoInterventi;
-    private double costoPartecipazione;
 
     // Costruttore, getter e setter
     
@@ -27,15 +27,16 @@ public class Event {
     }
     
    public Event (String s) { //costruttore usato da me 
+	   System.out.printf("COSTRUTTORE EVENT %s\n", s);
 	   this.id = Singleton.getInstance().getNext(this.getClass().getSimpleName());
 	   elencoInterventi = new ArrayList <>();
    }
 
    public void setNomeOrg(String nome) {
-	   nomeOrganizzatore = nome;
+	   if (nome != null && !nome.trim().isEmpty()) nomeOrganizzatore = nome;
    }
    
-    public void setCostoPar(Double costo) {
+    public void setCostoPar(Integer costo) {
     	costoPartecipazione = costo;
     }
     
@@ -55,15 +56,9 @@ public class Event {
     	elencoInterventi.add(intervento);
     }
     
-
-
-    // altri metodi come necessario
-    
-    // Getter   
     public String getId() {
     	return id;
     }
-    
     
     public LocalDate getData() {
         return data;
@@ -85,7 +80,7 @@ public class Event {
         return elencoInterventi;
     }
 
-    public double getCostoPartecipazione() {
+    public Integer getCosto() {
         return costoPartecipazione;
     }
     

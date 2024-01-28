@@ -45,7 +45,7 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "INUSO"
+        "stato": "PRENOTATA"
       },
       {
         "data": "2024-01-02",
@@ -65,7 +65,7 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "INUSO"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-02",

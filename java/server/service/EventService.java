@@ -32,35 +32,31 @@ public class EventService {
  // Metodo GET per ottenere un singolo evento
     public Event getEvento(String id) {
         for (Event curr : eventi) {
-            if (curr.getId().equals(id)) {
-                return curr;
-            }
+        	if (curr.getId().compareTo(id)==0) return curr;
         }
         return null; // Restituisci null se nessun evento corrisponde all'ID fornito
     }
 
-    // Metodo POST per aggiungere un evento
-    public void addEvento(Event evento) {
-    	for( int i = 0; i < eventi.size(); i++) {
-    		if (eventi.get(i).getId().compareTo(evento.getId()) !=0 ) {
-    			eventi.add(evento);
-    			 salvaEventiSuDatabase();
-    		} else {
-    			updateEvento (evento);
-    		}
-    	}
+    // Metodo GET per invocare il singleton per poter aggiungere un evento
+    public Event addEvento() {
+    	Event evento = new Event("ciao"); //uso il costruttore che usa il dingleton
+    	eventi.add(evento);
+    	salvaEventiSuDatabase();
+    	return evento;
     }
 
     // Metodo PUT per aggiornare un evento
-    public void updateEvento(Event evento) {
+    public Event updateEvento(Event evento) {
         for (int i = 0; i < eventi.size(); i++) {
             if (eventi.get(i).getId().compareTo(evento.getId()) ==0 ) {
+            	System.out.printf("SERVICE prima della set %s\n", eventi.get(i).toString());
                 eventi.set(i, evento);
                 salvaEventiSuDatabase();
-                return;
+            	System.out.printf("SERVICE prima dopo la set %s\n", evento.toString());
+            	return evento;
             }
         }
-        throw new IllegalArgumentException("Evento con ID: " + evento.getId() + " non trovato.");
+        return null; //non c'è l'elemento da aggiornare!
     }
 
     /**
@@ -76,6 +72,7 @@ public class EventService {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
                 .registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
+                .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
                 .create();
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
             return gson.fromJson(br, new TypeToken<List<Event>>(){}.getType());
