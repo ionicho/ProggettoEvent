@@ -10,7 +10,7 @@ import javafx.scene.input.*;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
-
+import server.AppConfig;
 import server.model.*;
 
 public class WCalendarEvent implements EventHandler<MouseEvent> {
@@ -24,17 +24,18 @@ public class WCalendarEvent implements EventHandler<MouseEvent> {
     }
     
     public void mettiDati() {
-        Calendar calendar = restTemplate.getForObject("http://localhost:8080/api/calendar", Calendar.class);
+        Calendar calendar = restTemplate.getForObject(AppConfig.getURL() + "api/calendar", Calendar.class);
         if (calendar != null) {
             ObservableList<StateDate> data = FXCollections.observableArrayList(calendar.getDisponibilita());
             wCalendar.getTable().setItems(data);
         }
     }
    
+    @SuppressWarnings("null")
     public void setCalendario(LocalDate startDate, LocalDate endDate) {
         // Invia una richiesta PUT al server per aggiornare il calendario
-    	String msg  ="http://localhost:8080/api/calendar/" + startDate.toString() + "/" + endDate.toString();
-    	System.out.printf("%s \n", msg);
+        String msg  = AppConfig.getURL() + "api/calendar/" + startDate.toString() + "/" + endDate.toString();
+        System.out.printf("%s \n", msg);
         ResponseEntity<String> response = restTemplate.exchange(msg, HttpMethod.PUT, null, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
             Platform.runLater(this::mettiDati);
@@ -60,20 +61,21 @@ public class WCalendarEvent implements EventHandler<MouseEvent> {
         }
     }
     
-   private EventHandler<ActionEvent> setStatoData(LocalDate data, State stato) {
-       return e -> {
-           // Crea un nuovo StateDate con la data e lo stato selezionati
-           StateDate statoData = new StateDate(data,stato);
-           System.out.println("per la data " + data + " selezionato " + statoData);
-           // Invia una richiesta PUT del StateDate al tuo server
-           HttpEntity<StateDate> request = new HttpEntity<>(statoData);
-           ResponseEntity<Void> response = restTemplate.exchange("http://localhost:8080/api/calendar/state", HttpMethod.PUT, request, Void.class);          
-           if (response.getStatusCode() == HttpStatus.OK) {
-               // Aggiorna la GUI qui
-               Platform.runLater(this::mettiDati);
-           }
-       };
-   }
+    @SuppressWarnings("null")
+    private EventHandler<ActionEvent> setStatoData(LocalDate data, State stato) {
+           return e -> {
+               // Crea un nuovo StateDate con la data e lo stato selezionati
+               StateDate statoData = new StateDate(data,stato);
+               System.out.println("per la data " + data + " selezionato " + statoData);
+               // Invia una richiesta PUT del StateDate al tuo server
+               HttpEntity<StateDate> request = new HttpEntity<>(statoData);
+               ResponseEntity<Void> response = restTemplate.exchange(AppConfig.getURL() + "api/calendar/state", (HttpMethod) HttpMethod.PUT, request, Void.class);          
+               if (response.getStatusCode() == HttpStatus.OK) {
+                   // Aggiorna la GUI qui
+                   Platform.runLater(this::mettiDati);
+               }
+           };
+       }
    
     public TableCell<StateDate, State> coloraCelle() {
         return new TableCell<StateDate, State>() {

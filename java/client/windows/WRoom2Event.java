@@ -9,6 +9,7 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 
+import server.AppConfig;
 import server.model.*;
 
 /**
@@ -52,12 +53,14 @@ public class WRoom2Event implements EventHandler<MouseEvent> {
     private EventHandler<ActionEvent> cambiaStato(String camera, LocalDate data, State stato) {
         return new EventHandler<ActionEvent>() {
         
+            @SuppressWarnings("null")
             @Override
             public void handle(ActionEvent e) {
                 StateDate statoData = new StateDate(data,stato);
                 System.out.println("per la camera " + camera + " selezionato " + statoData);
                 HttpEntity<StateDate> request = new HttpEntity<>(statoData);
-                ResponseEntity<Void> response = restTemplate.exchange("http://localhost:8080/api/room/" + camera + "/state", HttpMethod.PUT, request, Void.class);
+                String url = AppConfig.getURL() +"api/room/";
+                ResponseEntity<Void> response = restTemplate.exchange(url + camera + "/state", HttpMethod.PUT, request, Void.class);
                 
                 if (response.getStatusCode() == HttpStatus.OK) {
                     // Aggiorna la GUI qui

@@ -2,12 +2,13 @@ package server.service;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
+import server.AppConfig;
 import server.model.Event;
 
 /**
@@ -17,10 +18,13 @@ import server.model.Event;
 @Service
 public class EventService {
 
-    private static final String DATABASE_FILE = "D:\\UniBG\\Event\\DataBase\\Eventi.json";
+    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Eventi.json";
     private List<Event> eventi;
+    private final Gson gson;
 
-    public EventService() {
+    @Autowired
+    public EventService(Gson gson) {
+        this.gson = gson;
         this.eventi = caricaEventiDaDatabase();
     }
 
@@ -30,9 +34,11 @@ public class EventService {
     }
     
  // Metodo GET per ottenere un singolo evento
-    public Event getEvento(String id) {
+    public Event getEvento(String id) {  	
         for (Event curr : eventi) {
-        	if (curr.getId().compareTo(id)==0) return curr;
+        	if (curr.getId().compareTo(id)==0) {
+        		return curr;
+        	}
         }
         return null; // Restituisci null se nessun evento corrisponde all'ID fornito
     }
@@ -69,11 +75,6 @@ public class EventService {
 
     private List<Event> caricaEventiDaDatabase() {
         try {
-            Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
-                .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
-                .create();
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
             return gson.fromJson(br, new TypeToken<List<Event>>(){}.getType());
         } catch (IOException e) {
@@ -83,11 +84,6 @@ public class EventService {
 
     private void salvaEventiSuDatabase() {
         try {
-            Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
-                .setPrettyPrinting()  // inserisce i CR
-                .create();
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
             pw.println(gson.toJson(eventi));
             pw.close();

@@ -3,7 +3,7 @@ package client;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.web.client.RestTemplate;
-
+import server.AppConfig;
 import client.windows.*;
 
 /**
@@ -12,12 +12,14 @@ import client.windows.*;
 
 public class ReceptionistApplication extends Application {
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
 
     @Override
     public void start(Stage primaryStage) {
-    	
-    	// finestra per il calendario
+        // Configura RestTemplate con l'adattatore IntegerTypeAdapter
+        restTemplate = AppConfig.configureRestTemplate();
+        
+        // finestra per il calendario
         Stage calendarStage = new Stage();
         WCalendar wCalendar = new WCalendar();
         wCalendar.start(calendarStage, restTemplate);
@@ -36,8 +38,7 @@ public class ReceptionistApplication extends Application {
         Stage roomStage2 = new Stage();
         WRoom2 wRoom2 = new WRoom2(); 
         wRoom2.start(roomStage2, restTemplate);
-    }
-   
+    }   
 
     public static void main(String[] args) {
         launch(args);

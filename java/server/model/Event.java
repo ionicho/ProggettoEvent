@@ -24,12 +24,13 @@ public class Event {
     // Costruttore, getter e setter
     
     public Event() {  // costruttore usato da Gson
+ 	   this.elencoInterventi = new ArrayList <>();
     }
     
    public Event (String s) { //costruttore usato da me 
 	   System.out.printf("COSTRUTTORE EVENT %s\n", s);
 	   this.id = Singleton.getInstance().getNext(this.getClass().getSimpleName());
-	   elencoInterventi = new ArrayList <>();
+	   this.elencoInterventi = new ArrayList <>();
    }
 
    public void setNomeOrg(String nome) {
@@ -54,6 +55,10 @@ public class Event {
     
     public void addIntervento(Speech intervento) {
     	elencoInterventi.add(intervento);
+    }
+
+    public void addInterventi(List<Speech> interventi) {
+        elencoInterventi.addAll(interventi);
     }
     
     public String getId() {
@@ -86,28 +91,28 @@ public class Event {
     
     @Override
     public String toString() {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append("Evento {");
-    	sb.append(id);
-    	sb.append("data: ");
-    	sb.append(data);
-    	sb.append("ora inizio: ");
-    	sb.append(oraInizio);
-    	sb.append("ora fine: ");
-    	sb.append(oraFine);
-    	sb.append("organizzato da: ");
-    	sb.append(nomeOrganizzatore);
-    	sb.append("costo partecipazione: ");
-    	sb.append(costoPartecipazione);
-    	if (!elencoInterventi.isEmpty()) {
-    		for (Speech curr : elencoInterventi) {
-    			sb.append(curr.titolo);
-    			sb.append(curr.relatore);
-    			sb.append(curr.descrizione);
-    		}    		
-    	}
-    	return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Evento {");
+        sb.append("id: ").append(id).append(", ");
+        sb.append("data: ").append(data).append(", ");
+        sb.append("ora inizio: ").append(oraInizio).append(", ");
+        sb.append("ora fine: ").append(oraFine).append(", ");
+        sb.append("organizzato da: ").append(nomeOrganizzatore).append(", ");
+        sb.append("costo partecipazione: ").append(costoPartecipazione).append(", ");
+        if (!elencoInterventi.isEmpty()) {
+            sb.append("elenco interventi: [");
+            for (Speech curr : elencoInterventi) {
+                sb.append(curr.getTitolo()).append(", ");
+                sb.append(curr.getRelatore()).append(", ");
+                sb.append(curr.getDescrizione()).append(", ");
+            }
+            sb.delete(sb.length() - 2, sb.length());  // Rimuovi l'ultima virgola e spazio
+            sb.append("]");
+        }
+        sb.append("}");
+        return sb.toString();
     }
+
 
 }
 

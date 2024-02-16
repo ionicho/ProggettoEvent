@@ -2,11 +2,13 @@ package server.service;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
-import java.time.LocalDate;
 import java.util.*;
 
+import server.AppConfig;
 import server.model.*;
 
 /**
@@ -17,21 +19,18 @@ import server.model.*;
 @Service
 public class RoomService {
 
-    private static final String DATABASE_FILE = "D:\\UniBG\\Event\\DataBase\\Camere.json";
+    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Camere.json";
     private List<Room> camere;
-    private LocalDateTypeAdapter localDateTypeAdapter;
-    private StateDateTypeAdapter stateDateTypeAdapter;
+    private final Gson gson;
 
-    public RoomService() {
-        this.localDateTypeAdapter = new LocalDateTypeAdapter();
-        this.stateDateTypeAdapter = new StateDateTypeAdapter();
+    @Autowired
+    public RoomService(Gson gson) {
+        this.gson = gson;
         this.camere = caricaCamereDaDatabase();
     }
     
     // Metodo GET per ottenere tutte le camere
     public List<Room> getCamere() {
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, localDateTypeAdapter).create();
-        
         String json = gson.toJson(camere);
         return gson.fromJson(json, new TypeToken<List<Room>>(){}.getType());
     }
@@ -80,10 +79,6 @@ public class RoomService {
     
     private List<Room> caricaCamereDaDatabase() {
         try {
-            Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
-                .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
-                .create();
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
             return gson.fromJson(br, new TypeToken<List<Room>>(){}.getType());
         } catch (IOException e) {
@@ -93,23 +88,13 @@ public class RoomService {
 
     private void salvaCamereSuDatabase() {
         try {
-            Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
-                .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
-               .setPrettyPrinting()  // inserisce i CR
-                .create();
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
-            // Rimuove eventuali oggetti null dalla lista prima di salvarla
             camere.removeAll(Collections.singleton(null));
             pw.println(gson.toJson(camere));
             pw.close();
         } catch (IOException e) {
-            // Log the error or rethrow the exception
             e.printStackTrace();
         }
     }
 }
 
-
-
-        

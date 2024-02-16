@@ -5,10 +5,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.*;
-
+import server.AppConfig;
 import server.model.*;
+
 
 /**
  Classe per la gestione della finestra con l'elenco delle camere e la loro disponibilità.
@@ -51,7 +51,6 @@ public class WRoom2 {
 	    }
 
 	   
-	    @SuppressWarnings({ "unchecked", "rawtypes" })
 		private void addColonneDinamiche(Set<String> uniqueDates) {
 	        // Converti il Set in una List
 	        List<String> dateList = new ArrayList<>(uniqueDates);
@@ -70,13 +69,16 @@ public class WRoom2 {
 
         private void mettiDati() {
             // Invia una richiesta GET al server per ottenere i dati di tutte le camere
-            Room[] rooms = restTemplate.getForObject("http://localhost:8080/api/room", Room[].class);
+            String url = AppConfig.getURL() + "api/room";
+            Room[] rooms = restTemplate.getForObject(url, Room[].class);
 
             // Crea un insieme di date uniche
             Set<String> uniqueDates = new HashSet<>();
-            for (Room room : rooms) {
-                for (StateDate stateDate : room.getDisponibilita()) {
-                    uniqueDates.add(stateDate.getData().toString());
+            if (rooms != null){
+                for (Room room : rooms) {
+                    for (StateDate stateDate : room.getDisponibilita()) {
+                        uniqueDates.add(stateDate.getData().toString());
+                    }
                 }
             }
 

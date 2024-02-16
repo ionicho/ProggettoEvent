@@ -1,58 +1,50 @@
 package server.service;
 
 import com.google.gson.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.LocalDate;
 
+import server.AppConfig;
 import server.model.*;
 
 @Service
 public class CalendarService {
 
-    private static final String DATABASE_FILE = "D:\\UniBG\\Event\\DataBase\\Calendario.json";
+    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Calendario.json";
     private Calendar calendario;
-    private LocalDateTypeAdapter localDateTypeAdapter;
-    private StateDateTypeAdapter stateDateTypeAdapter;
+    private Gson gson;
 
-    public CalendarService() {
-        this.localDateTypeAdapter = new LocalDateTypeAdapter();
-        this.stateDateTypeAdapter = new StateDateTypeAdapter();
-        
+    @Autowired
+    public CalendarService(Gson gson) {
+        this.gson = gson;
         this.calendario = caricaCalendarioDaDB();
     }
     
     public Calendar getCalendario() {
-    	return calendario;
+        return calendario;
     }
     
     private Calendar caricaCalendarioDaDB() {
         try {
-            Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
-                .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
-                .create();
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
             return gson.fromJson(br, Calendar.class);
         } catch (IOException e) {
-        	System.out.printf("ARRRRG CALENDARIO VUOTO \n");
+            System.out.printf("ARRRRG CALENDARIO VUOTO \n");
             return null; // ritorna null se il file non esiste
         }
     }
    
     public void setCalendario(LocalDate start, LocalDate end) {
-    	System.out.printf("SERVICE PRESENTE \n");
-    	calendario.setCalendario(start, end);
-    	salvaCalendarioSuDB();
+        System.out.printf("SERVICE PRESENTE \n");
+        calendario.setCalendario(start, end);
+        salvaCalendarioSuDB();
     }
     
     public void salvaCalendarioSuDB() {
         try {
-            Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, localDateTypeAdapter)
-                .registerTypeAdapter(StateDate.class, stateDateTypeAdapter)
-                .setPrettyPrinting()  // inserisce i CR
-                .create();
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
             pw.println(gson.toJson(calendario));
             pw.close();
@@ -60,6 +52,5 @@ public class CalendarService {
             e.printStackTrace();
         }
    }
-    
+ 
 }
-

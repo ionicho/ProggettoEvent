@@ -5,8 +5,19 @@
     "oraInizio": "09:00",
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
-    "costoPartecipazione": 100,
-    "elencoInterventi": []
+    "elencoInterventi": [
+      {
+        "titolo": "Intervento 1",
+        "relatore": "Relatore 1",
+        "descrizione": "Descrizione dell\u0027intervento 1"
+      },
+      {
+        "titolo": "Intervento 2",
+        "relatore": "Relatore 2",
+        "descrizione": "Descrizione dell\u0027intervento 2"
+      }
+    ],
+    "costoPartecipazione": 100.0
   },
   {
     "id": "Event002",
@@ -14,7 +25,6 @@
     "oraInizio": "09:00",
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
-    "costoPartecipazione": 150,
     "elencoInterventi": [
       {
         "titolo": "Intervento 3",
@@ -26,33 +36,12 @@
         "relatore": "Relatore 4",
         "descrizione": "Descrizione dell\u0027intervento 4"
       }
-    ]
+    ],
+    "costoPartecipazione": 150.0
   },
   {
     "id": "Event003",
-    "data": "2024-01-12",
-    "oraInizio": "08:23",
-    "oraFine": "11:33",
-    "nomeOrganizzatore": "Pino Daniele",
-    "costoPartecipazione": 25,
-    "elencoInterventi": []
-  },
-  {
-    "id": "Event004",
-    "data": "2024-01-23",
-    "oraInizio": "13:33",
-    "oraFine": "15:33",
-    "nomeOrganizzatore": "Topolino",
-    "costoPartecipazione": 7777,
-    "elencoInterventi": []
-  },
-  {
-    "id": "Event005",
-    "data": "2024-01-13",
-    "oraInizio": "13:33",
-    "oraFine": "15:33",
-    "nomeOrganizzatore": "Topolino",
-    "costoPartecipazione": 0,
-    "elencoInterventi": []
+    "elencoInterventi": [],
+    "costoPartecipazione": 0.0
   }
 ]

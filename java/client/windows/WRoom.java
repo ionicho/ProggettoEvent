@@ -5,9 +5,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-
 import org.springframework.web.client.RestTemplate;
-
+import server.AppConfig;
 import server.model.*;
 
 public class WRoom {
@@ -34,7 +33,7 @@ public class WRoom {
  }
 
  private void searchRoom(String nome, TextField responseField, RestTemplate restTemplate) {
-	    String url = "http://localhost:8080/api/room/" + nome;
+	    String url = AppConfig.getURL() +"api/room/" + nome;
 	    System.out.printf("\n\n%s\n\n", url);
 	    Room room = restTemplate.getForObject(url, Room.class);
 	    if (room != null) {
