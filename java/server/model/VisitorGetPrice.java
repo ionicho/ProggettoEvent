@@ -9,6 +9,11 @@ public class VisitorGetPrice implements Visitor<Double> {
 	public Double visit(Room o) {
 		return o.getCosto();
 	}
+
+	@Override
+	public Double visit(ConferenceRoom o) {
+		return o.getCosto();
+	}
 	
 	public Double visit(Calendar o) {
 		return null;
@@ -23,5 +28,12 @@ public class VisitorGetPrice implements Visitor<Double> {
 	public Double visit(Calendar o, StateDate sd) {
 		return null;
 	}
+
+	@Override
+	public Double visit(ConferenceRoom o, StateDate sd) {
+		return null;
+	}
+
+
 	
 }

@@ -21,9 +21,7 @@ public class IntegerTypeAdapter extends TypeAdapter<Integer> {
             return null;
         }
         try {
-            Integer value = in.nextInt();
-            System.out.println("INTEGER_TYPE_ADAPTER Reading Integer: " + value);
-            return value;
+           return in.nextInt();
         } catch (NumberFormatException e) {
             return null;
         }

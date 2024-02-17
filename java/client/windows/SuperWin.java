@@ -5,6 +5,7 @@ import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -31,6 +32,13 @@ public class SuperWin {
         field.setPrefWidth(WIDTH);
         field.setText("");
         return field;
+    }
+
+    public ComboBox<String> creaComboBox(String[] options) {
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.setPrefWidth(WIDTH);
+        comboBox.getItems().addAll(options);
+        return comboBox;
     }
     
     public TextField creaIntegerField() {

@@ -1,9 +1,11 @@
 package client.windows;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import org.springframework.web.client.*;
-import org.springframework.http.*;
+
+import javafx.application.Platform;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,25 +22,53 @@ public class WEvent extends SuperWin {
 	private String url;
     private RestTemplate restTemplate;
     private Event evento;
+	private List<Event> eventi;
     private GridPane grid;
-    private Label fakeL, cercaL, msgL, idLabel, nomeOrgL, costoParL, dataL, oraIniL, oraFinL, interventiL;
-    private TextField cercaF, idField, msgF, nomeOrgF, costoParF, oraIniF, oraFinF;
-    private DatePicker dataF;
+    private Label cercaL, msgL, idLabel, nomeOrgL, costoParL, numParPreL, cateringL, dataL, oraIniL, oraFinL, interventiL;
+    private TextField cercaF, idField, msgF, nomeOrgF, costoParF, numParPreF, oraIniF, oraFinF;
+    private ComboBox<String> cateringF;
+	private DatePicker dataF;
     private TableView<Speech> interventiLista;
     private TableColumn<Speech, String> titolo, relatore, descrizione, elimina;
-    private Button newButton, saveButton, newSpeech;
+    private Button firstButton, prevButton, nextButton, lastButton, newButton, saveButton, newSpeech;
+    private static final String ORAMINUTI = "HH:mm";
 	
 	public void start(Stage eventStage, RestTemplate restTemplate) {
 		setFields();
-		this.url = AppConfig.getURL() +"api/eventi/";
+		this.url = AppConfig.getURL() +"api/eventi";
 		this.restTemplate = restTemplate;
 	    eventStage.setTitle("Gestione Eventi");
 	    grid = creaGriglia();
 	    Scene scene = new Scene(grid);
 	    eventStage.setScene(scene);
 	    eventStage.show();
+		getEventi(restTemplate);
+		evento = eventi.get(0);
+		populateFields(evento);
 	}
-  
+
+	@SuppressWarnings("null")
+	private void getEventi(RestTemplate restTemplate) {
+		this.eventi = Arrays.asList(restTemplate.getForObject(url, Event[].class));
+		System.out.printf("EVENTI = %s\n", eventi);
+	}
+	
+	/** Restituisce l'evento con l'ID specificato */
+	private Event getEvento(String id, RestTemplate restTemplate) {
+		return restTemplate.getForObject(url+"/"+id, Event.class);
+	}
+
+	/** Aggiunge un nuovo evento */
+	private Event addEvento(RestTemplate restTemplate) {
+		return  restTemplate.getForObject(url+"/nuovo", Event.class);	
+	}
+	
+	/** Aggiorna un evento e restituisce l'evento aggiornato */
+	private Event updateEvento(Event evento, RestTemplate restTemplate) {
+		restTemplate.put(url+"/"+evento.getId(), evento);
+		return getEvento(evento.getId(), restTemplate);
+	}
+
 	/** Inizializza i campi */
 	private void setFields() {
         cercaF = creaTextField();
@@ -46,10 +76,16 @@ public class WEvent extends SuperWin {
         msgF = creaTextField();
         nomeOrgF = creaTextField();
         costoParF = creaTextField();
+		numParPreF = creaTextField();
+		String[] cateringOptions = Arrays.stream(TipoCatering.values())
+		.map(TipoCatering::name)
+		.toArray(String[]::new);
+		cateringF = creaComboBox(cateringOptions);
         oraIniF  = creaHourField();
         oraFinF  = creaHourField();
         dataF = new DatePicker();
         interventiLista = new TableView<>();
+		interventiLista.setEditable(true);
         titolo = new TableColumn<>("Titolo");
 		titolo.setCellFactory(TextFieldTableCell.forTableColumn()); //rende modificabile
         relatore = new TableColumn<>("Relatore");
@@ -58,78 +94,257 @@ public class WEvent extends SuperWin {
 		descrizione.setCellFactory(TextFieldTableCell.forTableColumn());
 		elimina = new TableColumn<>("Azione");
 		setElimina();
+		firstButton = creaButton("Primo Evento");
+		prevButton = creaButton("Evento Precedente");
+		nextButton = creaButton("Prossimo Evento");
+		lastButton = creaButton("Ultimo Evento");
 		newButton = creaButton("Crea Nuovo Evento");
         saveButton = creaButton("Salva / Modifica Evento");
         newSpeech = creaButton("Crea nuovo Intervento");
-        fakeL = creaLabel("");
         cercaL = creaLabel("ID da cercare:");
         msgL = creaLabel("Messaggio:");
         idLabel = creaLabel("ID evento:");
         nomeOrgL = creaLabel("Nome Organizzatore:");
         costoParL = creaLabel("Costo Partecipazione:");
+		numParPreL = creaLabel("Partecipanti Previsti:");
+		cateringL = creaLabel("Catering:");
         dataL = creaLabel("Data:");
         oraIniL = creaLabel("Ora Inizio:");
         oraFinL = creaLabel("Ora Fine:");
         interventiL = creaLabel("Elenco Interventi:");
     }
 
+	/** Pulisce i campi */
+	private void clearFields() {
+		idField.setText("");
+		nomeOrgF.setText("");
+		costoParF.setText("0.0");
+		numParPreF.setText("0");
+		cateringF.getItems().clear();
+		oraIniF.setText("");
+		oraFinF.setText("");
+		dataF.setValue(null);
+		interventiLista.getItems().clear();
+	}
+	
+	private void populateFields(Event evento) {
+		idField.setText(evento.getId() != null ? evento.getId() : "");
+		nomeOrgF.setText(evento.getNomeOrganizzatore() != null ? evento.getNomeOrganizzatore() : "");
+		costoParF.setText(evento.getCostoPartecipazione() != null ? String.valueOf(evento.getCostoPartecipazione()) : "");
+		numParPreF.setText(evento.getPartPrevisti() != null ? String.valueOf(evento.getPartPrevisti()) : "");
+		cateringF.setValue(evento.getCatering() != null ? evento.getCatering().toString() : null);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ORAMINUTI);
+		oraIniF.setText(evento.getOraInizio() != null ? evento.getOraInizio().format(formatter) : "");
+		oraFinF.setText(evento.getOraFine() != null ? evento.getOraFine().format(formatter) : "");
+		dataF.setValue(evento.getData() != null ? evento.getData() : LocalDate.now());
+		titolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
+		relatore.setCellValueFactory(new PropertyValueFactory<>("relatore"));
+		descrizione.setCellValueFactory(new PropertyValueFactory<>("descrizione"));
+		interventiLista.getItems().clear();
+		List<Speech> interventi = evento.getElencoInterventi();
+		if (interventi != null) {
+			for (Speech speech : interventi) {
+				interventiLista.getItems().add(speech);
+			}
+		}
+	}
+
+	private void populateEvent() {
+		if (this.evento != null) {
+			this.evento.setNomeOrganizzatore(nomeOrgF.getText());
+			this.evento.setCostoPartecipazione(Double.parseDouble(costoParF.getText()));
+			this.evento.setPartPrevisti(Integer.parseInt(numParPreF.getText()));
+			this.evento.setCatering(cateringF.getValue() == null || cateringF.getValue().equals("") ? 
+				TipoCatering.COFFEE_BREAK : TipoCatering.valueOf(cateringF.getValue()));
+			this.evento.setOraInizio(LocalTime.parse(oraIniF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
+			this.evento.setOraFine(LocalTime.parse(oraFinF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
+			this.evento.setData(dataF.getValue());
+			this.evento.getElencoInterventi().clear();
+			this.evento.addInterventi(interventiLista.getItems());
+		}
+	}
+
 	/** Imposta il layout */
     private void setLayout() {
-        // Aggiungi le etichette e i campi nel layout a griglia
-        grid.add(cercaL,0,0);
-        grid.add(cercaF, 1, 0);
-		grid.add(fakeL,1,2);
-        grid.add(msgL, 0, 1);
-        grid.add(msgF, 1,1);
-        grid.add(newButton, 0, 2);
-        grid.add(saveButton, 1, 2);
-        grid.add(idLabel, 0, 3);
-        grid.add(idField, 1, 3);
-        grid.add(nomeOrgL, 0, 4);
-        grid.add(nomeOrgF, 1, 4);
-        grid.add(costoParL, 0, 5);
-        grid.add(costoParF, 1, 5);
-        grid.add(dataL, 0, 6);
-        grid.add(dataF, 1, 6);
-        grid.add(oraIniL, 0, 7);
-        grid.add(oraIniF, 1, 7);
-        grid.add(oraFinL, 0, 8);
-        grid.add(oraFinF, 1, 8);
-        grid.add(interventiL, 0, 9);
-		grid.add(newSpeech,1,9);
+		int row=0;
+		grid = new GridPane();
+		grid.setHgap(.10 * WIDTH);
+		grid.setVgap(.10 * WIDTH);
+		grid.setPrefWidth(6.2* WIDTH);
+		grid.setPadding(new Insets(.10 * WIDTH, .10 * WIDTH, .10 * WIDTH, .10 * WIDTH));  // Imposta un margine su tutti i lati
+		idField.setEditable(false); 
+		msgF.setEditable(false); // Impedisce all'utente di modificare il campo di risposta
+		dataF.setPrefWidth(WIDTH);
+		titolo.setPrefWidth(WIDTH); 
+		relatore.setPrefWidth(WIDTH);
+		descrizione.setPrefWidth(3.55*WIDTH);
+		elimina.setPrefWidth(.42*WIDTH);
+		elimina.setSortable(false);
+        grid.add(cercaL,0,row);
+        grid.add(cercaF, 1, row);
+        grid.add(msgL, 0, ++row);
+        grid.add(msgF, 1,row);
+        grid.add(idLabel, 0, ++row);
+        grid.add(idField, 1, row);
+        grid.add(nomeOrgL, 0, ++row);
+        grid.add(nomeOrgF, 1, row);
+        grid.add(costoParL, 0, ++row);
+        grid.add(costoParF, 1, row);
+		grid.add(numParPreL, 0, ++row);
+		grid.add(numParPreF, 1, row);
+		grid.add(cateringL, 0, ++row);
+		grid.add(cateringF, 1, row);
+        grid.add(dataL, 0, ++row);
+        grid.add(dataF, 1, row);
+        grid.add(oraIniL, 0, ++row);
+        grid.add(oraIniF, 1, row);
+        grid.add(oraFinL, 0, ++row);
+        grid.add(oraFinF, 1, row);
+        grid.add(interventiL, 0, ++row);
+		grid.add(newSpeech,1,row);
 		interventiLista.getColumns().add(titolo);
 		interventiLista.getColumns().add(relatore);
 		interventiLista.getColumns().add(descrizione);
 		interventiLista.getColumns().add(elimina);
-		grid.add(interventiLista,0,10,2,1);
+		grid.add(interventiLista,0,++row,6,1);
 		GridPane.setHalignment(interventiLista, HPos.CENTER);
-		GridPane.setHgrow(interventiLista, Priority.ALWAYS);
+		interventiLista.setPrefHeight(200);
+		grid.add(firstButton, 0, ++row);
+		grid.add(prevButton, 1, row);
+		grid.add(nextButton, 2, row);
+		grid.add(lastButton, 3, row);	
+		grid.add(newButton, 4, row);
+        grid.add(saveButton, 5, row);
     }
 
-	@SuppressWarnings("null")
-	private Event getEvento(String id, RestTemplate restTemplate) {
+	/** Crea la griglia */
+	private GridPane creaGriglia() {
+		Map<Integer, Speech> tempSpeeches = new HashMap<>();
+				
+		// Gestisce la logica degli spostamenti dell'evento
+		firstButtonAction();
+		prevButtonAction();
+		nextButtonAction();
+		lastButtonAction();
 
-	    // Crea un'istanza di HttpHeaders e imposta il tipo di contenuto su 'application/json'
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
+		// Gestisce la logica di creazione di un evento
+		newButton.setOnAction(e -> {
+			try {
+				System.out.printf("WINDOW creaButton\n");
+				this.evento =  addEvento(restTemplate);
+				cercaF.setText("");
+				clearFields();
+				msgF.setText("Creato nuovo evento.");
+			} catch (ServerException | HttpClientErrorException.NotFound ex) {
+				msgF.setText("La creazione del nuovo evento non è riuscita.");
+			}
+		});
+		
+		// Gestisce la logica della ricerca di un evento
+		cercaF.setPromptText("Inserisci l'ID dell'evento");
+		cercaF.setOnAction(e -> {
+			try {
+				this.evento = getEvento(cercaF.getText(), restTemplate);
+				populateFields(evento);
+			} catch (ServerException | HttpClientErrorException.NotFound ex) {
+				msgF.setText("Nessun evento trovato con l'ID specificato.");
+				clearFields();
+				idField.setText(cercaF.getText());
+			}		    
+		});
 
-	    // Crea un oggetto HttpEntity con gli headers
-		HttpEntity<String> entity = new HttpEntity<>(headers);
+		// Gestisce la logica di salvataggio delle modifiche di un evento
+		saveButton.setOnAction(e -> {
+			try {
+				System.out.printf("SAVE BUTTON evento =%s\n", this.evento.toString());
+				for (Map.Entry<Integer, Speech> entry : tempSpeeches.entrySet()) {
+					int index = entry.getKey();
+					Speech speech = entry.getValue();
+					if (index < this.evento.getElencoInterventi().size()) {
+						this.evento.getElencoInterventi().set(index, speech);
+					} else {
+						this.evento.addIntervento(speech);
+					}
+				}
+				populateEvent();
+				this.evento = updateEvento(this.evento,restTemplate);
+				populateFields(this.evento);
+			} catch (ServerException | HttpClientErrorException.NotFound ex) {
+				msgF.setText("Il salvataggio dell'evento non è riuscita.");
+				clearFields();
+			}
+		});
 
-		try {
-			// Invia la richiesta al server e ottieni la risposta
-			ResponseEntity<Event> response = restTemplate.exchange(url+id, HttpMethod.GET, entity, Event.class);
-			System.out.printf("Risposta ricevuta prima della deserializzazione%s\n",response);
-			Event evento = response.getBody();
-			System.out.println("Event dopo deserializzazione: " + evento);
+		newSpeech.setOnAction(e -> {
+			Speech speech = new Speech("","","");
+			interventiLista.getItems().add(speech);
+			int index = interventiLista.getItems().indexOf(speech);
+			tempSpeeches.put(index, speech);
+			Platform.runLater(() -> interventiLista.edit(index, titolo));
+		});
 
-			return evento;
-		} catch (Exception e) {
-			e.printStackTrace(); // Gestisci l'eccezione in modo appropriato
-			return null; // O gestisci l'eccezione e restituisci un valore predefinito
-		}
+		titolo.setOnEditCommit(e -> {
+			Speech speech = e.getRowValue();
+			speech.setTitolo(e.getNewValue());
+			int index = interventiLista.getItems().indexOf(speech);
+			tempSpeeches.put(index, speech);
+			Platform.runLater(() -> interventiLista.edit(index, relatore));
+		});
+
+		relatore.setOnEditCommit(e -> {
+			Speech speech = e.getRowValue();
+			speech.setRelatore(e.getNewValue());
+			int index = interventiLista.getItems().indexOf(speech);
+			tempSpeeches.put(index, speech);
+			Platform.runLater(() -> interventiLista.edit(index, descrizione));
+		});
+
+		descrizione.setOnEditCommit(e -> {
+			Speech speech = e.getRowValue();
+			speech.setDescrizione(e.getNewValue());
+			int index = interventiLista.getItems().indexOf(speech);
+			tempSpeeches.put(index, speech);
+			Platform.runLater(() -> interventiLista.edit(index, titolo));
+		});
+		
+		setLayout();
+		return grid;
 	}
 
+	private void firstButtonAction() {
+		firstButton.setOnAction(e -> {
+			this.evento = eventi.get(0);
+			populateFields(evento);
+		});
+	}
+
+	private void prevButtonAction(){
+		prevButton.setOnAction(e -> {
+			int index = eventi.indexOf(this.evento);
+			if (index > 0) {
+				this.evento = eventi.get(index - 1);
+				populateFields(evento);
+			}
+		});
+	}
+
+	private void nextButtonAction(){
+		nextButton.setOnAction(e -> {
+			int index = eventi.indexOf(this.evento);
+			if (index < eventi.size() - 1) {
+				this.evento = eventi.get(index + 1);
+				populateFields(evento);
+			}
+		});
+	}
+
+	private void lastButtonAction() {
+		lastButton.setOnAction(e -> {
+			this.evento = eventi.get(eventi.size() - 1);
+			populateFields(evento);
+		});
+	}
+			
 	/** Gestisce la logica della rimozione (dalla maschera) degli interventi*/
 	private void setElimina() {
 		elimina.setCellFactory(param -> new TableCell<Speech, String>() {
@@ -152,140 +367,4 @@ public class WEvent extends SuperWin {
 		});
 	}
 
-
-	/*
-	
-	private Event getEvento(String id, RestTemplate restTemplate) {
-		String url = "http://localhost:8080/api/eventi/" + id;
-		return restTemplate.getForObject(url, Event.class);
-	}
-	*/
-	
-	private Event addEvento(RestTemplate restTemplate) {
-		return  restTemplate.getForObject(url+"nuovo", Event.class);	
-	}
-	
-	@SuppressWarnings("null")
-	private Event updateEvento(Event evento, RestTemplate restTemplate) {
-		ResponseEntity<Event> response = restTemplate.exchange(url+evento.getId(), HttpMethod.PUT, new HttpEntity<>(evento), Event.class);
-		return response.getBody();
-	}
-
-	private GridPane creaGriglia() {
-		    grid = new GridPane();
-	        grid.setHgap(.10 * WIDTH);
-	        grid.setVgap(.10 * WIDTH);
-	        grid.setPrefWidth(3.2* WIDTH);
-	        grid.setPadding(new Insets(.10 * WIDTH, .10 * WIDTH, .10 * WIDTH, .10 * WIDTH));  // Imposta un margine su tutti i lati
-			idField.setEditable(false); 
-			msgF.setEditable(false); // Impedisce all'utente di modificare il campo di risposta
-	        dataF.setPrefWidth(WIDTH);
-			titolo.setPrefWidth(.6*WIDTH); 
-			relatore.setPrefWidth(.6*WIDTH);
-			descrizione.setPrefWidth(1.35*WIDTH);
-			elimina.setPrefWidth(.42*WIDTH);
-
-			// Gestisce la logica della ricerca di un evento
-	        cercaF.setPromptText("Inserisci l'ID dell'evento");
-	        cercaF.setOnAction(e -> {
-	            try {
-	                this.evento = getEvento(cercaF.getText(), restTemplate);
-	                idField.setText(evento.getId());
-	                nomeOrgF.setText(evento.getNomeOrganizzatore());                
-	                costoParF.setText(String.valueOf(evento.getCosto()));		    
-	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-	                oraIniF.setText(evento.getOraInizio().format(formatter));
-	                oraFinF.setText(evento.getOraFine().format(formatter));
-	                dataF.setValue(evento.getData());
-					titolo.setCellValueFactory(new PropertyValueFactory<Speech, String>("titolo"));
-					relatore.setCellValueFactory(new PropertyValueFactory<Speech, String>("relatore"));
-					descrizione.setCellValueFactory(new PropertyValueFactory<Speech, String>("descrizione"));
-					interventiLista.getItems().clear();
-					List<Speech> interventi = evento.getElencoInterventi();
-					for (Speech speech : interventi) {
-						interventiLista.getItems().add(speech);
-					}
-	            } catch (ServerException | HttpClientErrorException.NotFound ex) {
-	                msgF.setText("Nessun evento trovato con l'ID specificato.");
-	                idField.setText(cercaF.getText());
-	                nomeOrgF.setText("");
-	                costoParF.setText("");		    
-	                oraIniF.setText("");
-	                oraFinF.setText("");
-	                dataF.setValue(null);
-					interventiLista.getItems().clear();
-	            }		    
-	        });
-	        
-	        // Gestisce la logica di creazione di un evento
-			newButton.setOnAction(e -> {
-				try {
-					System.out.printf("WINDOW creaButton\n");
-					this.evento =  addEvento(restTemplate);
-					cercaF.setText("");
-					idField.setText(evento.getId());
-	                nomeOrgF.setText("");
-	                costoParF.setText("");		    
-	                oraIniF.setText("");
-	                oraFinF.setText("");
-	                dataF.setValue(null);
-		            msgF.setText("Creato nuovo evento.");
-					interventiLista.getItems().clear();
-				} catch (ServerException | HttpClientErrorException.NotFound ex) {
-		            msgF.setText("La creazione del nuovo evento non è riuscita.");
-				}
-			});
-
-			// Gestisce la logica di salvataggio delle modifiche di un evento
-	        saveButton.setOnAction(e -> {
-	        	if (!nomeOrgF.getText().equals("")) 
-	        		this.evento.setNomeOrg(nomeOrgF.getText());
-	        	if (!costoParF.getText().equals("")) 
-	        		this.evento.setCostoPar(Integer.parseInt(costoParF.getText()));
-	        	if (dataF.getValue() != null) 
-	        		this.evento.setData(dataF.getValue());
-	            if (!oraIniF.getText().equals("")) 
-	            	this.evento.setOraInizio(LocalTime.parse(oraIniF.getText()));
-	            if (!oraFinF.getText().equals("")) 
-	            	this.evento.setOraFine(LocalTime.parse(oraFinF.getText()));
-				if (!interventiLista.getItems().isEmpty()) {
-					evento.addInterventi(new ArrayList<>(interventiLista.getItems()));
-				}
-	            try {
-	            	System.out.printf("SAVE BUTTON evento =%s\n", this.evento.toString());
-	            	this.evento = updateEvento(this.evento,restTemplate);	
-				} catch (ServerException | HttpClientErrorException.NotFound ex) {
-		            msgF.setText("Il salvataggio dell'evento non è riuscita.");
-				}
-			});
-
-			newSpeech.setOnAction(e -> {
-				Speech speech = new Speech();
-				// Imposta gli attributi del discorso
-				interventiLista.getItems().add(speech);
-			});
-
-			titolo.setOnEditCommit(e -> {
-				Speech speech = e.getRowValue();
-				speech.setTitolo(e.getNewValue());
-			});
-
-			relatore.setOnEditCommit(e -> {
-				Speech speech = e.getRowValue();
-				speech.setRelatore(e.getNewValue());
-			});
-
-			descrizione.setOnEditCommit(e -> {
-				Speech speech = e.getRowValue();
-				speech.setDescrizione(e.getNewValue());
-			});
-	        
-			newSpeech.setOnAction(e -> {
-				Speech speech = new Speech();
-				interventiLista.getItems().add(speech);
-			});
-
-	        setLayout();
-	        return grid;
-	    }
 }

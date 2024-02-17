@@ -1,14 +1,13 @@
 package server.service;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.LocalDate;
 
 import server.AppConfig;
-import server.model.*;
+import server.model.Calendar;
 
 @Service
 public class CalendarService {
@@ -17,7 +16,6 @@ public class CalendarService {
     private Calendar calendario;
     private Gson gson;
 
-    @Autowired
     public CalendarService(Gson gson) {
         this.gson = gson;
         this.calendario = caricaCalendarioDaDB();

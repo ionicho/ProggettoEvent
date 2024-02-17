@@ -1,5 +1,7 @@
 package server.model;
 
+import java.util.Objects;
+
 /**
  * Classe per la gestione degli Speech, un evento può avere più speech.
  */
@@ -52,5 +54,21 @@ public class Speech {
                 + "relatore: " + relatore + ", "
                 + "descrizione: " + descrizione
                 + "}";
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Speech speech = (Speech) o;
+        return Objects.equals(titolo, speech.titolo) &&
+            Objects.equals(relatore, speech.relatore) &&
+            Objects.equals(descrizione, speech.descrizione);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(titolo, relatore, descrizione);
     }
 }

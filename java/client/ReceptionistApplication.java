@@ -12,12 +12,10 @@ import client.windows.*;
 
 public class ReceptionistApplication extends Application {
 
-    private RestTemplate restTemplate;
-
     @Override
     public void start(Stage primaryStage) {
         // Configura RestTemplate con l'adattatore IntegerTypeAdapter
-        restTemplate = AppConfig.configureRestTemplate();
+    	 RestTemplate restTemplate = AppConfig.configureRestTemplate();
         
         // finestra per il calendario
         Stage calendarStage = new Stage();

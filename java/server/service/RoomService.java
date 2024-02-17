@@ -1,15 +1,16 @@
 package server.service;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import server.AppConfig;
-import server.model.*;
+import server.model.Room;
 
 /**
  * Questa classe esegue le operazioni di lettura e scrittura
@@ -23,7 +24,6 @@ public class RoomService {
     private List<Room> camere;
     private final Gson gson;
 
-    @Autowired
     public RoomService(Gson gson) {
         this.gson = gson;
         this.camere = caricaCamereDaDatabase();

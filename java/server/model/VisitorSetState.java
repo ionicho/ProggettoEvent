@@ -11,6 +11,12 @@ public class VisitorSetState implements Visitor<Void> {
 		return null;
 	}
 
+	@Override
+	public Void visit(ConferenceRoom o, StateDate sd) {
+		o.changeStato(sd);
+		return null;
+	}
+
 	public Void visit(Calendar o, StateDate sd) {
 		o.changeStato(sd);
 		return null;
@@ -23,6 +29,11 @@ public class VisitorSetState implements Visitor<Void> {
 	
 	@Override
 	public Void visit (Calendar o) {
+		return null;
+	}
+
+	@Override
+	public Void visit(ConferenceRoom o) {
 		return null;
 	}
 }

@@ -69,7 +69,7 @@ public class WCalendarEvent implements EventHandler<MouseEvent> {
                System.out.println("per la data " + data + " selezionato " + statoData);
                // Invia una richiesta PUT del StateDate al tuo server
                HttpEntity<StateDate> request = new HttpEntity<>(statoData);
-               ResponseEntity<Void> response = restTemplate.exchange(AppConfig.getURL() + "api/calendar/state", (HttpMethod) HttpMethod.PUT, request, Void.class);          
+               ResponseEntity<Void> response = restTemplate.exchange(AppConfig.getURL() + "api/calendar/state", HttpMethod.PUT, request, Void.class);          
                if (response.getStatusCode() == HttpStatus.OK) {
                    // Aggiorna la GUI qui
                    Platform.runLater(this::mettiDati);

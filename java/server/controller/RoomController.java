@@ -1,12 +1,13 @@
 package server.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
-import server.model.*;
-import server.service.*;
+import server.model.Room;
+import server.model.StateDate;
+import server.model.VisitorSetState;
+import server.service.RoomService;
 
 /**
  * Questa classe intercetta le richieste relative alle CAMERE,
@@ -20,7 +21,6 @@ public class RoomController {
 	
     private final RoomService roomService;
 
-    @Autowired
     public RoomController(RoomService roomService) {
         this.roomService = roomService;
     }
@@ -41,7 +41,7 @@ public class RoomController {
     @PostMapping("/room")
     public String addCamera(@RequestBody Room camera) {
         roomService.addCamera(camera);
-        return "Evento aggiunto con successo.";
+        return "Camera aggiunto con successo.";
     }
 
  // Metodo PUT per aggiornare lo stato di una camera e poi salvare l'intero oggetto

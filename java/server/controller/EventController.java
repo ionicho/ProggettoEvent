@@ -1,10 +1,9 @@
 package server.controller;
 
-import java.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
-import server.model.*;
-import server.service.*;
+import server.model.Event;
+import server.service.EventService;
 
 /**
  * Questa classe intercetta le richieste relative agli EVENTI,
@@ -18,7 +17,6 @@ public class EventController {
 
     private final EventService eventoService;
 
-    @Autowired
     public EventController(EventService eventoService) {
         this.eventoService = eventoService;
     }
@@ -49,7 +47,6 @@ public class EventController {
     // Metodo PUT per aggiornare un evento   
     @PutMapping("/eventi/{id}")
     public Event updateEvento(@RequestBody Event evento) {
-        System.out.printf("CONTROLLER prima %s --%d\n", evento.toString(), evento.getCosto());
         return eventoService.updateEvento(evento);
     }
 

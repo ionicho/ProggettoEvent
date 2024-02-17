@@ -1,12 +1,14 @@
 package server.service;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.stereotype.Service;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import server.AppConfig;
 import server.model.Event;
@@ -22,9 +24,12 @@ public class EventService {
     private List<Event> eventi;
     private final Gson gson;
 
-    @Autowired
     public EventService(Gson gson) {
         this.gson = gson;
+    }
+
+    @PostConstruct
+    public void init() {
         this.eventi = caricaEventiDaDatabase();
     }
 
@@ -45,7 +50,7 @@ public class EventService {
 
     // Metodo GET per invocare il singleton per poter aggiungere un evento
     public Event addEvento() {
-    	Event evento = new Event("ciao"); //uso il costruttore che usa il dingleton
+    	Event evento = new Event("ciao"); //uso il costruttore che usa il singleton
     	eventi.add(evento);
     	salvaEventiSuDatabase();
     	return evento;

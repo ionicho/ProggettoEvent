@@ -23,7 +23,6 @@ import server.model.*;
 public class WCalendar {
 
     private TableView<StateDate> table;
-    private RestTemplate restTemplate;
     
     public TableView<StateDate> getTable(){
     	return this.table;
@@ -31,8 +30,7 @@ public class WCalendar {
 
 	public void start(Stage primaryStage, RestTemplate restTemplate) {
 	    this.table = new TableView<>();
-	    this.restTemplate = restTemplate;
-	    WCalendarEvent event = new WCalendarEvent(this, this.restTemplate);
+	    WCalendarEvent event = new WCalendarEvent(this, restTemplate);
 	    primaryStage.setTitle("Gestione Calendario");
 		    	    
 	 // Crea le etichette

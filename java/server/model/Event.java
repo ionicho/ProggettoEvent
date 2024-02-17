@@ -18,7 +18,10 @@ public class Event {
     private LocalTime oraInizio;
     private LocalTime oraFine;
     private String nomeOrganizzatore;
-    private Integer costoPartecipazione;
+    private Double costoPartecipazione;
+    private ConferenceRoom sala;
+    private Integer partPrevisti;
+    private TipoCatering catering;
     private List<Speech> elencoInterventi;
 
     // Costruttore, getter e setter
@@ -33,12 +36,24 @@ public class Event {
 	   this.elencoInterventi = new ArrayList <>();
    }
 
-   public void setNomeOrg(String nome) {
+   public void setNomeOrganizzatore(String nome) {
 	   if (nome != null && !nome.trim().isEmpty()) nomeOrganizzatore = nome;
    }
    
-    public void setCostoPar(Integer costo) {
+    public void setCostoPartecipazione(Double costo) {
     	costoPartecipazione = costo;
+    }
+
+    public void setPartPrevisti(Integer part) {
+    	partPrevisti = part;
+    }
+    
+    public void setSala(ConferenceRoom sala) {
+    	this.sala = sala;
+    }
+
+    public void setCatering(TipoCatering catering) {
+    	this.catering = catering;
     }
     
     public void setData(LocalDate data) {
@@ -81,11 +96,23 @@ public class Event {
         return nomeOrganizzatore;
     }
 
+    public ConferenceRoom getSala() {
+        return sala;
+    }
+
+    public Integer getPartPrevisti() {
+        return partPrevisti;
+    }
+
+    public TipoCatering getCatering() {
+        return catering;
+    }
+
     public List<Speech> getElencoInterventi() {
         return elencoInterventi;
     }
 
-    public Integer getCosto() {
+    public Double getCostoPartecipazione() {
         return costoPartecipazione;
     }
     
@@ -98,6 +125,9 @@ public class Event {
         sb.append("ora inizio: ").append(oraInizio).append(", ");
         sb.append("ora fine: ").append(oraFine).append(", ");
         sb.append("organizzato da: ").append(nomeOrganizzatore).append(", ");
+        sb.append("partecipanti previsti: ").append(partPrevisti).append(", ");
+        sb.append("catering: ").append(catering).append(", ");
+        sb.append("sala: ").append(sala).append(", ");
         sb.append("costo partecipazione: ").append(costoPartecipazione).append(", ");
         if (!elencoInterventi.isEmpty()) {
             sb.append("elenco interventi: [");
@@ -111,6 +141,30 @@ public class Event {
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id) &&
+            Objects.equals(data, event.data) &&
+            Objects.equals(oraInizio, event.oraInizio) &&
+            Objects.equals(oraFine, event.oraFine) &&
+            Objects.equals(nomeOrganizzatore, event.nomeOrganizzatore) &&
+            Objects.equals(costoPartecipazione, event.costoPartecipazione) &&
+            Objects.equals(partPrevisti, event.partPrevisti) &&
+            Objects.equals(catering, event.catering) &&
+            Objects.equals(sala, event.sala) &&
+            Objects.equals(elencoInterventi, event.elencoInterventi);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, data, oraInizio, oraFine, 
+        nomeOrganizzatore, costoPartecipazione, 
+        partPrevisti, catering, sala, elencoInterventi);
     }
 
 

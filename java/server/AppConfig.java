@@ -21,6 +21,7 @@ public class AppConfig {
      * Directory in cui verranno salvati i file JSON e URL per le chiamate REST
      */
     public static final String DATABASE_ROOT_PATH = "D:\\UniBG\\Event\\DataBase\\";
+
     public static final String URL = "http://localhost:8080/";
 
     public static String getURL() {
@@ -36,13 +37,15 @@ public class AppConfig {
     public static RestTemplate configureRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
         gsonBuilder.registerTypeAdapter(Integer.class, new IntegerTypeAdapter());
+        gsonBuilder.registerTypeAdapter(Double.class, new DoubleTypeAdapter());
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter());
         gsonBuilder.registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter());
         Gson gson = gsonBuilder.create();
         GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
         gsonHttpMessageConverter.setGson(gson);
-        restTemplate.getMessageConverters().removeIf(m -> m.getClass().getName().equals(GsonHttpMessageConverter.class.getName()));
+        restTemplate.getMessageConverters().removeIf(m -> GsonHttpMessageConverter.class.isAssignableFrom(m.getClass()));
         restTemplate.getMessageConverters().add(gsonHttpMessageConverter);
         return restTemplate;
     }
@@ -63,7 +66,9 @@ public class AppConfig {
      */
     public static Gson configureGson() {
         return new GsonBuilder()
+            .setPrettyPrinting()
             .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
+            .registerTypeAdapter(Double.class, new DoubleTypeAdapter())
             .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
             .registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
             .create();
