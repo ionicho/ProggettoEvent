@@ -30,6 +30,38 @@ public class WRoom2Event implements EventHandler<MouseEvent> {
         this.wRoom2= wRoom2;
     }
 
+    public TableCell<Room, String> creaCellaColorate() {
+        return new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(item);
+                if (item == null || empty) {
+                    setStyle("");
+                    return;
+                }
+                switch (item) {
+                    case "DISPONIBILE":
+                        setStyle("-fx-alignment: CENTER; -fx-background-color: #90ee90"); // Verde chiaro
+                        break;
+                    case "PRENOTATA":
+                        setStyle("-fx-alignment: CENTER; -fx-background-color: #ffff99"); // Giallo chiaro
+                        break;
+                    case "INUSO":
+                        setStyle("-fx-alignment: CENTER; -fx-background-color: #ff7f7f"); // Rosso chiaro
+                        break;
+                    case "PULIZIA":
+                        setStyle("-fx-alignment: CENTER; -fx-background-color: #d3d3d3"); // Grigio chiaro
+                        break;
+                    default:
+                        setStyle("-fx-alignment: CENTER");
+                        break;
+                }
+                setOnMouseClicked(new WRoom2Event(wRoom2));
+            }
+        };
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
     public void handle(MouseEvent event) {
@@ -48,28 +80,20 @@ public class WRoom2Event implements EventHandler<MouseEvent> {
         }
     }
     
-      
-	//////////////////inizio classe anonima /////////////////////////   
+    @SuppressWarnings("null")
     private EventHandler<ActionEvent> cambiaStato(String camera, LocalDate data, State stato) {
-        return new EventHandler<ActionEvent>() {
-        
-            @SuppressWarnings("null")
-            @Override
-            public void handle(ActionEvent e) {
-                StateDate statoData = new StateDate(data,stato);
-                System.out.println("per la camera " + camera + " selezionato " + statoData);
-                HttpEntity<StateDate> request = new HttpEntity<>(statoData);
-                String url = AppConfig.getURL() +"api/room/";
-                ResponseEntity<Void> response = restTemplate.exchange(url + camera + "/state", HttpMethod.PUT, request, Void.class);
-                
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    // Aggiorna la GUI qui
-                	    Platform.runLater(() -> Platform.runLater(wRoom2::aggiornaTabella));
-                }
+        return e -> {
+            if (restTemplate.exchange(
+                    AppConfig.getURL() + "api/room/" + camera + "/state",
+                    HttpMethod.PUT,
+                    new HttpEntity<>(new StateDate(data, stato)),
+                    Void.class
+                ).getStatusCode() == HttpStatus.OK) {
+                // Aggiorna la GUI qui
+                Platform.runLater(wRoom2::aggiornaTabella);
             }
         };
     }
-	//////////////////fine classe anonima /////////////////////////
 
-  }
+}
 
