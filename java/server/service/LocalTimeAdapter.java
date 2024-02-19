@@ -10,7 +10,7 @@ import java.time.LocalTime;
  * in formato LocalTime
  */
 
-public class LocalTimeTypeAdapter extends TypeAdapter<LocalTime> {
+public class LocalTimeAdapter extends TypeAdapter<LocalTime> {
 
     @Override
     public LocalTime read(JsonReader reader) throws IOException {

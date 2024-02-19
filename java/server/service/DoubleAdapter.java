@@ -4,9 +4,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.*;
 import java.io.IOException;
 
-public class IntegerAdapter extends TypeAdapter<Integer> {
+public class DoubleAdapter extends TypeAdapter<Double> {
     @Override
-    public void write(JsonWriter out, Integer value) throws IOException {
+    public void write(JsonWriter out, Double value) throws IOException {
         if (value == null) {
             out.nullValue();
         } else {
@@ -15,13 +15,13 @@ public class IntegerAdapter extends TypeAdapter<Integer> {
     }
 
     @Override
-    public Integer read(JsonReader in) throws IOException {
+    public Double read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
         }
         try {
-           return in.nextInt();
+           return in.nextDouble();
         } catch (NumberFormatException e) {
             return null;
         }

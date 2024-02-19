@@ -12,7 +12,7 @@ import server.model.*;
  * disponibilità in formato StateDate.
  */
 
-public class StateDateTypeAdapter extends TypeAdapter<StateDate> {
+public class StateDateAdapter extends TypeAdapter<StateDate> {
 
     @Override
     public void write(JsonWriter out, StateDate stateDate) throws IOException {

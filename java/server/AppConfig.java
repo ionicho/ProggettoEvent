@@ -38,10 +38,10 @@ public class AppConfig {
         RestTemplate restTemplate = new RestTemplate();
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
-        gsonBuilder.registerTypeAdapter(Integer.class, new IntegerTypeAdapter());
-        gsonBuilder.registerTypeAdapter(Double.class, new DoubleTypeAdapter());
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter());
-        gsonBuilder.registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter());
+        gsonBuilder.registerTypeAdapter(Integer.class, new IntegerAdapter());
+        gsonBuilder.registerTypeAdapter(Double.class, new DoubleAdapter());
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
+        gsonBuilder.registerTypeAdapter(LocalTime.class, new LocalTimeAdapter());
         Gson gson = gsonBuilder.create();
         GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
         gsonHttpMessageConverter.setGson(gson);
@@ -67,10 +67,10 @@ public class AppConfig {
     public static Gson configureGson() {
         return new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
-            .registerTypeAdapter(Double.class, new DoubleTypeAdapter())
-            .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-            .registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
+            .registerTypeAdapter(Integer.class, new IntegerAdapter())
+            .registerTypeAdapter(Double.class, new DoubleAdapter())
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
             .create();
     }
 

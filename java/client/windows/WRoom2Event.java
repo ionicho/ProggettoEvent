@@ -96,4 +96,3 @@ public class WRoom2Event implements EventHandler<MouseEvent> {
     }
 
 }
-
