@@ -30,7 +30,7 @@ public class WCalendar {
 
 	public void start(Stage primaryStage, RestTemplate restTemplate) {
 	    this.table = new TableView<>();
-	    WCalendarEvent event = new WCalendarEvent(this, restTemplate);
+	    WCalendarHandler event = new WCalendarHandler(this, restTemplate);
 	    primaryStage.setTitle("Gestione Calendario");
 		    	    
 	 // Crea le etichette

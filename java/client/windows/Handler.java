@@ -13,24 +13,37 @@ import server.AppConfig;
 import server.model.*;
 
 /**
- *  Classe che gestisce gli eventi della WRoom2
+ *  Classe che gestisce gli eventi della WRoom
  *  Al click destro sulle celle della disponibilità delle camere fa comparire un menu
  *  contestuale consentendo di scegliere il nuovo stato per la camera.
  *  Invia la richesta al servere (con la classe anonima) e quando riceve l'ok aggiorna
  *  schermata.
  */
 
-public class WRoom2Event implements EventHandler<MouseEvent> {
+public class Handler <T extends Resource> implements EventHandler<MouseEvent> {
 
     private final RestTemplate restTemplate;
-    private final WRoom2 wRoom2; //Riferimento a WRoom2
+    private final WRoom wRoom; // Riferimento a WRoom1
+    private final WHall wHall; // Riferimento a WHall
+    private static final Integer ROOM = 1;
+    private static final Integer HALL = 2;
+    private final Integer tipo;
 
-    public WRoom2Event(WRoom2 wRoom2) {
-        this.restTemplate = new RestTemplate();
-        this.wRoom2= wRoom2;
+    public Handler(WRoom wRoom, RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.wRoom = wRoom;
+        this.wHall = null;
+        this.tipo = ROOM;
     }
 
-    public TableCell<Room, String> creaCellaColorate() {
+    public Handler(WHall wHall, RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.wHall = wHall;
+        this.wRoom = null;
+        this.tipo = HALL;
+    }
+
+    public TableCell<T, String> creaCellaColorate() {
         return new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -57,23 +70,26 @@ public class WRoom2Event implements EventHandler<MouseEvent> {
                         setStyle("-fx-alignment: CENTER");
                         break;
                 }
-                setOnMouseClicked(new WRoom2Event(wRoom2));
+                if (tipo == ROOM) //NOSONAR
+                    setOnMouseClicked(new Handler<>(wRoom, restTemplate));
+                else
+                    setOnMouseClicked(new Handler<>(wHall, restTemplate));
             }
         };
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
+    @Override
     public void handle(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) { //click dx del mouse
-           TableCell <Room, State >cell = (TableCell) event.getSource();
-            Room room = cell.getTableRow().getItem();
-            String camera = room.getNome();
+           TableCell <T, State >cell = (TableCell) event.getSource();
+            T resource = cell.getTableRow().getItem();
+            String resourceName = resource.getNome();
             LocalDate data = LocalDate.parse(cell.getTableColumn().getText());
             ContextMenu menuStati = new ContextMenu();
             for (State stato : State.values()) {
                 MenuItem item = new MenuItem(stato.name());
-                item.setOnAction(cambiaStato(camera, data, stato));
+                item.setOnAction(cambiaStato(resourceName, data, stato));
                 menuStati.getItems().add(item);
             }
             menuStati.show((javafx.scene.Node) event.getSource(), event.getScreenX(), event.getScreenY());
@@ -81,16 +97,24 @@ public class WRoom2Event implements EventHandler<MouseEvent> {
     }
     
     @SuppressWarnings("null")
-    private EventHandler<ActionEvent> cambiaStato(String camera, LocalDate data, State stato) {
+    private EventHandler<ActionEvent> cambiaStato(String name, LocalDate data, State stato) {
         return e -> {
+            String url;
+            if (tipo == ROOM) //NOSONAR
+                url = AppConfig.getURL() + "api/room/";
+            else
+                url = AppConfig.getURL() + "api/hall/";
             if (restTemplate.exchange(
-                    AppConfig.getURL() + "api/room/" + camera + "/state",
+                    url + name + "/state",
                     HttpMethod.PUT,
                     new HttpEntity<>(new StateDate(data, stato)),
                     Void.class
                 ).getStatusCode() == HttpStatus.OK) {
                 // Aggiorna la GUI qui
-                Platform.runLater(wRoom2::aggiornaTabella);
+                if (tipo == ROOM) //NOSONAR
+                    Platform.runLater(wRoom::aggiornaTabella);
+                else
+                    Platform.runLater(wHall::aggiornaTabella);
             }
         };
     }

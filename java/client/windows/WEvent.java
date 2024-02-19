@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import org.springframework.web.client.*;
-
 import javafx.application.Platform;
 import javafx.geometry.*;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
@@ -32,6 +32,8 @@ public class WEvent extends SuperWin {
     private TableColumn<Speech, String> titolo, relatore, descrizione, elimina;
     private Button firstButton, prevButton, nextButton, lastButton, newButton, saveButton, newSpeech;
     private static final String ORAMINUTI = "HH:mm";
+	private WHall wHall;//sottofinestra con le sale
+	private Node nHall;
 	
 	public void start(Stage eventStage, RestTemplate restTemplate) {
 		setFields();
@@ -112,6 +114,10 @@ public class WEvent extends SuperWin {
         oraIniL = creaLabel("Ora Inizio:");
         oraFinL = creaLabel("Ora Fine:");
         interventiL = creaLabel("Elenco Interventi:");
+		Stage hallStage = new Stage();
+		wHall = new WHall();
+		wHall.start(hallStage, restTemplate);
+		nHall = wHall.getTable();
     }
 
 	/** Pulisce i campi */
@@ -147,6 +153,7 @@ public class WEvent extends SuperWin {
 				interventiLista.getItems().add(speech);
 			}
 		}
+		wHall.aggiornaTabella();
 	}
 
 	private void populateEvent() {
@@ -182,6 +189,7 @@ public class WEvent extends SuperWin {
 		elimina.setSortable(false);
         grid.add(cercaL,0,row);
         grid.add(cercaF, 1, row);
+		grid.add(nHall, 0, row, 4, 1);
         grid.add(msgL, 0, ++row);
         grid.add(msgF, 1,row);
         grid.add(idLabel, 0, ++row);

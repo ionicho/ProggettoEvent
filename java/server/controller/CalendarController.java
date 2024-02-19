@@ -25,14 +25,14 @@ public class CalendarController {
     @PutMapping("/calendar/state")
     public String setStatoData(@RequestBody StateDate stateDate) {
         calendarService.getCalendario().setStatoData(stateDate.getData(), stateDate.getStato());
-        calendarService.salvaCalendarioSuDB();
+        calendarService.salvaCalendariosuDB();
         return "Stato della data aggiornato con successo e calendario salvato.";
     }
 
     // Metodo PUT per salvare il calendario modificato
     @PutMapping("/calendar")
     public String salvaCalendario() {
-        calendarService.salvaCalendarioSuDB();
+        calendarService.salvaCalendariosuDB();
         return "Calendario salvato con successo.";
     }
 

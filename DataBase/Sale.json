@@ -1,0 +1,59 @@
+[
+  {
+    "numeroPosti": 30,
+    "disponibilita": [
+      {
+        "data": "2024-01-01",
+        "stato": "INUSO"
+      },
+      {
+        "data": "2024-01-02",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-01-03",
+        "stato": "PULIZIA"
+      }
+    ],
+    "nome": "Hall001",
+    "costo": 1200.0
+  },
+  {
+    "numeroPosti": 50,
+    "disponibilita": [
+      {
+        "data": "2024-01-01",
+        "stato": "INUSO"
+      },
+      {
+        "data": "2024-01-02",
+        "stato": "INUSO"
+      },
+      {
+        "data": "2024-01-03",
+        "stato": "PRENOTATA"
+      }
+    ],
+    "nome": "Hall002",
+    "costo": 1500.0
+  },
+  {
+    "numeroPosti": 150,
+    "disponibilita": [
+      {
+        "data": "2024-01-01",
+        "stato": "PRENOTATA"
+      },
+      {
+        "data": "2024-01-02",
+        "stato": "PRENOTATA"
+      },
+      {
+        "data": "2024-01-03",
+        "stato": "INUSO"
+      }
+    ],
+    "nome": "Hall003",
+    "costo": 2200.0
+  }
+]

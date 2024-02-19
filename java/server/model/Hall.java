@@ -4,25 +4,25 @@ package server.model;
 	import java.util.*;
 
 	/**
-	 * Classe per le risorse CAMERE
+	 * Classe per le risorse SALE
 	 * Il costruttore provvede a definire gli attributi specifici di questa risorsa
 	 * ed ad accettare tutti i Visitors
 	 */
-	public class ConferenceRoom extends Resource {
+	public class Hall extends Resource {
 
 		private Integer numeroPosti;
 
-		public ConferenceRoom(String nome, Double costo, Integer numeroPosti, LocalDate endDate) {
+		public Hall(String nome, Double costo, Integer numeroPosti, LocalDate endDate) {
 			super(nome, costo, endDate);
 			this.numeroPosti = numeroPosti;
 		}
 		
-		public ConferenceRoom(String nome, Double costo,Integer numeroPosti, List<StateDate> disponibilita) {
+		public Hall(String nome, Double costo,Integer numeroPosti, List<StateDate> disponibilita) {
 		    super(nome, costo, disponibilita);
 			this.numeroPosti = numeroPosti;
 		}
 
-		public ConferenceRoom() { //costruttore di default serve a Spring Boot a deseralizzare
+		public Hall() { //costruttore di default serve a Spring Boot a deseralizzare
 		}
 
 	    public <T> T accept(Visitor<T> v, StateDate stato) {
@@ -36,15 +36,20 @@ package server.model;
 	    public Integer getNumeroPosti() {
 	    		return this.numeroPosti;
 	    }
+	    
+	    public void setNumeroPosti(Integer n) {
+	    	this.numeroPosti = n;
+	    }
 		
 	    @Override
 	    public String toString() {
 	    		StringBuilder sb = new StringBuilder();
-	    		sb.append("Camera{");
+	    		sb.append("Salaa{");
 	    		sb.append("id:");
 	    		sb.append(nome);
-	    		sb.append("tipo camera: ");
-	    		sb.append("numero di letti: ");
+	    		sb.append("costo:");
+	    		sb.append(costo);
+	    		sb.append("N. Posti: ");
 	    		sb.append(numeroPosti);
 	    		for (StateDate curr : disponibilita) {
 	    			sb.append(curr.data);

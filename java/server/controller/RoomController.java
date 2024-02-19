@@ -1,13 +1,9 @@
 package server.controller;
 
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import server.model.Room;
-import server.model.StateDate;
-import server.model.VisitorSetState;
-import server.service.RoomService;
+import java.util.*;
+import server.model.*;
+import server.service.*;
 
 /**
  * Questa classe intercetta le richieste relative alle CAMERE,
@@ -41,30 +37,18 @@ public class RoomController {
     @PostMapping("/room")
     public String addCamera(@RequestBody Room camera) {
         roomService.addCamera(camera);
-        return "Camera aggiunto con successo.";
+        return "Camera aggiunta con successo.";
     }
 
  // Metodo PUT per aggiornare lo stato di una camera e poi salvare l'intero oggetto
     @PutMapping("/room/{nome}/state")
-    public String updateCameraStateAndSave(@PathVariable String nome, @RequestBody StateDate statoData) {
-        // Ottieni la camera dal RoomService
-        Room camera = roomService.getCamera(nome);
-        
-        // Crea un'istanza del Visitor
-        VisitorSetState visitor = new VisitorSetState();
-        
-        // Usa il Visitor per applicare lo stato alla camera
-        visitor.visit(camera, statoData);
-        
-        // Aggiorna l'intera camera nel RoomService
-        roomService.updateCamera(nome, camera);
-        
+    public String updateCamera(@PathVariable String nome, @RequestBody StateDate statoData) {
+        roomService.updateCamera(nome, statoData);      
         return "Stato della camera con nome: " + nome + " aggiornato con successo e camera salvata.";
     }
 
-
     // Metodo DELETE per rimuovere una camera
-    @DeleteMapping("/room/{id}")
+    @DeleteMapping("/room/{id}/delete")
     public String deleteCamera(@PathVariable String nome) {
         roomService.deleteCamera(nome);
         return "Camera con nome: " + nome + " rimossa con successo.";

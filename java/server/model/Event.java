@@ -19,7 +19,7 @@ public class Event {
     private LocalTime oraFine;
     private String nomeOrganizzatore;
     private Double costoPartecipazione;
-    private ConferenceRoom sala;
+    private Hall sala;
     private Integer partPrevisti;
     private TipoCatering catering;
     private List<Speech> elencoInterventi;
@@ -48,7 +48,7 @@ public class Event {
     	partPrevisti = part;
     }
     
-    public void setSala(ConferenceRoom sala) {
+    public void setSala(Hall sala) {
     	this.sala = sala;
     }
 
@@ -96,7 +96,7 @@ public class Event {
         return nomeOrganizzatore;
     }
 
-    public ConferenceRoom getSala() {
+    public Hall getSala() {
         return sala;
     }
 

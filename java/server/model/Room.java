@@ -51,9 +51,11 @@ public class Room extends Resource {
     		sb.append("Camera{");
     		sb.append("id:");
     		sb.append(nome);
+    		sb.append("costo:");
+    		sb.append(costo);
     		sb.append("tipo camera: ");
     		sb.append(tipo);
-    		sb.append("numero di letti: ");
+    		sb.append("N. letti: ");
     		sb.append(numeroLetti);
     		for (StateDate curr : disponibilita) {
     			sb.append(curr.data);

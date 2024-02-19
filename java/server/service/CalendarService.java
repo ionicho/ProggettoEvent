@@ -18,14 +18,14 @@ public class CalendarService {
 
     public CalendarService(Gson gson) {
         this.gson = gson;
-        this.calendario = caricaCalendarioDaDB();
+        this.calendario = caricaCalendariodaDB();
     }
     
     public Calendar getCalendario() {
         return calendario;
     }
     
-    private Calendar caricaCalendarioDaDB() {
+    private Calendar caricaCalendariodaDB() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
             return gson.fromJson(br, Calendar.class);
@@ -38,10 +38,10 @@ public class CalendarService {
     public void setCalendario(LocalDate start, LocalDate end) {
         System.out.printf("SERVICE PRESENTE \n");
         calendario.setCalendario(start, end);
-        salvaCalendarioSuDB();
+        salvaCalendariosuDB();
     }
     
-    public void salvaCalendarioSuDB() {
+    public void salvaCalendariosuDB() {
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
             pw.println(gson.toJson(calendario));

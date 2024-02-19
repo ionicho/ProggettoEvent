@@ -18,7 +18,7 @@ public class Singleton {
     private Singleton() {
         this.counters = new HashMap<>();
         // Carica lo stato da disco
-        this.counters = SingletonService.caricaCountDaDB();
+        this.counters = SingletonService.caricaCountdaDB();
     }
 
     public static synchronized Singleton getInstance() {
@@ -38,7 +38,7 @@ public class Singleton {
     
     public synchronized String getNext(String tipoRisorsa) {
         incrementCount(tipoRisorsa);
-        SingletonService.salvaCountSuDB(counters);
+        SingletonService.salvaCountsuDB(counters);
         return formatCount(tipoRisorsa, getCount(tipoRisorsa));
     }
     

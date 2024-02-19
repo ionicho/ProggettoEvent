@@ -10,39 +10,42 @@ import server.AppConfig;
 import server.model.*;
 
 /**
- Classe per la gestione della finestra con l'elenco delle camere e la loro disponibilità.
- Con la classe WRoom2Event consente di inviare una request al server e quando 
- riceve la notifica del tutto ok, aggiorna la videata.
- */
-public class WRoom2 {
+Classe per la gestione della finestra con l'elenco delle sale e la loro disponibilità.
+Con la classe Handler consente di inviare una request al server e quando 
+riceve la notifica del tutto ok, aggiorna la videata.
+*/
+public class WHall {
 
-    private TableView<Room> table;
+    private TableView<Hall> table;
     private RestTemplate restTemplate;
-    private WRoom2Event wRoom2Event;
+    private Handler <Hall> handler;
         
     public void start(Stage primaryStage, RestTemplate restTemplate) {
-        primaryStage.setTitle("Visualizzazione Camere");
+        primaryStage.setTitle("Visualizzazione Sale");
         this.restTemplate = restTemplate;
         this.table = new TableView<>(); // Inizializza table
-        this.wRoom2Event = new WRoom2Event(this);
+        this.handler = new Handler<>(this, restTemplate);
         addColonneStatiche();
         mettiDati();
-        Scene scene = new Scene(table, 1200, 400);
+        Scene scene = new Scene(table, 400, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    
+
+    // Metodo per ottenere la tabella come un Node
+    public TableView<Hall> getTable() {
+        return table;
+    }
+
     private void addColonneStatiche() {
         String centrato = "CENTER";
         String aDestra = "CENTER-RIGHT";
-        TableColumn<Room, String> cameraCol = StaticCol.creaCol("Camera", "nome", centrato);
+        TableColumn<Hall, String> cameraCol = StaticCol.creaCol("Sala", "nome", centrato);
         table.getColumns().add(cameraCol);
-        TableColumn<Room, RoomType> tipoCol = StaticCol.creaCol("Tipo", "tipo", centrato);
-        table.getColumns().add(tipoCol);
-        TableColumn<Room, Double> costoCol = StaticCol.creaCol("Costo", "costo", aDestra);
+        TableColumn<Hall, Double> costoCol = StaticCol.creaCol("Costo", "costo", aDestra);
         table.getColumns().add(costoCol);
-        TableColumn<Room, Integer> lettiCol = StaticCol.creaCol("N. Letti", "numeroLetti", centrato);
-        table.getColumns().add(lettiCol);
+        TableColumn<Hall, Integer> postiCol = StaticCol.creaCol("N. Posti", "numeroPosti", centrato);
+        table.getColumns().add(postiCol);
     }
     
     private void addColonneDinamiche(Set<String> uniqueDates) {
@@ -52,22 +55,22 @@ public class WRoom2 {
         Collections.sort(dateList);       
         // Ora aggiungi le colonne in base all'ordine della lista
         for (String date : dateList) {	
-            TableColumn<Room, String> column = new TableColumn<>(date);
-            column.setCellValueFactory(new DinamicCol(date));        	 
-            column.setCellFactory(col -> wRoom2Event.creaCellaColorate()); 
+            TableColumn<Hall, String> column = new TableColumn<>(date);
+            column.setCellValueFactory(new DinamicCol<>(date));        	 
+            column.setCellFactory(col -> handler.creaCellaColorate()); 
             table.getColumns().add(column);
         }
     }
 
     private void mettiDati() {
-        // Invia una richiesta GET al server per ottenere i dati di tutte le camere
-        String url = AppConfig.getURL() + "api/room";
-        Room[] rooms = restTemplate.getForObject(url, Room[].class);
+        // Invia una richiesta GET al server per ottenere i dati di tutte le sale
+        String url = AppConfig.getURL() + "api/hall";
+        Hall[] halls = restTemplate.getForObject(url, Hall[].class);
         // Crea un insieme di date uniche
         Set<String> uniqueDates = new HashSet<>();
-        if (rooms != null){
-            for (Room room : rooms) {
-                for (StateDate stateDate : room.getDisponibilita()) {
+        if (halls != null){
+            for (Hall curr : halls) {
+                for (StateDate stateDate : curr.getDisponibilita()) {
                     uniqueDates.add(stateDate.getData().toString());
                 }
             }
@@ -75,7 +78,7 @@ public class WRoom2 {
         // Aggiungi colonne dinamiche per le date e gli stati
         addColonneDinamiche(uniqueDates);
         // Popola la tabella con i dati ricevuti
-        ObservableList<Room> data = FXCollections.observableArrayList(rooms);
+        ObservableList<Hall> data = FXCollections.observableArrayList(halls);
         table.setItems(data);
     }
     

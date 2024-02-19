@@ -13,12 +13,12 @@ import java.time.LocalDate;
 import server.AppConfig;
 import server.model.*;
 
-public class WCalendarEvent implements EventHandler<MouseEvent> {
+public class WCalendarHandler implements EventHandler<MouseEvent> {
 
 	private final RestTemplate restTemplate;
     private final WCalendar wCalendar; //Riferimento a WCalendar
 
-    public WCalendarEvent(WCalendar wCalendar, RestTemplate restTemplate) {
+    public WCalendarHandler(WCalendar wCalendar, RestTemplate restTemplate) {
     	this.restTemplate = restTemplate;
         this.wCalendar = wCalendar;
     }
@@ -97,7 +97,7 @@ public class WCalendarEvent implements EventHandler<MouseEvent> {
                         break;
                 }
                 // Aggiungi un gestore di eventi
-                setOnMouseClicked(WCalendarEvent.this);
+                setOnMouseClicked(WCalendarHandler.this);
             }
         };
     }

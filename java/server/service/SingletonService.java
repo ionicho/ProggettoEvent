@@ -30,7 +30,7 @@ import java.util.*;
      }
  
     // Metodo per caricare i contatori da DB
-    public static HashMap<String, Integer> caricaCountDaDB() {//NOSONAR 
+    public static HashMap<String, Integer> caricaCountdaDB() {//NOSONAR 
         try {
             Gson gson = getGson();
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
@@ -41,7 +41,7 @@ import java.util.*;
     }
  
      // Metodo per salvare i contatori su DB
-     public static void salvaCountSuDB(Map<String, Integer> counters) {
+     public static void salvaCountsuDB(Map<String, Integer> counters) {
          try {
              Gson gson = getGson();
              PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));

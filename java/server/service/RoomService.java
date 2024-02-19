@@ -2,15 +2,11 @@ package server.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.springframework.stereotype.Service;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import java.util.*;
 import server.AppConfig;
-import server.model.Room;
+import server.model.*;
 
 /**
  * Questa classe esegue le operazioni di lettura e scrittura
@@ -26,7 +22,7 @@ public class RoomService {
 
     public RoomService(Gson gson) {
         this.gson = gson;
-        this.camere = caricaCamereDaDatabase();
+        this.camere = caricaCameredaDB();
     }
     
     // Metodo GET per ottenere tutte le camere
@@ -49,19 +45,22 @@ public class RoomService {
     public void addCamera(Room camera) {
         if (camera != null && camera.getNome() != null && !camera.getNome().isEmpty()) {
             camere.add(camera);
-            salvaCamereSuDatabase();
+            salvaCameresuDB();
         } else {
             throw new IllegalArgumentException("Camera non valida.");
         }
     }
        
- // Metodo PUT per aggiornare una camera
-    public void updateCamera(String nome, Room camera) {
+ // Metodo PUT per aggiornare lo stato di una camera
+    public void updateCamera(String nome, StateDate statoData) {
+        Room camera = getCamera(nome);
+        VisitorSetState visitor = new VisitorSetState();
+        visitor.visit(camera, statoData);
         if (camera != null && camera.getNome() != null && !camera.getNome().isEmpty()) {
             for (int i = 0; i < camere.size(); i++) {
                 if (camere.get(i).getNome().equals(nome)) {
                     camere.set(i, camera);
-                    salvaCamereSuDatabase();
+                    salvaCameresuDB();
                     return;
                 }
             }
@@ -74,10 +73,10 @@ public class RoomService {
       */
     public void deleteCamera(String nome) {
     		camere.removeIf(curr-> curr.getNome().equals(nome)); 
-        salvaCamereSuDatabase();
+        salvaCameresuDB();
     }
     
-    private List<Room> caricaCamereDaDatabase() {
+    private List<Room> caricaCameredaDB() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
             return gson.fromJson(br, new TypeToken<List<Room>>(){}.getType());
@@ -86,7 +85,7 @@ public class RoomService {
         }
     }
 
-    private void salvaCamereSuDatabase() {
+    private void salvaCameresuDB() {
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
             camere.removeAll(Collections.singleton(null));

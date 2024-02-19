@@ -22,20 +22,25 @@ public class ReceptionistApplication extends Application {
         WCalendar wCalendar = new WCalendar();
         wCalendar.start(calendarStage, restTemplate);
         
-        // finestra per l'evento
+        /* finestra per l'evento
         Stage eventStage = new Stage();
         WEvent wEvent = new WEvent();
         wEvent.start(eventStage, restTemplate);
-
+ */
         // finestra per la camera
         Stage roomStage = new Stage();
-        WRoom wRoom = new WRoom();
-        wRoom.start(roomStage, restTemplate);
+        WRoom1 wRoom1 = new WRoom1();
+        wRoom1.start(roomStage, restTemplate);
         
         // finestra di tutte le camere
         Stage roomStage2 = new Stage();
-        WRoom2 wRoom2 = new WRoom2(); 
-        wRoom2.start(roomStage2, restTemplate);
+        WRoom wRoom = new WRoom(); 
+        wRoom.start(roomStage2, restTemplate);
+
+                // finestra di tutte le sale
+                Stage hallStage = new Stage();
+                WHall wHall = new WHall(); 
+                wHall.start(hallStage, restTemplate);
     }   
 
     public static void main(String[] args) {

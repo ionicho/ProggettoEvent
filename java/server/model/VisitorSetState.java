@@ -12,7 +12,7 @@ public class VisitorSetState implements Visitor<Void> {
 	}
 
 	@Override
-	public Void visit(ConferenceRoom o, StateDate sd) {
+	public Void visit(Hall o, StateDate sd) {
 		o.changeStato(sd);
 		return null;
 	}
@@ -33,7 +33,7 @@ public class VisitorSetState implements Visitor<Void> {
 	}
 
 	@Override
-	public Void visit(ConferenceRoom o) {
+	public Void visit(Hall o) {
 		return null;
 	}
 }

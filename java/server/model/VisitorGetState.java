@@ -10,7 +10,7 @@ public class VisitorGetState implements Visitor<State> {
 		return o.getStato(sd.data);
 	}
 
-	public State visit(ConferenceRoom o, StateDate sd) {
+	public State visit(Hall o, StateDate sd) {
 		return o.getStato(sd.data);
 	}
 
@@ -22,7 +22,7 @@ public class VisitorGetState implements Visitor<State> {
 		return null;
 	}
 
-	public State visit (ConferenceRoom o) {
+	public State visit (Hall o) {
 		return null;
 	}
 
