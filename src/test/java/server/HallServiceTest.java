@@ -14,7 +14,7 @@ import server.model.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class HallServiceTest {
+class HallServiceTest {
     
     private HallService hallService;
 

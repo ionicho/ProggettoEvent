@@ -4,7 +4,7 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "INUSO"
+        "stato": "PULIZIA"
       },
       {
         "data": "2024-01-02",
@@ -23,11 +23,11 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "PRENOTATA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-02",
-        "stato": "INUSO"
+        "stato": "PULIZIA"
       },
       {
         "data": "2024-01-03",
@@ -42,7 +42,7 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "PRENOTATA"
+        "stato": "CHIUSO"
       },
       {
         "data": "2024-01-02",

@@ -17,7 +17,7 @@ import server.controller.SystemException;
 import server.model.*;
 import java.util.*;
 
-public class WEvent extends SuperWin {
+public class WEvent extends StdControl {
 	
 	private String url;
     private RestTemplate restTemplate;
@@ -117,8 +117,8 @@ public class WEvent extends SuperWin {
         interventiL = creaLabel("Elenco Interventi:");
 		Stage hallStage = new Stage();
 		hallStage.initOwner(stage); // Imposta la finestra principale come proprietaria
-		wHall = new WHall();
-		wHall.start(hallStage, restTemplate);
+		wHall = new WHall(restTemplate);
+		wHall.start("Visualizzazione Sale", hallStage);
 		nHall = wHall.getTable();
 		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }

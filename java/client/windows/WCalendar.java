@@ -2,17 +2,13 @@ package client.windows;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import org.springframework.web.client.RestTemplate;
-
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.util.StringConverter;
-
+import server.AppConfig;
 import server.model.*;
 
 /**
@@ -20,27 +16,52 @@ import server.model.*;
  * @restTemplate è un'istanza per i servizi RESTful
  * @Table raccoglie i dati di calendar.disponibilita
  */
-public class WCalendar {
-
-    private TableView<StateDate> table;
+public class WCalendar extends WResource<Calendar> {
+	private Scene scene;
+	private GridPane griglia;
     
-    public TableView<StateDate> getTable(){
-    	return this.table;
+	public WCalendar(RestTemplate restTemplate) {
+        super(restTemplate);
+        this.url = AppConfig.getURL() + "api/calendar";
+        this.stdHandler = new StdHandler<>(this, restTemplate);
+        addColonneStatiche();
+		addContolli();
+        mettiDati();
+		TableColumn<Calendar, ?> nomeColumn = table.getColumns().stream()
+			.filter(c -> "Nome".equals(c.getText()))
+			.findAny()
+			.orElse(null);
+		TableColumn<Calendar, ?> costoColumn = table.getColumns().stream()
+			.filter(c -> "Costo".equals(c.getText()))
+			.findAny()
+			.orElse(null);
+		if (nomeColumn != null) {nomeColumn.setVisible(false);}
+		if (costoColumn != null) {costoColumn.setVisible(false);}
+        this.scene = new Scene(griglia, 1200, 400);
     }
 
-	public void start(Stage primaryStage, RestTemplate restTemplate) {
-	    this.table = new TableView<>();
-	    WCalendarHandler event = new WCalendarHandler(this, restTemplate);
-	    primaryStage.setTitle("Gestione Calendario");
-		    	    
-	 // Crea le etichette
-	    Label startDateL = new Label("Data inizio:");
+	public void start(String title, Stage primaryStage) {
+		primaryStage.setTitle(title);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+	}
+	
+	@SuppressWarnings("null")
+	@Override
+	protected Calendar[] getDati() {
+		RestTemplate restTemplate = new RestTemplate();
+		Calendar calendar = restTemplate.getForObject(url, Calendar.class);
+		return new Calendar[]{calendar}; // Restituisci un array con un singolo elemento
+	}
+
+	private void addContolli(){	
+	    griglia = new GridPane();
+		Label startDateL = new Label("Data inizio:");
 	    Label endDateL = new Label("Data fine:");
-  
-	 // Crea i DatePicker e li formatta perchè abbiano lo stesso formato di disponibilita.Date
 	    DatePicker startDatePicker = new DatePicker();
 	    DatePicker endDatePicker = new DatePicker();
 	    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// Usa lo stesso convertitore per entrambi i DatePicker
 	    startDatePicker.setConverter(new StringConverter<>() {
 	        @Override
 	        public String toString(LocalDate date) {
@@ -49,27 +70,14 @@ public class WCalendar {
 	        public LocalDate fromString(String string) {
 	            return (string != null && !string.isEmpty()) ? LocalDate.parse(string, dateFormatter) : null;	        }
 	    });
-	    endDatePicker.setConverter(startDatePicker.getConverter()); // Usa lo stesso convertitore per entrambi i DatePicker
-
+	    endDatePicker.setConverter(startDatePicker.getConverter()); 
 	    // Crea il pulsante e gli associa un evento
 	    Button setCalendarButton = new Button("Crea Calendario");
 	    setCalendarButton.setOnAction(e -> {
 	        LocalDate startDate = startDatePicker.getValue();
 	        LocalDate endDate = endDatePicker.getValue();
-	        event.setCalendario(startDate, endDate);
+	        stdHandler.setCalendario(startDate, endDate);
 	    });
- 
-	    // Crea le colonne per il calendario con gli stati
-	    TableColumn<StateDate, String> dataCol = new TableColumn<>("Data");
-	    dataCol.setCellValueFactory(new PropertyValueFactory<>("data"));
-	    table.getColumns().add(dataCol);
-	    TableColumn<StateDate, State> statoCol = new TableColumn<>("Stato");
-	    statoCol.setCellValueFactory(new PropertyValueFactory<>("stato"));
-	    statoCol.setCellFactory(column -> event.coloraCelle());
-	    table.getColumns().add(statoCol);
-
-	    // Crea il layout griglia per le etichette e i DatePicker
-	    GridPane griglia = new GridPane();
 	    griglia.setHgap(10);
 	    griglia.setVgap(10);
 	    griglia.add(startDateL, 1, 2);
@@ -81,14 +89,7 @@ public class WCalendar {
 	    Pane bordoSotto = new Pane();
 	    bordoSotto.setMinHeight(10); //
 	    griglia.add(bordoSotto, 1, 15, 2, 1);
-
-	    event.mettiDati();
-
-	    Scene scene = new Scene(griglia, 400, 400);
-	    primaryStage.setScene(scene);
-	    primaryStage.show();
 	}
-   
 }
     
     

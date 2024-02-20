@@ -33,8 +33,8 @@ public class Menu {
         buttonCalendario.setOnAction(e -> {
             Stage calendarStage = new Stage();
             openStages.add(calendarStage);
-            WCalendar wCalendar = new WCalendar();
-            wCalendar.start(calendarStage, restTemplate);
+            WCalendar wCalendar = new WCalendar(restTemplate);
+            wCalendar.start("Visualizzazione Calendario", calendarStage);
             primaryStage.hide(); // Nasconde la finestra del menu
             calendarStage.setOnHidden(event -> primaryStage.show()); // Mostra la finestra del menu quando la nuova finestra viene chiusa
         });
@@ -42,8 +42,8 @@ public class Menu {
         buttonCamere.setOnAction(e -> {
             Stage roomStage = new Stage();
             openStages.add(roomStage);
-            WRoom wRoom = new WRoom();
-            wRoom.start(roomStage, restTemplate);
+            WRoom wRoom = new WRoom(restTemplate);
+            wRoom.start("Visualizzazione Camere", roomStage);
             primaryStage.hide(); // Nasconde la finestra del menu
             roomStage.setOnHidden(event -> primaryStage.show()); // Mostra la finestra del menu quando la nuova finestra viene chiusa
         });

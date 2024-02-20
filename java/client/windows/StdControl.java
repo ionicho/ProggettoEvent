@@ -9,7 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-public class SuperWin {
+public class StdControl {
 	protected static final int WIDTH =150;
 	
 	public Button creaButton (String text) {

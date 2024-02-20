@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class SystemController {
 
-    @Autowired
-    private ApplicationContext appContext;
+    private final ApplicationContext appContext;
+
+    public SystemController(ApplicationContext appContext) {
+        this.appContext = appContext;
+    }
 
     @DeleteMapping("api/arresta-server")
     public ResponseEntity<String> arrestaServer() {

@@ -49,11 +49,11 @@
       },
       {
         "data": "2024-01-02",
-        "stato": "PRENOTATA"
+        "stato": "PULIZIA"
       },
       {
         "data": "2024-01-03",
-        "stato": "INUSO"
+        "stato": "PULIZIA"
       }
     ],
     "nome": "Room003",
@@ -65,15 +65,15 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "INUSO"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-02",
-        "stato": "INUSO"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-03",
-        "stato": "PULIZIA"
+        "stato": "CHIUSO"
       }
     ],
     "nome": "Room004",
