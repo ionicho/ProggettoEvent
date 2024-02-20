@@ -38,4 +38,17 @@ public class StateDate {
     		this.stato = stato;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StateDate stateDate = (StateDate) o;
+        return data.equals(stateDate.data) && stato == stateDate.stato;
+    }
+
+    @Override
+    public int hashCode() {
+        return data.hashCode() + stato.hashCode();
+    }
+
 }

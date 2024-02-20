@@ -25,11 +25,11 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "DISPONIBILE"
+        "stato": "PRENOTATA"
       },
       {
         "data": "2024-01-02",
-        "stato": "PRENOTATA"
+        "stato": "INUSO"
       },
       {
         "data": "2024-01-03",
@@ -45,11 +45,11 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "PULIZIA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-02",
-        "stato": "INUSO"
+        "stato": "PRENOTATA"
       },
       {
         "data": "2024-01-03",
@@ -69,7 +69,7 @@
       },
       {
         "data": "2024-01-02",
-        "stato": "PRENOTATA"
+        "stato": "INUSO"
       },
       {
         "data": "2024-01-03",

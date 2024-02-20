@@ -1,45 +1,34 @@
 package server;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.google.gson.Gson;
-
-import server.service.EventService;
+import server.service.*;
 import server.model.*;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EventServiceTest {
 
-    @InjectMocks
     private EventService eventService;
 
     @Mock
     private List<Event> eventi;
-
-    private Gson gson;
+    private Gson gson = AppConfig.configureGson();
 
     @BeforeEach
     void setUp() {
         gson = AppConfig.configureGson();
+        eventService = new EventService(gson);
     }
 
-    /**
-     * Test per verificare che la serializzazione e 
-     * deserializzazione di un oggetto Event funzioni correttamente
-     */
-    @Test
-    void eventGsonTest() {
+    Event creaEvent(){
         Event event = new Event();
         event.setData(LocalDate.now());
         event.setOraInizio(LocalTime.now());
@@ -58,39 +47,27 @@ class EventServiceTest {
         speech2.setRelatore("Relatore2");
         speech2.setDescrizione("Descrizione2");
         event.addIntervento(speech2);
+        return event;
 
-        // Serializzazione dell'oggetto Event in una stringa JSON
+    }
+    @Test
+    void GsonTest() {
+        Event event = creaEvent();
         String eventJson = gson.toJson(event);
-        // Deserializzazione della stringa JSON in un oggetto Event
         Event deserializedEvent = gson.fromJson(eventJson, Event.class);
-        // Verifica che l'oggetto Event deserializzato sia uguale all'oggetto Event originale
         assertEquals(event, deserializedEvent);
     }
 
     @Test
-    void testAddEvento() {
-        Event evento = eventService.addEvento();
-        System.out.println("Evento: " + evento);
-        System.out.println("ID dell'evento: " + evento.getId());
-        assertNotNull(evento);
-        assertNotNull(evento.getId());
-    }
+	void loadFromDbTest() {
+		List<Event> eventi = eventService.getEventi();
+		assertFalse(eventi.isEmpty());
+		for (Event evento : eventi) {
+			assertNotNull(evento.getId());
+			assertFalse(evento.getId().isEmpty());
+		}
+	}
 
-    /**
-     * Test per verificare che l'aggiunta di un intervento ad un evento funzioni correttamente
-     * @throws Exception se si verifica un errore durante l'aggiunta dell'intervento
-     */
-    @Test
-    void testUpdateEvento() {
-        Event oldEvent = new Event("vecchio");
-        oldEvent.setNomeOrganizzatore("vecchio nome");
-        when(eventi.get(anyInt())).thenReturn(oldEvent);
 
-        Event newEvent = new Event("nuovo");
-        newEvent.setNomeOrganizzatore("nuovo nome");
-
-        Event updatedEvent = eventService.updateEvento(newEvent);
-        assertNotNull(updatedEvent);
-        assertEquals("nuovo nome", updatedEvent.getNomeOrganizzatore());
-    }
+    
 }

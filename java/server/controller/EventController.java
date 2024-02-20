@@ -32,7 +32,7 @@ public class EventController {
     public Event getEvento(@PathVariable String id) {   
         Event evento = eventoService.getEvento(id);
         if (evento == null) {
-            throw new ServerException("Non ho trovato l'evento " + id);
+            throw new SystemException("Non ho trovato l'evento " + id);
         }
         System.out.printf("RISPOSTA INVIATA %s\n",evento.toString());
         return evento;

@@ -34,13 +34,30 @@ package server.model;
 	    }
 	    
 	    public Integer getNumeroPosti() {
-	    		return this.numeroPosti;
+	    	return this.numeroPosti;
 	    }
-	    
-	    public void setNumeroPosti(Integer n) {
-	    	this.numeroPosti = n;
-	    }
-		
+
+		public void setNumeroPosti(Integer numeroPosti) {
+			this.numeroPosti = numeroPosti;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			Hall hall = (Hall) o;
+			return Objects.equals(nome, hall.nome) && 
+				Objects.equals(costo, hall.costo) && 
+				Objects.equals(numeroPosti, hall.numeroPosti) && 
+				Objects.equals(disponibilita, hall.disponibilita);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(nome, costo, numeroPosti, disponibilita);
+		}
+
+	    	
 	    @Override
 	    public String toString() {
 	    		StringBuilder sb = new StringBuilder();

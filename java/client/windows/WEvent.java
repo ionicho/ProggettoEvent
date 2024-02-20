@@ -13,7 +13,7 @@ import javafx.scene.control.cell.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import server.AppConfig;
-import server.controller.ServerException;
+import server.controller.SystemException;
 import server.model.*;
 import java.util.*;
 
@@ -36,9 +36,9 @@ public class WEvent extends SuperWin {
 	private Node nHall;
 	
 	public void start(Stage eventStage, RestTemplate restTemplate) {
-		setFields();
 		this.url = AppConfig.getURL() +"api/eventi";
 		this.restTemplate = restTemplate;
+		setFields(eventStage);
 	    eventStage.setTitle("Gestione Eventi");
 	    grid = creaGriglia();
 	    Scene scene = new Scene(grid);
@@ -47,6 +47,7 @@ public class WEvent extends SuperWin {
 		getEventi(restTemplate);
 		evento = eventi.get(0);
 		populateFields(evento);
+
 	}
 
 	@SuppressWarnings("null")
@@ -72,7 +73,7 @@ public class WEvent extends SuperWin {
 	}
 
 	/** Inizializza i campi */
-	private void setFields() {
+	private void setFields(Stage stage) {
         cercaF = creaTextField();
         idField = creaTextField();
         msgF = creaTextField();
@@ -115,9 +116,11 @@ public class WEvent extends SuperWin {
         oraFinL = creaLabel("Ora Fine:");
         interventiL = creaLabel("Elenco Interventi:");
 		Stage hallStage = new Stage();
+		hallStage.initOwner(stage); // Imposta la finestra principale come proprietaria
 		wHall = new WHall();
 		wHall.start(hallStage, restTemplate);
 		nHall = wHall.getTable();
+		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }
 
 	/** Pulisce i campi */
@@ -189,7 +192,7 @@ public class WEvent extends SuperWin {
 		elimina.setSortable(false);
         grid.add(cercaL,0,row);
         grid.add(cercaF, 1, row);
-		grid.add(nHall, 0, row, 4, 1);
+		grid.add(nHall, 2, row, 4, 11);
         grid.add(msgL, 0, ++row);
         grid.add(msgF, 1,row);
         grid.add(idLabel, 0, ++row);
@@ -243,7 +246,7 @@ public class WEvent extends SuperWin {
 				cercaF.setText("");
 				clearFields();
 				msgF.setText("Creato nuovo evento.");
-			} catch (ServerException | HttpClientErrorException.NotFound ex) {
+			} catch (SystemException | HttpClientErrorException.NotFound ex) {
 				msgF.setText("La creazione del nuovo evento non è riuscita.");
 			}
 		});
@@ -254,7 +257,7 @@ public class WEvent extends SuperWin {
 			try {
 				this.evento = getEvento(cercaF.getText(), restTemplate);
 				populateFields(evento);
-			} catch (ServerException | HttpClientErrorException.NotFound ex) {
+			} catch (SystemException | HttpClientErrorException.NotFound ex) {
 				msgF.setText("Nessun evento trovato con l'ID specificato.");
 				clearFields();
 				idField.setText(cercaF.getText());
@@ -277,7 +280,7 @@ public class WEvent extends SuperWin {
 				populateEvent();
 				this.evento = updateEvento(this.evento,restTemplate);
 				populateFields(this.evento);
-			} catch (ServerException | HttpClientErrorException.NotFound ex) {
+			} catch (SystemException | HttpClientErrorException.NotFound ex) {
 				msgF.setText("Il salvataggio dell'evento non è riuscita.");
 				clearFields();
 			}

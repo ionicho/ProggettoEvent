@@ -2,14 +2,10 @@ package server.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import jakarta.annotation.PostConstruct;
-
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import server.AppConfig;
 import server.model.Event;
 
@@ -26,10 +22,6 @@ public class EventService {
 
     public EventService(Gson gson) {
         this.gson = gson;
-    }
-
-    @PostConstruct
-    public void init() {
         this.eventi = caricaEventiDaDatabase();
     }
 

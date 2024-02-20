@@ -28,7 +28,7 @@ public class HallService {
     // Metodo GET per ottenere tutte le sale
     public List<Hall> getSale() {
         String json = gson.toJson(sale);
-        return gson.fromJson(json, new TypeToken<List<Room>>(){}.getType());
+        return gson.fromJson(json, new TypeToken<List<Hall>>(){}.getType());
     }
 
     // Metodo GET per ottenere una singola sala

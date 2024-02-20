@@ -38,12 +38,37 @@ public class Room extends Resource {
     }
     
     public Integer getNumeroLetti() {
-    		return this.numeroLetti;
+    	return this.numeroLetti;
     }
+
+	public void setNumeroLetti(Integer numeroLetti) {
+		this.numeroLetti = numeroLetti;
+	}
   
     public RoomType getTipo() {
-    		return this.tipo;
+    	return this.tipo;
     }
+
+	public void setTipo(RoomType tipo) {	
+		this.tipo = tipo;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Room room = (Room) o;
+		return Objects.equals(nome, room.nome) &&
+			Objects.equals(costo, room.costo) &&
+			Objects.equals(numeroLetti, room.numeroLetti) &&
+			Objects.equals(tipo, room.tipo) &&
+			Objects.equals(disponibilita, room.disponibilita);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(nome, costo, numeroLetti, tipo, disponibilita);
+	}
 	
     @Override
     public String toString() {

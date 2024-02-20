@@ -46,7 +46,6 @@ public abstract class Resource  {
 	}
 	
 	public void changeStato (StateDate sd) {
-
 		for (StateDate curr: disponibilita){
 			if (curr.data.compareTo(sd.data) ==0) {
 				curr.setStato(sd.stato);		
@@ -63,7 +62,11 @@ public abstract class Resource  {
 		return this.costo;
 	}
 	
-    //@JsonProperty("nome")
+	public void setCosto(Double costo) {
+		this.costo = costo;
+	}
+	
+	//@JsonProperty("nome")
 	public String getNome() {
 		return this.nome;
 	}
@@ -71,6 +74,10 @@ public abstract class Resource  {
     //@JsonProperty("disponibilita")
 	public List<StateDate> getDisponibilita(){
 		return this.disponibilita;
+	}
+
+	public void setDisponibilita(List<StateDate> disponibilita) {
+		this.disponibilita = disponibilita;
 	}
 	
 }
