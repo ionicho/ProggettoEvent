@@ -4,10 +4,15 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.*;
+
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
+import java.util.List;
+
 import server.AppConfig;
 import server.model.*;
 
@@ -28,7 +33,7 @@ public class StdHandler <T extends Resource> implements EventHandler<MouseEvent>
     private static final Integer ROOM = 1;
     private static final Integer HALL = 2;
     private static final Integer CALENDAR = 3;
-    private final Integer tipo;
+    private Integer tipo;
     private final State[] statiPossibili;
 
     public StdHandler(WRoom wRoom, RestTemplate restTemplate) {
@@ -87,12 +92,16 @@ public class StdHandler <T extends Resource> implements EventHandler<MouseEvent>
                 }
                 if (item == "CHIUSO" && (tipo ==ROOM || tipo == HALL)) //NOSONAR
                     setOnMouseClicked(null);
+                else if(item == "PRENOTATA" && tipo == HALL ) //NOSONAR
+                    setOnMouseClicked(new StdHandler<>(wHall, restTemplate));
                 else if (tipo == ROOM) //NOSONAR
                     setOnMouseClicked(new StdHandler<>(wRoom, restTemplate));
                 else if (tipo == HALL) //NOSONAR
                     setOnMouseClicked(new StdHandler<>(wHall, restTemplate));
-                else
+                else if (tipo == CALENDAR) //NOSONAR
                     setOnMouseClicked(new StdHandler<>(wCalendar, restTemplate));
+                else
+                    setOnMouseClicked(null);
             }
         };
     }
@@ -100,7 +109,15 @@ public class StdHandler <T extends Resource> implements EventHandler<MouseEvent>
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void handle(MouseEvent event) {
-        if (event.getButton() == MouseButton.SECONDARY) { //click dx del mouse
+        if (event.getButton() == MouseButton.PRIMARY && tipo == HALL) { //NOSONAR
+            System.out.println("CLICK SX");
+            TableCell <T, State> cell = (TableCell) event.getSource();
+            T resource = cell.getTableRow().getItem();
+            String hallName = resource.getNome();
+            LocalDate date = LocalDate.parse(cell.getTableColumn().getText());
+            getEventByDateHall(date, hallName);
+        }
+        if (event.getButton() == MouseButton.SECONDARY && tipo != HALL) { //NOSONAR
            TableCell <T, State >cell = (TableCell) event.getSource();
             T resource = cell.getTableRow().getItem();
             String resourceName = resource.getNome();
@@ -116,6 +133,26 @@ public class StdHandler <T extends Resource> implements EventHandler<MouseEvent>
     }
     
     @SuppressWarnings("null")
+    private void getEventByDateHall(LocalDate date, String hallName) {
+        String url = AppConfig.getURL() + "api/eventi/" + date.toString() + "/" + hallName;
+        ResponseEntity<Event> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Event>() {});
+        if (response.getStatusCode() == HttpStatus.OK) {
+            Event event = response.getBody();
+            WEvent wEvent = wHall.getWEvent();
+            if (wEvent != null) {
+                wEvent.getEvento(event.getId(), restTemplate);
+            }
+            Platform.runLater(() -> {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("La sala è prenotata per l'evento:");
+                alert.setHeaderText(null);
+                alert.setContentText(event.toString());
+                alert.showAndWait();
+            });
+        }
+    }
+
+    @SuppressWarnings("null")
     private EventHandler<ActionEvent> cambiaStato(String name, LocalDate data, State stato) {
         return e -> {
             String url;
@@ -125,8 +162,8 @@ public class StdHandler <T extends Resource> implements EventHandler<MouseEvent>
                 url = AppConfig.getURL() + "api/hall/" + name + "/state";
             else if (tipo == CALENDAR) //NOSONAR
                 url = AppConfig.getURL() + "api/calendar/state";
-            else
-                url = ""; //ERRORE
+            else //ERRORE
+                return;
             if (restTemplate.exchange(
                     url,
                     HttpMethod.PUT,
@@ -149,8 +186,17 @@ public class StdHandler <T extends Resource> implements EventHandler<MouseEvent>
         // Invia una richiesta PUT al server per aggiornare il calendario
         String msg  = AppConfig.getURL() + "api/calendar/" + startDate.toString() + "/" + endDate.toString();
         System.out.printf("%s \n", msg);
-        ResponseEntity<String> response = restTemplate.exchange(msg, HttpMethod.PUT, null, String.class);
+        ResponseEntity<List<String>> response = restTemplate.exchange(msg, HttpMethod.PUT, null, new ParameterizedTypeReference<List<String>>() {});
         if (response.getStatusCode() == HttpStatus.OK) {
+            List<String> toReschedule = response.getBody();
+            // Mostra un alert con la lista toReschedule
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sale da rischedulare");
+                alert.setHeaderText(null);
+                alert.setContentText("Le seguenti sale devono essere rischedulate: " + String.join(", ", toReschedule));
+                alert.showAndWait();
+            });
             Platform.runLater(wCalendar::mettiDati);
         }
     }

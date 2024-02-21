@@ -3,9 +3,10 @@ package server.service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 import java.io.*;
 import java.util.*;
-import server.AppConfig;
+import server.*;
 import server.model.*;
 
 /**
@@ -14,7 +15,7 @@ import server.model.*;
  */
 
 @Service
-public class HallService {
+public class HallService implements Subscriber {
 
     private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Sale.json";
     private List<Hall> sale;
@@ -23,6 +24,29 @@ public class HallService {
     public HallService(Gson gson) {
         this.gson = gson;
         this.sale = caricaSaledaDB();
+    }
+
+    @Override
+    public List<String>  updateState(List<StateDate> disponibilita) {
+        List<String> saleToBeResc = new ArrayList<>();
+        State oldStato;
+        VisitorSetState setVisitor = new VisitorSetState();
+        VisitorGetState getVisitor = new VisitorGetState();
+        for (Hall curr : sale) {
+            for(StateDate sd : disponibilita){
+                oldStato = getVisitor.visit(curr, sd);
+                if (oldStato == State.PRENOTATA && sd.getStato() == State.CHIUSO){
+                    saleToBeResc.add(curr.getNome());
+                    setVisitor.visit(curr, sd);
+                } else if (oldStato != null && sd.getStato() == State.DISPONIBILE){
+                    // non fare niente, va bene così
+                } else{ //if oldStato == null
+                    setVisitor.visit(curr, sd);           
+                }   
+            }
+        }
+        salvaSalesuDB();
+        return saleToBeResc;
     }
     
     // Metodo GET per ottenere tutte le sale
@@ -40,6 +64,19 @@ public class HallService {
         }
         return null;
     }
+    
+    // Metodo GET per ottenere l'elenco dei nomi dell sale libere in una data specifica
+    public List<String> getSaleLibere(LocalDate data) {
+        List<String> saleLibere = new ArrayList<>();
+        VisitorGetState visitor = new VisitorGetState();
+        StateDate sd = new StateDate(data,null);
+        for (Hall curr : sale) {
+            if (visitor.visit(curr, sd) == State.DISPONIBILE) {
+                saleLibere.add(curr.getNome());
+            }
+        }
+        return saleLibere;
+    }
 
  // Metodo POST per aggiungere una sala
     public void addSala(Hall sala) {
@@ -55,11 +92,12 @@ public class HallService {
     public void updateSala(String nome, StateDate statoData) {
         Hall sala = getSala(nome);
         VisitorSetState visitor = new VisitorSetState();
-        visitor.visit(sala, statoData);
+        visitor.visit(sala, statoData);    
         if (sala != null && sala.getNome() != null && !sala.getNome().isEmpty()) {
             for (int i = 0; i < sale.size(); i++) {
                 if (sale.get(i).getNome().equals(nome)) {
                     sale.set(i, sala);
+                    System.out.printf("scritto nel file %s\n\n",sale.toString());
                     salvaSalesuDB();
                     return;
                 }

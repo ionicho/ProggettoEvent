@@ -1,6 +1,8 @@
 package server.controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.*;
 import server.model.*;
 import server.service.*;
@@ -40,7 +42,14 @@ public class HallController {
         return "Sala aggiunta con successo.";
     }
 
- // Metodo PUT per aggiornare lo stato di una sala e poi salvare l'intero oggetto
+    // Metodo GET per ottenere l'elenco delle sale libere in una data specifica
+    @GetMapping("/hall/libere/{date}")
+    public List<String> getSaleLibere(@PathVariable String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return hallService.getSaleLibere(localDate);
+    }
+
+    // Metodo PUT per aggiornare lo stato di una sala e poi salvare l'intero oggetto
     @PutMapping("/hall/{nome}/state")
     public String updateSala(@PathVariable String nome, @RequestBody StateDate statoData) {
     	hallService.updateSala(nome, statoData); 

@@ -19,13 +19,13 @@ public class Event {
     private LocalTime oraFine;
     private String nomeOrganizzatore;
     private Double costoPartecipazione;
-    private Hall sala;
+    private String sala;
     private Integer partPrevisti;
     private TipoCatering catering;
     private List<Speech> elencoInterventi;
 
-    // Costruttore, getter e setter
-    
+
+    // Costruttore, getter e setter    
     public Event() {  // costruttore usato da Gson
  	   this.elencoInterventi = new ArrayList <>();
     }
@@ -48,8 +48,8 @@ public class Event {
     	partPrevisti = part;
     }
     
-    public void setSala(Hall sala) {
-    	this.sala = sala;
+    public void setSala(String salaName) {
+        this.sala = salaName;
     }
 
     public void setCatering(TipoCatering catering) {
@@ -96,7 +96,7 @@ public class Event {
         return nomeOrganizzatore;
     }
 
-    public Hall getSala() {
+    public String getSala() {
         return sala;
     }
 
@@ -119,27 +119,27 @@ public class Event {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Evento {");
-        sb.append("id: ").append(id).append(", ");
-        sb.append("data: ").append(data).append(", ");
-        sb.append("ora inizio: ").append(oraInizio).append(", ");
-        sb.append("ora fine: ").append(oraFine).append(", ");
-        sb.append("organizzato da: ").append(nomeOrganizzatore).append(", ");
-        sb.append("partecipanti previsti: ").append(partPrevisti).append(", ");
-        sb.append("catering: ").append(catering).append(", ");
-        sb.append("sala: ").append(sala).append(", ");
-        sb.append("costo partecipazione: ").append(costoPartecipazione).append(", ");
+        sb.append("Evento {\n");
+        sb.append("id: ").append(id).append(",\n");
+        sb.append("data: ").append(data).append(",\n");
+        sb.append("ora inizio: ").append(oraInizio).append(",\n");
+        sb.append("ora fine: ").append(oraFine).append(",\n");
+        sb.append("organizzato da: ").append(nomeOrganizzatore).append(",\n");
+        sb.append("partecipanti previsti: ").append(partPrevisti).append(",\n");
+        sb.append("catering: ").append(catering).append(",\n");
+        sb.append("sala: ").append(sala).append(",\n");
+        sb.append("costo partecipazione: ").append(costoPartecipazione).append(",\n");
         if (!elencoInterventi.isEmpty()) {
-            sb.append("elenco interventi: [");
+            sb.append("elenco interventi: [\n");
             for (Speech curr : elencoInterventi) {
-                sb.append(curr.getTitolo()).append(", ");
-                sb.append(curr.getRelatore()).append(", ");
-                sb.append(curr.getDescrizione()).append(", ");
+                sb.append(curr.getTitolo()).append(",\n");
+                sb.append(curr.getRelatore()).append(",\n");
+                sb.append(curr.getDescrizione()).append(",\n");
             }
             sb.delete(sb.length() - 2, sb.length());  // Rimuovi l'ultima virgola e spazio
-            sb.append("]");
+            sb.append("]\n");
         }
-        sb.append("}");
+        sb.append("}\n");
         return sb.toString();
     }
 

@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import org.springframework.web.client.*;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -24,9 +25,9 @@ public class WEvent extends StdControl {
     private Event evento;
 	private List<Event> eventi;
     private GridPane grid;
-    private Label cercaL, msgL, idLabel, nomeOrgL, costoParL, numParPreL, cateringL, dataL, oraIniL, oraFinL, interventiL;
+    private Label cercaL, msgL, idLabel, nomeOrgL, costoParL, numParPreL, cateringL, dataL, oraIniL, oraFinL, salaL, interventiL;
     private TextField cercaF, idField, msgF, nomeOrgF, costoParF, numParPreF, oraIniF, oraFinF;
-    private ComboBox<String> cateringF;
+    private ComboBox<String> cateringF, salaF;
 	private DatePicker dataF;
     private TableView<Speech> interventiLista;
     private TableColumn<Speech, String> titolo, relatore, descrizione, elimina;
@@ -47,17 +48,16 @@ public class WEvent extends StdControl {
 		getEventi(restTemplate);
 		evento = eventi.get(0);
 		populateFields(evento);
-
 	}
 
 	@SuppressWarnings("null")
-	private void getEventi(RestTemplate restTemplate) {
+	public void getEventi(RestTemplate restTemplate) {
 		this.eventi = Arrays.asList(restTemplate.getForObject(url, Event[].class));
 		System.out.printf("EVENTI = %s\n", eventi);
 	}
 	
 	/** Restituisce l'evento con l'ID specificato */
-	private Event getEvento(String id, RestTemplate restTemplate) {
+	public Event getEvento(String id, RestTemplate restTemplate) {
 		return restTemplate.getForObject(url+"/"+id, Event.class);
 	}
 
@@ -81,12 +81,15 @@ public class WEvent extends StdControl {
         costoParF = creaTextField();
 		numParPreF = creaTextField();
 		String[] cateringOptions = Arrays.stream(TipoCatering.values())
-		.map(TipoCatering::name)
-		.toArray(String[]::new);
+			.map(TipoCatering::name)
+			.toArray(String[]::new);
 		cateringF = creaComboBox(cateringOptions);
         oraIniF  = creaHourField();
         oraFinF  = creaHourField();
-        dataF = new DatePicker();
+		salaF = new ComboBox<>();
+		salaF.setPrefWidth(WIDTH);
+		dataF = new DatePicker();
+		dataF.setPrefWidth(WIDTH);
         interventiLista = new TableView<>();
 		interventiLista.setEditable(true);
         titolo = new TableColumn<>("Titolo");
@@ -114,6 +117,7 @@ public class WEvent extends StdControl {
         dataL = creaLabel("Data:");
         oraIniL = creaLabel("Ora Inizio:");
         oraFinL = creaLabel("Ora Fine:");
+		salaL = creaLabel("Sala:");
         interventiL = creaLabel("Elenco Interventi:");
 		Stage hallStage = new Stage();
 		hallStage.initOwner(stage); // Imposta la finestra principale come proprietaria
@@ -123,7 +127,48 @@ public class WEvent extends StdControl {
 		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }
 
-	/** Pulisce i campi */
+	/** Ottiene l'elenco delle sale libere nel giorno specificato + riga vuota*/
+	public String[] getSaleLibere(LocalDate date) {
+		String urlSaleLibere = AppConfig.getURL() + "api/hall/libere/" + date.toString();
+		List<String> saleNames = new ArrayList<>(Arrays.asList(restTemplate.getForObject(urlSaleLibere, String[].class)));
+		saleNames.add(0, "");
+		return saleNames.toArray(new String[0]);
+	}
+	
+	/** Libera una sala nel giorno specificato */
+	private void liberaSala(String nome, LocalDate data) {
+		if (nome != null && !nome.equals("") && data != null){
+			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
+			restTemplate.put(urlHall, new StateDate(data, State.DISPONIBILE));
+		}
+	}
+
+	/** Occupa una sala nel giorno specificato */
+	private void occupaSala(String nome, LocalDate data) {
+		if (nome != null && !nome.equals("") && data != null){
+			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
+			restTemplate.put(urlHall, new StateDate(data, State.PRENOTATA));
+		}
+	}
+	
+	/** Gestisce la logica delle sale*/
+	private void impostaSala() {
+		if (evento != null && dataF != null && salaF != null) {
+			if (!Objects.equals(evento.getData(), dataF.getValue())) { //cambia la data
+				liberaSala(evento.getSala(), evento.getData());
+				evento.setSala(null);
+			}
+			String oldSala = evento.getSala();
+			String newSala = salaF.getValue();
+			if (!Objects.equals(oldSala, newSala)) { //cambia la sala
+				liberaSala(oldSala, evento.getData());
+				occupaSala(newSala, dataF.getValue());
+				evento.setSala(newSala);
+			}
+		}
+	}
+	
+	/** Pulisce i campi della finestra*/
 	private void clearFields() {
 		idField.setText("");
 		nomeOrgF.setText("");
@@ -136,6 +181,7 @@ public class WEvent extends StdControl {
 		interventiLista.getItems().clear();
 	}
 	
+	/** Popola i campi della finestra*/
 	private void populateFields(Event evento) {
 		idField.setText(evento.getId() != null ? evento.getId() : "");
 		nomeOrgF.setText(evento.getNomeOrganizzatore() != null ? evento.getNomeOrganizzatore() : "");
@@ -146,6 +192,7 @@ public class WEvent extends StdControl {
 		oraIniF.setText(evento.getOraInizio() != null ? evento.getOraInizio().format(formatter) : "");
 		oraFinF.setText(evento.getOraFine() != null ? evento.getOraFine().format(formatter) : "");
 		dataF.setValue(evento.getData() != null ? evento.getData() : LocalDate.now());
+		salaF.setValue(evento.getSala() != null ? evento.getSala() : "");
 		titolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
 		relatore.setCellValueFactory(new PropertyValueFactory<>("relatore"));
 		descrizione.setCellValueFactory(new PropertyValueFactory<>("descrizione"));
@@ -158,7 +205,8 @@ public class WEvent extends StdControl {
 		}
 		wHall.aggiornaTabella();
 	}
-
+	
+	/** Popola l'evento con i dati della finestra*/
 	private void populateEvent() {
 		if (this.evento != null) {
 			this.evento.setNomeOrganizzatore(nomeOrgF.getText());
@@ -169,6 +217,7 @@ public class WEvent extends StdControl {
 			this.evento.setOraInizio(LocalTime.parse(oraIniF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
 			this.evento.setOraFine(LocalTime.parse(oraFinF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
 			this.evento.setData(dataF.getValue());
+			this.evento.setSala(salaF.getValue() == null || salaF.getValue().equals("") ? null : salaF.getValue()); 
 			this.evento.getElencoInterventi().clear();
 			this.evento.addInterventi(interventiLista.getItems());
 		}
@@ -207,6 +256,8 @@ public class WEvent extends StdControl {
 		grid.add(cateringF, 1, row);
         grid.add(dataL, 0, ++row);
         grid.add(dataF, 1, row);
+		grid.add(salaL, 0, ++row);
+		grid.add(salaF, 1, row);
         grid.add(oraIniL, 0, ++row);
         grid.add(oraIniF, 1, row);
         grid.add(oraFinL, 0, ++row);
@@ -263,6 +314,20 @@ public class WEvent extends StdControl {
 				idField.setText(cercaF.getText());
 			}		    
 		});
+
+		// Gestisce la logica del cambio di data
+		dataF.setOnAction(e -> {
+			LocalDate newValue = dataF.getValue();
+			if (newValue != null) {
+				String[] saleOptions = getSaleLibere(newValue);
+				salaF.setValue(null);
+				salaF.setItems(FXCollections.observableArrayList(saleOptions));
+			}
+			impostaSala();
+		});
+
+		// Gestisce la logica del cambio di sala
+		salaF.setOnAction(e -> impostaSala());
 
 		// Gestisce la logica di salvataggio delle modifiche di un evento
 		saveButton.setOnAction(e -> {
@@ -321,7 +386,30 @@ public class WEvent extends StdControl {
 		setLayout();
 		return grid;
 	}
+		
+	/** Gestisce la logica della rimozione (dalla maschera) degli interventi*/
+	private void setElimina() {
+		elimina.setCellFactory(param -> new TableCell<Speech, String>() {
+			final Button btn = new Button("Elimina");
+			@Override
+			public void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty) {
+					setGraphic(null);
+					setText(null);
+				} else {
+					btn.setOnAction(event -> {
+						Speech speech = getTableView().getItems().get(getIndex());
+						getTableView().getItems().remove(speech);
+					});
+					setGraphic(btn);
+					setText(null);
+				}
+			}
+		});
+	}
 
+	/** Gestisce la logica della navigazione degli eventi*/
 	private void firstButtonAction() {
 		firstButton.setOnAction(e -> {
 			this.evento = eventi.get(0);
@@ -355,27 +443,5 @@ public class WEvent extends StdControl {
 			populateFields(evento);
 		});
 	}
-			
-	/** Gestisce la logica della rimozione (dalla maschera) degli interventi*/
-	private void setElimina() {
-		elimina.setCellFactory(param -> new TableCell<Speech, String>() {
-			final Button btn = new Button("Elimina");
-			@Override
-			public void updateItem(String item, boolean empty) {
-				super.updateItem(item, empty);
-				if (empty) {
-					setGraphic(null);
-					setText(null);
-				} else {
-					btn.setOnAction(event -> {
-						Speech speech = getTableView().getItems().get(getIndex());
-						getTableView().getItems().remove(speech);
-					});
-					setGraphic(btn);
-					setText(null);
-				}
-			}
-		});
-	}
-
+	
 }

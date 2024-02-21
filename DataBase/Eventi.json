@@ -1,11 +1,12 @@
 [
   {
     "id": "Event001",
-    "data": "2023-01-01",
+    "data": "2024-01-02",
     "oraInizio": "09:00",
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
     "costoPartecipazione": 120.0,
+    "sala": "Hall001",
     "partPrevisti": 25,
     "catering": "COFFEE_BREAK",
     "elencoInterventi": [
@@ -33,11 +34,12 @@
   },
   {
     "id": "Event002",
-    "data": "2023-01-02",
+    "data": "2024-01-03",
     "oraInizio": "09:00",
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
     "costoPartecipazione": 150.0,
+    "sala": "Hall002",
     "partPrevisti": 25,
     "catering": "COLAZIONE",
     "elencoInterventi": [
@@ -52,5 +54,9 @@
         "descrizione": "Descrizione dell\u0027intervento 4"
       }
     ]
+  },
+  {
+    "id": "Event021",
+    "elencoInterventi": []
   }
 ]

@@ -9,9 +9,15 @@ import server.model.*;
 
 public class WHall extends WResource<Hall> {
     private Scene scene;
+    private final WEvent wEvent;
 
     public WHall(RestTemplate restTemplate) {
+        this(restTemplate, null);
+    }
+
+    public WHall(RestTemplate restTemplate, WEvent wEvent) {
         super(restTemplate);
+        this.wEvent = wEvent;
         this.url = AppConfig.getURL() + "api/hall";
         this.stdHandler = new StdHandler<>(this, restTemplate);
         addColonneStatiche();
@@ -23,6 +29,10 @@ public class WHall extends WResource<Hall> {
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public WEvent getWEvent() {
+        return wEvent;
     }
 
     @SuppressWarnings({ "null" })

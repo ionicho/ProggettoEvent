@@ -29,6 +29,10 @@ public abstract class WResource<T extends Resource> {
         return table;
     }
 
+    public void refresh() {
+        aggiornaTabella();
+    }
+
     protected void addColonneStatiche() {
         String centrato = "CENTER";
         String aDestra = "CENTER-RIGHT";

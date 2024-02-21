@@ -41,6 +41,10 @@ package server.model;
 			this.numeroPosti = numeroPosti;
 		}
 
+		public int compareName(String o) {
+			return this.getNome().compareTo(o);
+		}
+		
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;

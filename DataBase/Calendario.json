@@ -18,7 +18,7 @@
     },
     {
       "data": "2024-01-05",
-      "stato": "CHIUSO"
+      "stato": "DISPONIBILE"
     },
     {
       "data": "2024-01-06",
@@ -26,7 +26,7 @@
     },
     {
       "data": "2024-01-07",
-      "stato": "DISPONIBILE"
+      "stato": "CHIUSO"
     },
     {
       "data": "2024-01-08",
@@ -150,6 +150,26 @@
     },
     {
       "data": "2024-02-07",
+      "stato": "DISPONIBILE"
+    },
+    {
+      "data": "2024-02-08",
+      "stato": "DISPONIBILE"
+    },
+    {
+      "data": "2024-02-09",
+      "stato": "DISPONIBILE"
+    },
+    {
+      "data": "2024-02-10",
+      "stato": "DISPONIBILE"
+    },
+    {
+      "data": "2024-02-11",
+      "stato": "DISPONIBILE"
+    },
+    {
+      "data": "2024-02-12",
       "stato": "DISPONIBILE"
     }
   ],

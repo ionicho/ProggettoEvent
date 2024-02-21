@@ -54,7 +54,12 @@ public abstract class Resource  {
 	}
 	
 	public State getStato(LocalDate data) {
-		return selectData(data).stato;
+		if (selectData(data) == null){
+			StateDate sd = new StateDate(data, State.DISPONIBILE);
+			disponibilita.add(sd);
+			return sd.stato;
+		}
+		else return selectData(data).stato;
 	}
 	
    // @JsonProperty("costo")  //specifico il nome usato nel json

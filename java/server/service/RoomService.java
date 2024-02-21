@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.*;
-import server.AppConfig;
+import server.*;
 import server.model.*;
 
 /**
@@ -14,7 +14,7 @@ import server.model.*;
  */
 
 @Service
-public class RoomService {
+public class RoomService implements Subscriber{
 
     private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Camere.json";
     private List<Room> camere;
@@ -23,6 +23,29 @@ public class RoomService {
     public RoomService(Gson gson) {
         this.gson = gson;
         this.camere = caricaCameredaDB();
+    }
+
+    @Override
+    public List<String>  updateState(List<StateDate> disponibilita) {
+        List<String> camereToBeResc = new ArrayList<>();
+        State oldStato;
+        VisitorSetState setVisitor = new VisitorSetState();
+        VisitorGetState getVisitor = new VisitorGetState();
+        for (Room curr : camere) {
+            for(StateDate sd : disponibilita){
+                oldStato = getVisitor.visit(curr, sd);
+                if (oldStato == State.PRENOTATA && sd.getStato() == State.CHIUSO){
+                    camereToBeResc.add(curr.getNome());
+                    setVisitor.visit(curr, sd);
+                } else if (oldStato != null && sd.getStato() == State.DISPONIBILE){
+                    // non fare niente, va bene così
+                } else{ //if oldStato == null
+                    setVisitor.visit(curr, sd);           
+                }   
+            }
+        }
+        salvaCameresuDB();
+        return camereToBeResc;
     }
     
     // Metodo GET per ottenere tutte le camere

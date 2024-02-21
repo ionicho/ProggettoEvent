@@ -1,5 +1,6 @@
 package server.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import server.model.Event;
@@ -37,6 +38,15 @@ public class EventController {
         System.out.printf("RISPOSTA INVIATA %s\n",evento.toString());
         return evento;
     }
+
+    @GetMapping("/eventi/{date}/{hallName}")
+    public Event getEventoByDateHall(@PathVariable String date, @PathVariable String hallName) {
+        Event evento = eventoService.getEventoByDateHall(LocalDate.parse(date), hallName);
+        if (evento == null) {
+            throw new SystemException("Non ho trovato l'evento per la data " + date + " e la sala " + hallName);
+        }
+        return evento;
+    }   
 
     // Metodo GET per invocare il singleton per poter aggiungere un evento
     @GetMapping("/eventi/nuovo")
