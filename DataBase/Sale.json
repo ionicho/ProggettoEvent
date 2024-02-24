@@ -185,6 +185,10 @@
       {
         "data": "2024-02-24",
         "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
+        "stato": "DISPONIBILE"
       }
     ],
     "nome": "Hall001",
@@ -376,6 +380,10 @@
       {
         "data": "2024-02-24",
         "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
+        "stato": "DISPONIBILE"
       }
     ],
     "nome": "Hall002",
@@ -566,6 +574,10 @@
       },
       {
         "data": "2024-02-24",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
         "stato": "DISPONIBILE"
       }
     ],

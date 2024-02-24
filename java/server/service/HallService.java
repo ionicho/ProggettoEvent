@@ -23,7 +23,7 @@ public class HallService implements Subscriber, RWjson <Hall>{
 
     public HallService(Gson gson) {
         this.gson = gson;
-        Type typeOfT = new TypeToken<List<Room>>(){}.getType();
+        Type typeOfT = new TypeToken<List<Hall>>(){}.getType();
         this.sale = caricadaDB(DBname, gson, typeOfT);
         System.out.println("Caricate " + sale.size() + sale.toString());
     }

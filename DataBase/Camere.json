@@ -178,6 +178,10 @@
       {
         "data": "2024-02-13",
         "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
+        "stato": "DISPONIBILE"
       }
     ],
     "nome": "Room001",
@@ -362,6 +366,10 @@
       {
         "data": "2024-02-13",
         "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
+        "stato": "DISPONIBILE"
       }
     ],
     "nome": "Room002",
@@ -377,7 +385,7 @@
       },
       {
         "data": "2024-01-02",
-        "stato": "PULIZIA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-03",
@@ -545,6 +553,10 @@
       },
       {
         "data": "2024-02-13",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
         "stato": "DISPONIBILE"
       }
     ],
@@ -561,7 +573,7 @@
       },
       {
         "data": "2024-01-02",
-        "stato": "DISPONIBILE"
+        "stato": "PRENOTATA"
       },
       {
         "data": "2024-01-03",
@@ -729,6 +741,10 @@
       },
       {
         "data": "2024-02-13",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
         "stato": "DISPONIBILE"
       }
     ],
@@ -913,6 +929,10 @@
       },
       {
         "data": "2024-02-13",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-14",
         "stato": "DISPONIBILE"
       }
     ],

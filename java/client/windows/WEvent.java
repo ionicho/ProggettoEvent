@@ -12,18 +12,21 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import server.AppConfig;
 import server.controller.SystemException;
 import server.model.*;
 import java.util.*;
 
-public class WEvent extends WEventLayout implements WEventRest {
+public class WEvent extends WEventLayout{
 	
+	private String url;
     private RestTemplate restTemplate;
     private Event evento;
 	private WHall wHall;//sottofinestra con le sale
 	private Node nHall;
 	
 	public void start(Stage eventStage, RestTemplate restTemplate) {
+		this.url = AppConfig.getURL() +"api/eventi";
 		this.restTemplate = restTemplate;
 		setFields(eventStage);
 	    eventStage.setTitle("Gestione Eventi");
@@ -31,14 +34,36 @@ public class WEvent extends WEventLayout implements WEventRest {
 	    Scene scene = new Scene(grid);
 	    eventStage.setScene(scene);
 	    eventStage.show();
-	    this.eventi = getEventi(restTemplate);
+		getEventi(restTemplate);
 		evento = eventi.get(0);
 		populateFields(evento);
 	}
+
+	@SuppressWarnings("null")
+	public void getEventi(RestTemplate restTemplate) {
+		this.eventi = Arrays.asList(restTemplate.getForObject(url, Event[].class));
+		System.out.printf("EVENTI = %s\n", eventi);
+	}
 	
+	/** Restituisce l'evento con l'ID specificato */
+	public Event getEvento(String id, RestTemplate restTemplate) {
+		return restTemplate.getForObject(url+"/"+id, Event.class);
+	}
+
+	/** Aggiunge un nuovo evento */
+	private Event addEvento(RestTemplate restTemplate) {
+		return  restTemplate.getForObject(url+"/nuovo", Event.class);	
+	}
+	
+	/** Aggiorna un evento e restituisce l'evento aggiornato */
+	private Event updateEvento(Event evento, RestTemplate restTemplate) {
+		restTemplate.put(url+"/"+evento.getId(), evento);
+		return getEvento(evento.getId(), restTemplate);
+	}
+
 	/** Inizializza i campi */
 	protected void setFields(Stage stage) {
-        super.setFields(stage);
+       super.setFields(stage);
 		setElimina();
 		Stage hallStage = new Stage();
 		hallStage.initOwner(stage); // Imposta la finestra principale come proprietaria
@@ -47,25 +72,43 @@ public class WEvent extends WEventLayout implements WEventRest {
 		nHall = wHall.getTable();
 		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }
-	
-	/** Imposta il layout */
-    protected void setLayout() {
-    	super.setLayout();
-		grid.add(nHall, 2, 0, 4, 11);
-    }
 
+	/** Ottiene l'elenco delle sale libere nel giorno specificato + riga vuota*/
+	public String[] getSaleLibere(LocalDate date) {
+		String urlSaleLibere = AppConfig.getURL() + "api/hall/libere/" + date.toString();
+		List<String> saleNames = new ArrayList<>(Arrays.asList(restTemplate.getForObject(urlSaleLibere, String[].class)));
+		saleNames.add(0, "");
+		return saleNames.toArray(new String[0]);
+	}
+	
+	/** Libera una sala nel giorno specificato */
+	private void liberaSala(String nome, LocalDate data) {
+		if (nome != null && !nome.equals("") && data != null){
+			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
+			restTemplate.put(urlHall, new StateDate(data, State.DISPONIBILE));
+		}
+	}
+
+	/** Occupa una sala nel giorno specificato */
+	private void occupaSala(String nome, LocalDate data) {
+		if (nome != null && !nome.equals("") && data != null){
+			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
+			restTemplate.put(urlHall, new StateDate(data, State.PRENOTATA));
+		}
+	}
+	
 	/** Gestisce la logica delle sale*/
 	private void impostaSala() {
 		if (evento != null && dataF != null && salaF != null) {
 			if (!Objects.equals(evento.getData(), dataF.getValue())) { //cambia la data
-				liberaSala(evento.getSala(), evento.getData(), restTemplate);
+				liberaSala(evento.getSala(), evento.getData());
 				evento.setSala(null);
 			}
 			String oldSala = evento.getSala();
 			String newSala = salaF.getValue();
 			if (!Objects.equals(oldSala, newSala)) { //cambia la sala
-				liberaSala(oldSala, evento.getData(), restTemplate);
-				occupaSala(newSala, dataF.getValue(), restTemplate);
+				liberaSala(oldSala, evento.getData());
+				occupaSala(newSala, dataF.getValue());
 				evento.setSala(newSala);
 			}
 		}
@@ -126,6 +169,12 @@ public class WEvent extends WEventLayout implements WEventRest {
 		}
 	}
 
+	/** Imposta il layout */
+    protected void setLayout() {
+    	super.setLayout();        
+		grid.add(nHall, 2, 0, 4, 11);
+    }
+
 	/** Crea la griglia */
 	private GridPane creaGriglia() {
 		Map<Integer, Speech> tempSpeeches = new HashMap<>();
@@ -166,7 +215,7 @@ public class WEvent extends WEventLayout implements WEventRest {
 		dataF.setOnAction(e -> {
 			LocalDate newValue = dataF.getValue();
 			if (newValue != null) {
-				String[] saleOptions = getSaleLibere(newValue, restTemplate);
+				String[] saleOptions = getSaleLibere(newValue);
 				salaF.setValue(null);
 				salaF.setItems(FXCollections.observableArrayList(saleOptions));
 			}

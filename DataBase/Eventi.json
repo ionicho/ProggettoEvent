@@ -23,12 +23,12 @@
         "descrizione": "pppppppppppppppppppp"
       }
     ],
-    "data": "2024-01-04",
+    "data": "2024-01-03",
     "oraInizio": "09:00",
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
     "costoPartecipazione": 120.0,
-    "sala": "Hall003",
+    "sala": "Hall001",
     "partPrevisti": 25,
     "catering": "BRUNCH"
   },

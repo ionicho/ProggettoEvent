@@ -31,7 +31,7 @@ public class WCalendar extends WResource<Calendar> {
 	public WCalendar(RestTemplate restTemplate) {
         super(restTemplate);
         this.url = AppConfig.getURL() + "api/calendar";
-        this.wResourceClick = new WResourceClick<>(this, restTemplate);
+        this.wResourceRest = new WResourceRest<>(this, restTemplate);
         addColonneStatiche();
 		addContolli();
         mettiDati();

@@ -13,7 +13,7 @@ public class WRoom extends WResource<Room> {
     public WRoom(RestTemplate restTemplate) {
         super(restTemplate);
         this.url = AppConfig.getURL() + "api/room";
-        this.wResourceClick = new WResourceClick<>(this, restTemplate);
+        this.wResourceRest = new WResourceRest<>(this, restTemplate);
         addColonneStatiche();
         mettiDati();
         this.scene = new Scene(table, 1200, 400);
