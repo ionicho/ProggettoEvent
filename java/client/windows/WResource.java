@@ -8,7 +8,7 @@ import server.model.*;
 
 /**
  * Classe generica per la gestione della finestra con l'elenco delle risorse e la loro disponibilità.
- * Con la classe StdHandler consente di inviare una request al server e quando
+ * Con la classe WResourceClick consente di inviare una request al server e quando
  * riceve la notifica del tutto ok, aggiorna la videata.
  * @param <T> Tipo della risorsa
  */
@@ -16,7 +16,7 @@ public abstract class WResource<T extends Resource> {
 
     protected TableView<T> table;
     protected RestTemplate restTemplate;
-    protected StdHandler<T> stdHandler;
+    protected WResourceClick<T> wResourceClick;
     protected String url;
 
     protected WResource(RestTemplate restTemplate) {
@@ -52,7 +52,7 @@ public abstract class WResource<T extends Resource> {
         for (String date : dateList) {
             TableColumn<T, String> column = new TableColumn<>(date);
             column.setCellValueFactory(new DinamicCol<>(date));
-            column.setCellFactory(col -> stdHandler.creaCellaColorate());
+            column.setCellFactory(col -> wResourceClick.creaCellaColorate());
             table.getColumns().add(column);
         }
     }

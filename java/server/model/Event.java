@@ -1,9 +1,6 @@
 package server.model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
-
 
 /**
  * Classe per la gestione degli eventi
@@ -12,62 +9,26 @@ import java.util.*;
  * degli eventi. 
  */
 
-public class Event {
+public class Event extends EventInfo{
 	private String id;
-    private LocalDate data;
-    private LocalTime oraInizio;
-    private LocalTime oraFine;
-    private String nomeOrganizzatore;
-    private Double costoPartecipazione;
-    private String sala;
-    private Integer partPrevisti;
-    private TipoCatering catering;
+
     private List<Speech> elencoInterventi;
 
-
     // Costruttore, getter e setter    
-    public Event() {  // costruttore usato da Gson
+    public Event() {
  	   this.elencoInterventi = new ArrayList <>();
     }
     
-   public Event (String s) { //costruttore usato da me 
+   public Event (String s) {
 	   System.out.printf("COSTRUTTORE EVENT %s\n", s);
 	   this.id = Singleton.getInstance().getNext(this.getClass().getSimpleName());
 	   this.elencoInterventi = new ArrayList <>();
    }
 
-   public void setNomeOrganizzatore(String nome) {
-	   if (nome != null && !nome.trim().isEmpty()) nomeOrganizzatore = nome;
+   public String getId() {
+   	return id;
    }
-   
-    public void setCostoPartecipazione(Double costo) {
-    	costoPartecipazione = costo;
-    }
-
-    public void setPartPrevisti(Integer part) {
-    	partPrevisti = part;
-    }
-    
-    public void setSala(String salaName) {
-        this.sala = salaName;
-    }
-
-    public void setCatering(TipoCatering catering) {
-    	this.catering = catering;
-    }
-    
-    public void setData(LocalDate data) {
-    	this.data = data;
-    }
-
-    public void setOraInizio(LocalTime inizio) {
-    	oraInizio = inizio;
-    }
-    
-    public void setOraFine(LocalTime fine) {
-    	oraFine = fine;
-    }
-    
+       
     public void addIntervento(Speech intervento) {
     	elencoInterventi.add(intervento);
     }
@@ -75,47 +36,11 @@ public class Event {
     public void addInterventi(List<Speech> interventi) {
         elencoInterventi.addAll(interventi);
     }
-    
-    public String getId() {
-    	return id;
-    }
-    
-    public LocalDate getData() {
-        return data;
-    }
-
-    public LocalTime getOraInizio() {
-        return oraInizio;
-    }
-
-    public LocalTime getOraFine() {
-        return oraFine;
-    }
-
-    public String getNomeOrganizzatore() {
-        return nomeOrganizzatore;
-    }
-
-    public String getSala() {
-        return sala;
-    }
-
-    public Integer getPartPrevisti() {
-        return partPrevisti;
-    }
-
-    public TipoCatering getCatering() {
-        return catering;
-    }
 
     public List<Speech> getElencoInterventi() {
         return elencoInterventi;
     }
-
-    public Double getCostoPartecipazione() {
-        return costoPartecipazione;
-    }
-    
+   
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

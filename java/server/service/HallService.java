@@ -3,11 +3,11 @@ package server.service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import java.io.*;
 import java.util.*;
 import server.*;
 import server.model.*;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
 
 /**
  * Questa classe esegue le operazioni di lettura e scrittura
@@ -15,15 +15,17 @@ import server.model.*;
  */
 
 @Service
-public class HallService implements Subscriber {
+public class HallService implements Subscriber, RWjson <Hall>{
 
-    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Sale.json";
+    private static final String DBname = AppConfig.DATABASE_ROOT_PATH +"Sale.json";
     private List<Hall> sale;
     private final Gson gson;
 
     public HallService(Gson gson) {
         this.gson = gson;
-        this.sale = caricaSaledaDB();
+        Type typeOfT = new TypeToken<List<Room>>(){}.getType();
+        this.sale = caricadaDB(DBname, gson, typeOfT);
+        System.out.println("Caricate " + sale.size() + sale.toString());
     }
 
     @Override
@@ -51,15 +53,14 @@ public class HallService implements Subscriber {
     
     // Metodo GET per ottenere tutte le sale
     public List<Hall> getSale() {
-        String json = gson.toJson(sale);
-        return gson.fromJson(json, new TypeToken<List<Hall>>(){}.getType());
+        return sale;
     }
 
     // Metodo GET per ottenere una singola sala
     public Hall getSala(String id) {
     	for (Hall curr : sale) {
-            if (curr.getNome().equals(id)) {
-            	return new Hall(curr.getNome(), curr.getCosto(), curr.getNumeroPosti(), curr.getDisponibilita());
+            if (curr.getNome().compareTo(id)==0) {
+                return curr;
             }
         }
         return null;
@@ -110,28 +111,12 @@ public class HallService implements Subscriber {
      *  Metodo DELETE per rimuovere una camera, funz lambda imposta da Sonar Lint
       */
     public void deleteSala(String nome) {
-    		sale.removeIf(curr-> curr.getNome().equals(nome)); 
-        salvaSalesuDB();
+        sale.removeIf(curr-> curr.getNome().equals(nome)); 
+        salvaNelDB(DBname, gson, sale);
     }
     
-    private List<Hall> caricaSaledaDB() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
-            return gson.fromJson(br, new TypeToken<List<Hall>>(){}.getType());
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
-    }
-
     private void salvaSalesuDB() {
-        try {
-            PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
-            sale.removeAll(Collections.singleton(null));
-            pw.println(gson.toJson(sale));
-            pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        salvaNelDB(DBname, gson, sale);
     }
 }
 

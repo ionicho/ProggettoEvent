@@ -10,9 +10,9 @@ import server.AppConfig;
 import server.model.Calendar;
 
 @Service
-public class CalendarService {
+public class CalendarService implements RWjson<Calendar>{
 
-    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Calendario.json";
+    private static final String DBname = AppConfig.DATABASE_ROOT_PATH +"Calendario.json";
     private Calendar calendario;
     private Gson gson;
 
@@ -26,29 +26,22 @@ public class CalendarService {
     }
     
     private Calendar caricaCalendariodaDB() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
-            return gson.fromJson(br, Calendar.class);
-        } catch (IOException e) {
-            System.out.printf("ARRRRG CALENDARIO VUOTO \n");
-            return null; // ritorna null se il file non esiste
-        }
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(DBname));
+                return gson.fromJson(br, Calendar.class);
+            } catch (IOException e) {
+                System.out.printf("ARRRRG CALENDARIO VUOTO \n");
+                return null; // ritorna null se il file non esiste
+            }
     }
    
     public void setCalendario(LocalDate start, LocalDate end) {
-        System.out.printf("SERVICE PRESENTE \n");
         calendario.setCalendario(start, end);
-        salvaCalendariosuDB();
+        salvaNelDB(DBname, gson, calendario);
     }
     
     public void salvaCalendariosuDB() {
-        try {
-            PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
-            pw.println(gson.toJson(calendario));
-            pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        salvaNelDB(DBname, gson, calendario);
    }
  
 }

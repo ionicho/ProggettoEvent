@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
 import server.*;
 import server.model.*;
@@ -14,15 +14,17 @@ import server.model.*;
  * del file json che funge da DB per gli EVENTI.
  */
 @Service
-public class EventService implements Subscriber{
+public class EventService implements Subscriber, RWjson <Event>{
 
-    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Eventi.json";
+    private static final String DBname = AppConfig.DATABASE_ROOT_PATH +"Eventi.json";
     private List<Event> eventi;
     private final Gson gson;
 
     public EventService(Gson gson) {
         this.gson = gson;
-        this.eventi = caricaEventidaDB();
+        Type typeOfT = new TypeToken<List<Event>>(){}.getType();
+        this.eventi = caricadaDB(DBname, gson, typeOfT);
+        System.out.println("Caricate " + eventi.size() + eventi.toString());
     }
 
     @Override
@@ -92,30 +94,12 @@ public class EventService implements Subscriber{
         return null; //non c'è l'elemento da aggiornare!
     }
 
-    /**
-     *  Metodo DELETE per rimuovere un evento, funz lambda imposta da Sonar Lint
-      */
     public void deleteEvento(String id) {
       	eventi.removeIf(curr -> curr.getId().equals(id)); 
         salvaEventisuDB();
     }
 
-    private List<Event> caricaEventidaDB() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
-            return gson.fromJson(br, new TypeToken<List<Event>>(){}.getType());
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
-    }
-
     private void salvaEventisuDB() {
-        try {
-            PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
-            pw.println(gson.toJson(eventi));
-            pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        salvaNelDB(DBname, gson, eventi);
     }
 }

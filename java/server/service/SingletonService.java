@@ -2,9 +2,7 @@ package server.service;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-
 import server.AppConfig;
-
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.*;

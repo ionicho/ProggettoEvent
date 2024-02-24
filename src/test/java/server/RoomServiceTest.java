@@ -41,6 +41,7 @@ class RoomServiceTest {
 		camera.setTipo(RoomType.SUITE);
 		return camera;
 	}
+	
 	@Test
 	void GsonTest() {
 		Room camera = creaRoom();

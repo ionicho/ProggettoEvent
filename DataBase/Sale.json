@@ -173,6 +173,18 @@
       {
         "data": "2024-02-12",
         "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-23",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-13",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-24",
+        "stato": "DISPONIBILE"
       }
     ],
     "nome": "Hall001",
@@ -187,11 +199,11 @@
       },
       {
         "data": "2024-01-02",
-        "stato": "DISPONIBILE"
+        "stato": "PRENOTATA"
       },
       {
         "data": "2024-01-03",
-        "stato": "PRENOTATA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-04",
@@ -351,6 +363,18 @@
       },
       {
         "data": "2024-02-12",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-23",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-13",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-24",
         "stato": "DISPONIBILE"
       }
     ],
@@ -530,6 +554,18 @@
       },
       {
         "data": "2024-02-12",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-23",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-13",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-24",
         "stato": "DISPONIBILE"
       }
     ],

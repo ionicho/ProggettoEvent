@@ -2,7 +2,15 @@ package client.windows;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
@@ -23,7 +31,7 @@ public class WCalendar extends WResource<Calendar> {
 	public WCalendar(RestTemplate restTemplate) {
         super(restTemplate);
         this.url = AppConfig.getURL() + "api/calendar";
-        this.stdHandler = new StdHandler<>(this, restTemplate);
+        this.wResourceClick = new WResourceClick<>(this, restTemplate);
         addColonneStatiche();
 		addContolli();
         mettiDati();
@@ -76,7 +84,7 @@ public class WCalendar extends WResource<Calendar> {
 	    setCalendarButton.setOnAction(e -> {
 	        LocalDate startDate = startDatePicker.getValue();
 	        LocalDate endDate = endDatePicker.getValue();
-	        stdHandler.setCalendario(startDate, endDate);
+	        setCalendario(startDate, endDate);
 	    });
 	    griglia.setHgap(10);
 	    griglia.setVgap(10);
@@ -90,6 +98,26 @@ public class WCalendar extends WResource<Calendar> {
 	    bordoSotto.setMinHeight(10); //
 	    griglia.add(bordoSotto, 1, 15, 2, 1);
 	}
+	
+    @SuppressWarnings("null")
+    public void setCalendario(LocalDate startDate, LocalDate endDate) {
+        // Invia una richiesta PUT al server per aggiornare il calendario
+        String msg  = AppConfig.getURL() + "api/calendar/" + startDate.toString() + "/" + endDate.toString();
+        System.out.printf("%s \n", msg);
+        ResponseEntity<List<String>> response = restTemplate.exchange(msg, HttpMethod.PUT, null, new ParameterizedTypeReference<List<String>>() {});
+        if (response.getStatusCode() == HttpStatus.OK) {
+            List<String> toReschedule = response.getBody();
+            // Mostra un alert con la lista toReschedule
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sale da rischedulare");
+                alert.setHeaderText(null);
+                alert.setContentText("Le seguenti sale devono essere rischedulate: " + String.join(", ", toReschedule));
+                alert.showAndWait();
+            });
+            Platform.runLater(this::mettiDati);
+        }
+    }
 }
     
     

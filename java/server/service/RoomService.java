@@ -3,10 +3,10 @@ package server.service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
-import java.io.*;
 import java.util.*;
 import server.*;
 import server.model.*;
+import java.lang.reflect.Type;
 
 /**
  * Questa classe esegue le operazioni di lettura e scrittura
@@ -14,19 +14,21 @@ import server.model.*;
  */
 
 @Service
-public class RoomService implements Subscriber{
+public class RoomService implements Subscriber, RWjson <Room> {
 
-    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Camere.json";
+    private static final String DBname = AppConfig.DATABASE_ROOT_PATH +"Camere.json";
     private List<Room> camere;
     private final Gson gson;
 
     public RoomService(Gson gson) {
         this.gson = gson;
-        this.camere = caricaCameredaDB();
+        Type typeOfT = new TypeToken<List<Room>>(){}.getType();
+        this.camere = caricadaDB(DBname, gson, typeOfT);
+        System.out.println("Caricate " + camere.size() + camere.toString());
     }
 
     @Override
-    public List<String>  updateState(List<StateDate> disponibilita) {
+    public List<String> updateState(List<StateDate> disponibilita) {
         List<String> camereToBeResc = new ArrayList<>();
         State oldStato;
         VisitorSetState setVisitor = new VisitorSetState();
@@ -50,15 +52,14 @@ public class RoomService implements Subscriber{
     
     // Metodo GET per ottenere tutte le camere
     public List<Room> getCamere() {
-        String json = gson.toJson(camere);
-        return gson.fromJson(json, new TypeToken<List<Room>>(){}.getType());
+        return camere;
     }
 
     // Metodo GET per ottenere una singola camera
     public Room getCamera(String id) {
-    	for (Room curr : camere) {
-            if (curr.getNome().equals(id)) {
-            	return new Room(curr.getNome(), curr.getCosto(), curr.getNumeroLetti(), curr.getTipo(), curr.getDisponibilita());
+        for (Room curr : camere) {
+            if (curr.getNome().compareTo(id)==0) {
+                return curr;
             }
         }
         return null;
@@ -91,31 +92,14 @@ public class RoomService implements Subscriber{
         throw new IllegalArgumentException("Camera con nome: " + nome + " non trovata.");
     }
 
-    /**
-     *  Metodo DELETE per rimuovere una camera, funz lambda imposta da Sonar Lint
-      */
     public void deleteCamera(String nome) {
-    		camere.removeIf(curr-> curr.getNome().equals(nome)); 
-        salvaCameresuDB();
+        camere.removeIf(curr-> curr.getNome().equals(nome)); 
+        salvaNelDB(DBname, gson, camere);
     }
     
-    private List<Room> caricaCameredaDB() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
-            return gson.fromJson(br, new TypeToken<List<Room>>(){}.getType());
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
-    }
-
     private void salvaCameresuDB() {
-        try {
-            PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
-            camere.removeAll(Collections.singleton(null));
-            pw.println(gson.toJson(camere));
-            pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        salvaNelDB(DBname, gson, camere);
     }
 }
+
+

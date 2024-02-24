@@ -19,7 +19,7 @@ public class WHall extends WResource<Hall> {
         super(restTemplate);
         this.wEvent = wEvent;
         this.url = AppConfig.getURL() + "api/hall";
-        this.stdHandler = new StdHandler<>(this, restTemplate);
+        this.wResourceClick = new WResourceClick<>(this, restTemplate);
         addColonneStatiche();
         mettiDati();
         this.scene = new Scene(table, 400, 400);

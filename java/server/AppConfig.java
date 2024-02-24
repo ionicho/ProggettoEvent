@@ -56,7 +56,7 @@ public class AppConfig {
      * @return un'istanza configurata di RestTemplate
      */
     @Bean
-    public RestTemplate restTemplate() {
+    RestTemplate restTemplate() {
         return configureRestTemplate();
     }
 
@@ -80,7 +80,7 @@ public class AppConfig {
      * @return un'istanza configurata di Gson
      */
     @Bean
-    public Gson gson() {
+    Gson gson() {
         return configureGson();
     }
 

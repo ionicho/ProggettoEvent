@@ -6,38 +6,24 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.web.client.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import server.AppConfig;
 import server.controller.SystemException;
 import server.model.*;
 import java.util.*;
 
-public class WEvent extends StdControl {
+public class WEvent extends WEventLayout implements WEventRest {
 	
-	private String url;
     private RestTemplate restTemplate;
     private Event evento;
-	private List<Event> eventi;
-    private GridPane grid;
-    private Label cercaL, msgL, idLabel, nomeOrgL, costoParL, numParPreL, cateringL, dataL, oraIniL, oraFinL, salaL, interventiL;
-    private TextField cercaF, idField, msgF, nomeOrgF, costoParF, numParPreF, oraIniF, oraFinF;
-    private ComboBox<String> cateringF, salaF;
-	private DatePicker dataF;
-    private TableView<Speech> interventiLista;
-    private TableColumn<Speech, String> titolo, relatore, descrizione, elimina;
-    private Button firstButton, prevButton, nextButton, lastButton, newButton, saveButton, newSpeech;
-    private static final String ORAMINUTI = "HH:mm";
 	private WHall wHall;//sottofinestra con le sale
 	private Node nHall;
 	
 	public void start(Stage eventStage, RestTemplate restTemplate) {
-		this.url = AppConfig.getURL() +"api/eventi";
 		this.restTemplate = restTemplate;
 		setFields(eventStage);
 	    eventStage.setTitle("Gestione Eventi");
@@ -45,80 +31,15 @@ public class WEvent extends StdControl {
 	    Scene scene = new Scene(grid);
 	    eventStage.setScene(scene);
 	    eventStage.show();
-		getEventi(restTemplate);
+	    this.eventi = getEventi(restTemplate);
 		evento = eventi.get(0);
 		populateFields(evento);
 	}
-
-	@SuppressWarnings("null")
-	public void getEventi(RestTemplate restTemplate) {
-		this.eventi = Arrays.asList(restTemplate.getForObject(url, Event[].class));
-		System.out.printf("EVENTI = %s\n", eventi);
-	}
 	
-	/** Restituisce l'evento con l'ID specificato */
-	public Event getEvento(String id, RestTemplate restTemplate) {
-		return restTemplate.getForObject(url+"/"+id, Event.class);
-	}
-
-	/** Aggiunge un nuovo evento */
-	private Event addEvento(RestTemplate restTemplate) {
-		return  restTemplate.getForObject(url+"/nuovo", Event.class);	
-	}
-	
-	/** Aggiorna un evento e restituisce l'evento aggiornato */
-	private Event updateEvento(Event evento, RestTemplate restTemplate) {
-		restTemplate.put(url+"/"+evento.getId(), evento);
-		return getEvento(evento.getId(), restTemplate);
-	}
-
 	/** Inizializza i campi */
-	private void setFields(Stage stage) {
-        cercaF = creaTextField();
-        idField = creaTextField();
-        msgF = creaTextField();
-        nomeOrgF = creaTextField();
-        costoParF = creaTextField();
-		numParPreF = creaTextField();
-		String[] cateringOptions = Arrays.stream(TipoCatering.values())
-			.map(TipoCatering::name)
-			.toArray(String[]::new);
-		cateringF = creaComboBox(cateringOptions);
-        oraIniF  = creaHourField();
-        oraFinF  = creaHourField();
-		salaF = new ComboBox<>();
-		salaF.setPrefWidth(WIDTH);
-		dataF = new DatePicker();
-		dataF.setPrefWidth(WIDTH);
-        interventiLista = new TableView<>();
-		interventiLista.setEditable(true);
-        titolo = new TableColumn<>("Titolo");
-		titolo.setCellFactory(TextFieldTableCell.forTableColumn()); //rende modificabile
-        relatore = new TableColumn<>("Relatore");
-		relatore.setCellFactory(TextFieldTableCell.forTableColumn());
-        descrizione = new TableColumn<>("Descrizione");
-		descrizione.setCellFactory(TextFieldTableCell.forTableColumn());
-		elimina = new TableColumn<>("Azione");
+	protected void setFields(Stage stage) {
+        super.setFields(stage);
 		setElimina();
-		firstButton = creaButton("Primo Evento");
-		prevButton = creaButton("Evento Precedente");
-		nextButton = creaButton("Prossimo Evento");
-		lastButton = creaButton("Ultimo Evento");
-		newButton = creaButton("Crea Nuovo Evento");
-        saveButton = creaButton("Salva / Modifica Evento");
-        newSpeech = creaButton("Crea nuovo Intervento");
-        cercaL = creaLabel("ID da cercare:");
-        msgL = creaLabel("Messaggio:");
-        idLabel = creaLabel("ID evento:");
-        nomeOrgL = creaLabel("Nome Organizzatore:");
-        costoParL = creaLabel("Costo Partecipazione:");
-		numParPreL = creaLabel("Partecipanti Previsti:");
-		cateringL = creaLabel("Catering:");
-        dataL = creaLabel("Data:");
-        oraIniL = creaLabel("Ora Inizio:");
-        oraFinL = creaLabel("Ora Fine:");
-		salaL = creaLabel("Sala:");
-        interventiL = creaLabel("Elenco Interventi:");
 		Stage hallStage = new Stage();
 		hallStage.initOwner(stage); // Imposta la finestra principale come proprietaria
 		wHall = new WHall(restTemplate);
@@ -126,43 +47,25 @@ public class WEvent extends StdControl {
 		nHall = wHall.getTable();
 		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }
-
-	/** Ottiene l'elenco delle sale libere nel giorno specificato + riga vuota*/
-	public String[] getSaleLibere(LocalDate date) {
-		String urlSaleLibere = AppConfig.getURL() + "api/hall/libere/" + date.toString();
-		List<String> saleNames = new ArrayList<>(Arrays.asList(restTemplate.getForObject(urlSaleLibere, String[].class)));
-		saleNames.add(0, "");
-		return saleNames.toArray(new String[0]);
-	}
 	
-	/** Libera una sala nel giorno specificato */
-	private void liberaSala(String nome, LocalDate data) {
-		if (nome != null && !nome.equals("") && data != null){
-			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
-			restTemplate.put(urlHall, new StateDate(data, State.DISPONIBILE));
-		}
-	}
+	/** Imposta il layout */
+    protected void setLayout() {
+    	super.setLayout();
+		grid.add(nHall, 2, 0, 4, 11);
+    }
 
-	/** Occupa una sala nel giorno specificato */
-	private void occupaSala(String nome, LocalDate data) {
-		if (nome != null && !nome.equals("") && data != null){
-			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
-			restTemplate.put(urlHall, new StateDate(data, State.PRENOTATA));
-		}
-	}
-	
 	/** Gestisce la logica delle sale*/
 	private void impostaSala() {
 		if (evento != null && dataF != null && salaF != null) {
 			if (!Objects.equals(evento.getData(), dataF.getValue())) { //cambia la data
-				liberaSala(evento.getSala(), evento.getData());
+				liberaSala(evento.getSala(), evento.getData(), restTemplate);
 				evento.setSala(null);
 			}
 			String oldSala = evento.getSala();
 			String newSala = salaF.getValue();
 			if (!Objects.equals(oldSala, newSala)) { //cambia la sala
-				liberaSala(oldSala, evento.getData());
-				occupaSala(newSala, dataF.getValue());
+				liberaSala(oldSala, evento.getData(), restTemplate);
+				occupaSala(newSala, dataF.getValue(), restTemplate);
 				evento.setSala(newSala);
 			}
 		}
@@ -223,62 +126,6 @@ public class WEvent extends StdControl {
 		}
 	}
 
-	/** Imposta il layout */
-    private void setLayout() {
-		int row=0;
-		grid = new GridPane();
-		grid.setHgap(.10 * WIDTH);
-		grid.setVgap(.10 * WIDTH);
-		grid.setPrefWidth(6.2* WIDTH);
-		grid.setPadding(new Insets(.10 * WIDTH, .10 * WIDTH, .10 * WIDTH, .10 * WIDTH));  // Imposta un margine su tutti i lati
-		idField.setEditable(false); 
-		msgF.setEditable(false); // Impedisce all'utente di modificare il campo di risposta
-		dataF.setPrefWidth(WIDTH);
-		titolo.setPrefWidth(WIDTH); 
-		relatore.setPrefWidth(WIDTH);
-		descrizione.setPrefWidth(3.55*WIDTH);
-		elimina.setPrefWidth(.42*WIDTH);
-		elimina.setSortable(false);
-        grid.add(cercaL,0,row);
-        grid.add(cercaF, 1, row);
-		grid.add(nHall, 2, row, 4, 11);
-        grid.add(msgL, 0, ++row);
-        grid.add(msgF, 1,row);
-        grid.add(idLabel, 0, ++row);
-        grid.add(idField, 1, row);
-        grid.add(nomeOrgL, 0, ++row);
-        grid.add(nomeOrgF, 1, row);
-        grid.add(costoParL, 0, ++row);
-        grid.add(costoParF, 1, row);
-		grid.add(numParPreL, 0, ++row);
-		grid.add(numParPreF, 1, row);
-		grid.add(cateringL, 0, ++row);
-		grid.add(cateringF, 1, row);
-        grid.add(dataL, 0, ++row);
-        grid.add(dataF, 1, row);
-		grid.add(salaL, 0, ++row);
-		grid.add(salaF, 1, row);
-        grid.add(oraIniL, 0, ++row);
-        grid.add(oraIniF, 1, row);
-        grid.add(oraFinL, 0, ++row);
-        grid.add(oraFinF, 1, row);
-        grid.add(interventiL, 0, ++row);
-		grid.add(newSpeech,1,row);
-		interventiLista.getColumns().add(titolo);
-		interventiLista.getColumns().add(relatore);
-		interventiLista.getColumns().add(descrizione);
-		interventiLista.getColumns().add(elimina);
-		grid.add(interventiLista,0,++row,6,1);
-		GridPane.setHalignment(interventiLista, HPos.CENTER);
-		interventiLista.setPrefHeight(200);
-		grid.add(firstButton, 0, ++row);
-		grid.add(prevButton, 1, row);
-		grid.add(nextButton, 2, row);
-		grid.add(lastButton, 3, row);	
-		grid.add(newButton, 4, row);
-        grid.add(saveButton, 5, row);
-    }
-
 	/** Crea la griglia */
 	private GridPane creaGriglia() {
 		Map<Integer, Speech> tempSpeeches = new HashMap<>();
@@ -319,7 +166,7 @@ public class WEvent extends StdControl {
 		dataF.setOnAction(e -> {
 			LocalDate newValue = dataF.getValue();
 			if (newValue != null) {
-				String[] saleOptions = getSaleLibere(newValue);
+				String[] saleOptions = getSaleLibere(newValue, restTemplate);
 				salaF.setValue(null);
 				salaF.setItems(FXCollections.observableArrayList(saleOptions));
 			}
