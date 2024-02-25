@@ -149,7 +149,7 @@ public class WEvent extends WEventLayout{
 				interventiLista.getItems().add(speech);
 			}
 		}
-		wHall.aggiornaTabella();
+		wHall.refresh();
 	}
 	
 	/** Popola l'evento con i dati della finestra*/

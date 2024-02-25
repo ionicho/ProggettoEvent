@@ -16,7 +16,7 @@ public abstract class WResource<T extends Resource> {
 
     protected TableView<T> table;
     protected RestTemplate restTemplate;
-    protected WResourceRest<T> wResourceRest;
+    protected WResourceClick<T> wResourceClick;
     protected String url;
 
     protected WResource(RestTemplate restTemplate) {
@@ -27,10 +27,6 @@ public abstract class WResource<T extends Resource> {
     // Metodo per ottenere la tabella come un Node
     public TableView<T> getTable() {
         return table;
-    }
-
-    public void refresh() {
-        aggiornaTabella();
     }
 
     protected void addColonneStatiche() {
@@ -52,7 +48,7 @@ public abstract class WResource<T extends Resource> {
         for (String date : dateList) {
             TableColumn<T, String> column = new TableColumn<>(date);
             column.setCellValueFactory(new DinamicCol<>(date));
-            column.setCellFactory(col -> wResourceRest.creaCellaColorate());
+            column.setCellFactory(col -> wResourceClick.creaCellaColorate());
             table.getColumns().add(column);
         }
     }
@@ -77,7 +73,7 @@ public abstract class WResource<T extends Resource> {
         table.setItems(data);
     }
 
-    public void aggiornaTabella() {
+    public void refresh() {
         // Rimuovi tutte le righe e colonne esistenti
         table.getItems().clear();
         table.getColumns().clear();
