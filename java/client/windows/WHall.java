@@ -4,12 +4,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.web.client.RestTemplate;
-import server.AppConfig;
 import server.model.*;
+
+/**
+ * Classe per la gestione della finestra di visualizzazione delle sale.
+ * La classe estende {@link WResource} e ne implementa i metodi astratti.
+ * La classe viene utilizzata per la visualizzazione delle sale,
+ * in una sottofinestra di {@link WEvent}.
+ * @param wEvent parametro della classe {@link WEvent}, utilizzato come
+ * riferimento per la finestra principale.
+ */
 
 public class WHall extends WResource<Hall> {
     private Scene scene;
-    private final WEvent wEvent;
 
     public WHall(RestTemplate restTemplate) {
         this(restTemplate, null);
@@ -18,8 +25,6 @@ public class WHall extends WResource<Hall> {
     public WHall(RestTemplate restTemplate, WEvent wEvent) {
         super(restTemplate);
         this.wEvent = wEvent;
-        this.url = AppConfig.getURL() + "api/hall";
-        this.wResourceClick = new WResourceClick<>(this, restTemplate);
         addColonneStatiche();
         mettiDati();
         this.scene = new Scene(table, 400, 400);
@@ -33,13 +38,6 @@ public class WHall extends WResource<Hall> {
 
     public WEvent getWEvent() {
         return wEvent;
-    }
-
-    @SuppressWarnings({ "null" })
-    @Override
-    protected Hall[] getDati() {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, Hall[].class);
     }
 
     @Override

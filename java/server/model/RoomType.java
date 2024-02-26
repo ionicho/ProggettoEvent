@@ -1,8 +1,9 @@
 package server.model;
 
-/*
- * Classe con l'eleco delle tipologie delle camere
+/**
+ * Enumerazione che rappresenta i tipi di camera
  */
+
 public enum RoomType {
 	SUITE,
 	MINISUITE,

@@ -1,10 +1,15 @@
 package server.model;
 
 import java.time.LocalDate;
+/**
+ * Classe che rappresenta il calendario della struttura
+ * che ospita gli eventi e le camere.
+ */
 
-public class Calendar extends Resource {
+public class Calendar extends Resource implements HasName{
 	
-	public Calendar() { //costruttore di default serve a Spring Boot a deseralizzare
+	// Costruttore senza parametri per la deserializzazione con Gson
+    public Calendar() {
 	}
 	
 	public void setStatoData(LocalDate data, State stato) {

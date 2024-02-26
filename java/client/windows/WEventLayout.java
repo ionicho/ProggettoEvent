@@ -1,25 +1,17 @@
 package client.windows;
 
-
-import java.util.Arrays;
-import java.util.List;
-
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.geometry.*;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import server.model.Event;
-import server.model.Speech;
-import server.model.TipoCatering;
+import java.util.*;
+import server.model.*;
+
+/**
+ * Superclasse di WEvent, contiene i metodi per la definizione
+ * dei campi e del layout della finestra.
+ */
 
 public class WEventLayout {
 	protected static final int WIDTH =150;
@@ -42,8 +34,8 @@ public class WEventLayout {
         nomeOrgF = creaTextField();
         costoParF = creaTextField();
 		numParPreF = creaTextField();
-		String[] cateringOptions = Arrays.stream(TipoCatering.values())
-			.map(TipoCatering::name)
+		String[] cateringOptions = Arrays.stream(CateringType.values())
+			.map(CateringType::name)
 			.toArray(String[]::new);
 		cateringF = creaComboBox(cateringOptions);
         oraIniF  = creaHourField();
@@ -136,9 +128,7 @@ public class WEventLayout {
 		grid.add(newButton, 4, row);
         grid.add(saveButton, 5, row);
     }
-	
-	
-	
+		
 	public Button creaButton (String text) {
 		Button button = new Button(text);
         GridPane.setHalignment(button, HPos.CENTER);

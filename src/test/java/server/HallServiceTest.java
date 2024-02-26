@@ -13,10 +13,19 @@ import server.service.*;
 import server.model.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Questa classe contiene i test per i medodi che ha solo
+ * la classe {@link HallService}, per gli altri metodi
+ * si veda {@link RoomServiceTest}.
+ */
+
 @ExtendWith(MockitoExtension.class)
 class HallServiceTest {
     
     private HallService hallService;
+	private List <StateDate> disp = new ArrayList <>();
+    private StateDate stato1;
+	private StateDate stato2;
 
     @Mock
     private List<Hall> sale;
@@ -28,22 +37,23 @@ class HallServiceTest {
         hallService = new HallService(gson);
     }
 	
-	Hall creaSala() {
+	Hall creaSala(Integer nPosti, State oggiStato, State domaniStato) {
 		Hall sala = new Hall();
-		List <StateDate> disp = new ArrayList <>();
-		StateDate stato1 = new StateDate(LocalDate.now(), State.INUSO);
-		StateDate stato2 = new StateDate(LocalDate.now().plusDays(1), State.PRENOTATA);
+		stato1 = new StateDate(LocalDate.now(), oggiStato);
 		disp.add(stato1);
-		disp.add(stato2);
+		if (domaniStato != null){
+			stato2 = new StateDate(LocalDate.now().plusDays(1), domaniStato);
+			disp.add(stato2);
+		}
 		sala.setDisponibilita(disp);
-		sala.setNumeroPosti(23);
+		sala.setNumeroPosti(nPosti);
 		sala.setCosto(1234.);
 		return sala;
 	}
 
 	@Test
 	void GsonTest() {
-		Hall sala = creaSala();
+		Hall sala = creaSala(30, State.INUSO, State.PRENOTATA);
 		String eventJson = gson.toJson(sala);
 		Hall deserializedHall = gson.fromJson(eventJson, Hall.class);
 		assertEquals(sala, deserializedHall);
@@ -51,7 +61,7 @@ class HallServiceTest {
 
 	@Test
 	void loadFromDbTest() {
-		List<Hall> sale = hallService.getSale();
+		List<Hall> sale = hallService.getRisorse();
 		assertFalse(sale.isEmpty());
 		for (Hall sala : sale) {
 			assertNotNull(sala.getNome());
@@ -59,4 +69,26 @@ class HallServiceTest {
 		}
 	}
 
+    @SuppressWarnings("null")
+	@Test
+    void getSaleLibereTest() throws Exception {
+		List<Hall> sale = hallService.getRisorse();
+		List<String> saleLibere= null;
+		boolean found = false;
+		LocalDate dataTest=null;
+		for (Hall sala : sale) {
+			for (StateDate sd : sala.getDisponibilita()) {
+				if (sd.getStato() != State.DISPONIBILE) {
+					dataTest = sd.getData();
+					found = true;
+					break;
+				}
+			}
+		}
+		if (found) {
+			saleLibere = hallService.getSaleLibere(dataTest);
+		}
+		assertNotEquals(sale.size(),saleLibere.size());
+    }
 }
+

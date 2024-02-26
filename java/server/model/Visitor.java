@@ -10,11 +10,12 @@ public interface Visitor <T>{
 	
 	public T visit (Room o, StateDate sd);
 	public T visit (Room o);
+
 	public T visit (Hall o, StateDate sd);
-	
-	public T visit (Calendar o, StateDate sd);
-	public T visit (Calendar o);
 	public T visit (Hall o);
 
+	public T visit (Calendar o, StateDate sd);
+	public T visit (Calendar o);
+	
 
 }

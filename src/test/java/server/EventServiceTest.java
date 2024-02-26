@@ -36,7 +36,7 @@ class EventServiceTest {
         event.setNomeOrganizzatore("Organizzatore");
         event.setCostoPartecipazione(100.);
         event.setPartPrevisti(23);
-        event.setCatering(TipoCatering.BRUNCH);
+        event.setCatering(CateringType.BRUNCH);
         Speech speech1 = new Speech();
         speech1.setTitolo("Titolo1");
         speech1.setRelatore("Relatore1");
@@ -48,8 +48,8 @@ class EventServiceTest {
         speech2.setDescrizione("Descrizione2");
         event.addIntervento(speech2);
         return event;
-
     }
+
     @Test
     void GsonTest() {
         Event event = creaEvent();
@@ -60,14 +60,12 @@ class EventServiceTest {
 
     @Test
 	void loadFromDbTest() {
-		List<Event> eventi = eventService.getEventi();
+		List<Event> eventi = eventService.getRisorse();
 		assertFalse(eventi.isEmpty());
 		for (Event evento : eventi) {
-			assertNotNull(evento.getId());
-			assertFalse(evento.getId().isEmpty());
+			assertNotNull(evento.getNome());
+			assertFalse(evento.getNome().isEmpty());
 		}
 	}
-
-
     
 }

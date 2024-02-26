@@ -3,30 +3,47 @@ package client.windows;
 import javafx.collections.*;
 import javafx.scene.control.*;
 import org.springframework.web.client.RestTemplate;
+import java.util.function.Consumer;
 import java.util.*;
 import server.model.*;
 
 /**
  * Classe generica per la gestione della finestra con l'elenco delle risorse e la loro disponibilità.
- * Con la classe WResourceRest consente di inviare una request al server e quando
- * riceve la notifica del tutto ok, aggiorna la videata.
- * @param <T> Tipo della risorsa
+ * L'attributo {@link WResource#restTemplate} è l'istanza di {@link RestTemplate} utilizzata con
+ * L'attributo {@link WResource#restHandler} per effettuare le richieste REST al server che
+ * risponde al path {@link WResource#url}.
+ * L'attributo {@link WResource#clickHandler} è l'istanza di {@link WResourceClick} utilizzata per
+ * gestire gli eventi di click sulle celle della tabella.
+ * @param <T> tipo generico che estende {@link server.model.Resource}
  */
-public abstract class WResource<T extends Resource> {
 
-    protected TableView<T> table;
+public class WResource<T extends Resource> {
+
+    protected WResourceClick<T> clickHandler;
+    protected WResourceRest<T> restHandler;
+    protected WEvent wEvent = null; // usata solo da WHall
     protected RestTemplate restTemplate;
-    protected WResourceClick<T> wResourceClick;
+    protected TableView<T> table;
     protected String url;
 
     protected WResource(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+        this.restHandler = new WResourceRest<>(this,restTemplate);
+        this.clickHandler = new WResourceClick<>(this);
         this.table = new TableView<>(); // Inizializza table
     }
 
     // Metodo per ottenere la tabella come un Node
     public TableView<T> getTable() {
         return table;
+    }
+
+    public WResourceRest <T> getRestHandler() {
+        return restHandler;
+    }
+
+    public WEvent getWEvent() {
+        return wEvent;
     }
 
     protected void addColonneStatiche() {
@@ -39,7 +56,7 @@ public abstract class WResource<T extends Resource> {
         table.getColumns().add(costoCol);
     }
 
-    protected void addColonneDinamiche(Set<String> uniqueDates) {
+    protected void addColonneDinamiche(Set<String> uniqueDates, Consumer<TableColumn<T, String>> clickHandler) {
         // Converti il Set in una List
         List<String> dateList = new ArrayList<>(uniqueDates);
         // Ordina la lista
@@ -48,15 +65,13 @@ public abstract class WResource<T extends Resource> {
         for (String date : dateList) {
             TableColumn<T, String> column = new TableColumn<>(date);
             column.setCellValueFactory(new DinamicCol<>(date));
-            column.setCellFactory(col -> wResourceClick.creaCellaColorate());
+            clickHandler.accept(column);
             table.getColumns().add(column);
         }
     }
 
-    protected abstract T[] getDati();
-
     protected void mettiDati() {
-        T[] resources = getDati();
+        T[] resources = restHandler.getDati();
         // Crea un insieme di date uniche
         Set<String> uniqueDates = new HashSet<>();
         if (resources != null) {
@@ -67,7 +82,7 @@ public abstract class WResource<T extends Resource> {
             }
         }
         // Aggiungi colonne dinamiche per le date e gli stati
-        addColonneDinamiche(uniqueDates);
+        addColonneDinamiche(uniqueDates, clickHandler::configuraClick);
         // Popola la tabella con i dati ricevuti
         ObservableList<T> data = FXCollections.observableArrayList(resources);
         table.setItems(data);

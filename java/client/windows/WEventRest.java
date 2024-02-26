@@ -1,20 +1,19 @@
 package client.windows;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.web.client.RestTemplate;
-
+import java.time.LocalDate;
+import java.util.*;
 import server.AppConfig;
-import server.model.Event;
-import server.model.State;
-import server.model.StateDate;
+import server.model.*;
+
+/**
+ * Interfaccia per la gestione delle richieste REST effettuate
+ * dalla finestra {@link WEvent}.
+ */
 
 public interface WEventRest {
 	
-	public String url = AppConfig.getURL() +"api/eventi";
+	public String url = AppConfig.getURL() +"api/event";
 	
 	@SuppressWarnings("null")
 	public default List <Event> getEventi(RestTemplate restTemplate) {
@@ -22,19 +21,19 @@ public interface WEventRest {
 	}
 	
 	/** Restituisce l'evento con l'ID specificato */
-	public default Event getEvento(String id, RestTemplate restTemplate) {
-		return restTemplate.getForObject(url+"/"+id, Event.class);
+	public default Event getEvento(String nome, RestTemplate restTemplate) {
+		return restTemplate.getForObject(url+"/"+nome, Event.class);
 	}
-
+	
 	/** Aggiunge un nuovo evento */
 	public default Event addEvento(RestTemplate restTemplate) {
-		return  restTemplate.getForObject(url+"/nuovo", Event.class);	
+		return  restTemplate.getForObject(url+"/add", Event.class);	
 	}
 	
 	/** Aggiorna un evento e restituisce l'evento aggiornato */
 	public default Event updateEvento(Event evento, RestTemplate restTemplate) {
-		restTemplate.put(url+"/"+evento.getId(), evento);
-		return getEvento(evento.getId(), restTemplate);
+		restTemplate.put(url+"/"+evento.getNome()+"/update", evento);
+		return getEvento(evento.getNome(), restTemplate);
 	}
 
 	/** Ottiene l'elenco delle sale libere nel giorno specificato + riga vuota*/

@@ -7,26 +7,58 @@ import java.time.LocalDate;
 import server.AppConfig;
 import server.model.*;
 
-public class WResourceRest {
+/**
+ * Classe per la gestione delle risorse tramite richieste REST ai vari controller.
+ * @param <T> tipo generico che estende {@link server.model.Resource}, rappresenta
+ * il tipo di risorsa gestita.
+ * @param tipo parametro della classe {@link ResourceType}, utilizzato per 
+ * semplificare le condizioni if nel codice.
+ */
 
-    protected final RestTemplate restTemplate;
-    protected static final Integer ROOM = 1;
-    protected static final Integer HALL = 2;
-    protected static final Integer CALENDAR = 3;
+public class WResourceRest <T extends Resource>{
 
-    public WResourceRest(RestTemplate restTemplate) {
+    private final RestTemplate restTemplate;
+    private ResourceType tipo;
+
+    public WResourceRest(WResource<T> wResource, RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+        if (wResource instanceof WRoom) {
+            tipo = ResourceType.ROOM;
+        } else if (wResource instanceof WHall) {
+            tipo = ResourceType.HALL;
+        } else if (wResource instanceof WCalendar) {
+            tipo = ResourceType.CALENDAR;
+        } else {
+            tipo = null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public T[] getDati() {
+        String url;
+        if (tipo == ResourceType.ROOM) {
+            url = AppConfig.getURL() + "api/room";
+            return (T[]) restTemplate.getForObject(url, Room[].class);
+        } else if (tipo == ResourceType.HALL) {
+            url = AppConfig.getURL() + "api/hall";
+            return (T[]) restTemplate.getForObject(url, Hall[].class);
+        } else if (tipo == ResourceType.CALENDAR) {
+            url = AppConfig.getURL() + "api/calendar";
+            return (T[]) restTemplate.getForObject(url, Calendar[].class);
+        } else {
+            return null;
+        }
     }
 
     @SuppressWarnings("null")
-    protected boolean cambiaStatoRest(Integer tipo, String name, LocalDate data, State stato) {
+    public boolean cambiaStatoRest(String name, LocalDate data, State stato) {
         String url;
-        if (tipo == ROOM) //NOSONAR
+        if (tipo == ResourceType.ROOM)
                 url = AppConfig.getURL() + "api/room/" + name + "/state";
-            else if (tipo == HALL) //NOSONAR
+            else if (tipo == ResourceType.HALL)
                 url = AppConfig.getURL() + "api/hall/" + name + "/state";
-            else if (tipo == CALENDAR) //NOSONAR
-                url = AppConfig.getURL() + "api/calendar/state";
+            else if (tipo == ResourceType.CALENDAR)
+                url = AppConfig.getURL() + "api/calendar/" + name + "/state";
             else //ERRORE
                 return false;
         return restTemplate.exchange(
@@ -38,8 +70,8 @@ public class WResourceRest {
     }
 
     @SuppressWarnings("null")
-    protected ResponseEntity<server.model.Event> getEventByDateHallRest(LocalDate date, String hallName) {
-        String url = AppConfig.getURL() + "api/eventi/" + date.toString() + "/" + hallName;
+    public ResponseEntity<server.model.Event> getEventByDateHallRest(LocalDate date, String hallName) {
+        String url = AppConfig.getURL() + "api/event/" + date.toString() + "/" + hallName;
         return restTemplate.exchange(
             url, 
             HttpMethod.GET, 

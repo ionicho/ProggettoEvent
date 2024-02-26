@@ -4,12 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * SuperClasse delle risporse (Implementa i metodi condivisi da tutte le Risorse)
- * 
- * Il primo costruttore della classe consente di assegnare nome e costo a tutte le risorse
- * mette a disponibile lo stato dalla data di istanza della risorsa suno alla endDate
- * 
- * Il secondo costruttore viene utilizzato quando si recuperano i dati dal file json.
+ * SuperClasse delle risorse (Implementa i metodi condivisi da tutte le Risorse)
  */
 public abstract class Resource  {
 	
@@ -17,23 +12,9 @@ public abstract class Resource  {
 	protected String nome;
 	protected Double costo;
 	
-	protected Resource (String nome, Double costo, LocalDate endDate) {
-		this.nome = nome;
-		this.costo = costo;
-		disponibilita = new ArrayList <>(); 
-	    for(LocalDate date = LocalDate.now(); !date.isAfter(endDate); date = date.plusDays(1)) {
-	        disponibilita.add(new StateDate(date, State.DISPONIBILE));
-	    }	
+	// Costruttore senza parametri per la deserializzazione con Gson
+    protected Resource(){
 	}
-	
-	protected Resource(String nome, Double costo, List<StateDate> disponibilita) {
-	    this.nome = nome;
-	    this.costo = costo;
-	    this.disponibilita = disponibilita;
-	}
-	
-	protected Resource(){}
-	
 
 	public abstract <T> T accept (Visitor <T> v, StateDate sd);
 	public abstract <T> T accept (Visitor <T> v);
@@ -62,7 +43,6 @@ public abstract class Resource  {
 		else return selectData(data).stato;
 	}
 	
-   // @JsonProperty("costo")  //specifico il nome usato nel json
 	public Double getCosto() {
 		return this.costo;
 	}
@@ -71,12 +51,10 @@ public abstract class Resource  {
 		this.costo = costo;
 	}
 	
-	//@JsonProperty("nome")
 	public String getNome() {
 		return this.nome;
 	}
 	
-    //@JsonProperty("disponibilita")
 	public List<StateDate> getDisponibilita(){
 		return this.disponibilita;
 	}

@@ -1,27 +1,26 @@
 package server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.google.gson.*;
+import org.springframework.context.annotation.*;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-import server.service.*;
+import java.time.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import server.adapter.*;
+
+/**
+ * Classe di configurazione per l'applicazione
+ * Contiene i bean di tipo RestTemplate e Gson
+ * usa metodi statici per la configurazione di RestTemplate e Gson
+ * perché possono essere utilizzati anche dai client anche se il server è spento
+ */
 
 @Configuration
 public class AppConfig {
-     /** 
-     * I metodi statici possono essere utilizzato anche dai client anche se il server è spento
-     */
 
-    /**
-     * Directory in cui verranno salvati i file JSON e URL per le chiamate REST
-     */
+    //  Directory in cui verranno salvati i file JSON e URL per le chiamate REST
     public static final String DATABASE_ROOT_PATH = "D:\\UniBG\\Event\\DataBase\\";
-
+    // base URL per le chiamate REST
     public static final String URL = "http://localhost:8080/";
 
     public static String getURL() {
@@ -30,7 +29,8 @@ public class AppConfig {
 
     /** 
      * Configura un RestTemplate con un GsonHttpMessageConverter
-     * che utilizza un Gson con dei TypeAdapter per le classi LocalDate, LocalTime e Integer
+     * che utilizza un Gson con dei TypeAdapter per le classi 
+     * LocalDate, LocalTime, Integer e Double
      * @return un'istanza di RestTemplate configurata
      */
     @SuppressWarnings("null")
@@ -61,7 +61,8 @@ public class AppConfig {
     }
 
     /**
-     * Configura un Gson con dei TypeAdapter per le classi LocalDate, LocalTime e Integer
+     * Configura un Gson con dei TypeAdapter per le classi 
+     * LocalDate, LocalTime, Integer e Double
      * @return un'istanza di Gson configurata
      */
     public static Gson configureGson() {

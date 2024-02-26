@@ -4,16 +4,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.web.client.RestTemplate;
-import server.AppConfig;
 import server.model.*;
+
+/**
+ * Classe per la gestione della finestra di visualizzazione delle stanze.
+ * La classe estende {@link WResource} e ne implementa i metodi astratti.
+ */
 
 public class WRoom extends WResource<Room> {
     private Scene scene;
 
     public WRoom(RestTemplate restTemplate) {
         super(restTemplate);
-        this.url = AppConfig.getURL() + "api/room";
-        this.wResourceClick = new WResourceClick<>(this, restTemplate);
         addColonneStatiche();
         mettiDati();
         this.scene = new Scene(table, 1200, 400);
@@ -23,13 +25,6 @@ public class WRoom extends WResource<Room> {
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    @SuppressWarnings({ "null" })
-    @Override
-    protected Room[] getDati() {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, Room[].class);
     }
 
     @Override

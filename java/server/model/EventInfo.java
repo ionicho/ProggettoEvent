@@ -3,6 +3,11 @@ package server.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Classe per la gestione delle informazioni sugli eventi.
+ * definita per riddure la perdita di coesione
+ */
+
 public class EventInfo {
     protected LocalDate data;
     protected LocalTime oraInizio;
@@ -11,9 +16,10 @@ public class EventInfo {
     protected Double costoPartecipazione;
     protected String sala;
     protected Integer partPrevisti;
-    protected TipoCatering catering;
+    protected CateringType catering;
 
-    public EventInfo() {//costruttore per Gson
+    // Costruttore senza parametri per la deserializzazione con Gson
+    public EventInfo() {
     }
 
     public void setNomeOrganizzatore(String nome) {
@@ -48,11 +54,11 @@ public class EventInfo {
         return sala;
     }
 
-    public void setCatering(TipoCatering catering) {
+    public void setCatering(CateringType catering) {
         this.catering = catering;
     }
 
-    public TipoCatering getCatering() {
+    public CateringType getCatering() {
         return catering;
     }
 

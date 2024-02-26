@@ -3,14 +3,16 @@ package client.windows;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.*;
 import java.util.*;
 import server.AppConfig;
+
+/**
+ * La classe rappresenta la finestra di menu principale del client.
+ */
 
 public class Menu {
 

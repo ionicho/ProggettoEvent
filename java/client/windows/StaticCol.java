@@ -4,8 +4,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
- * Classe per l'aggiunta di colonne statiiche (ovvero che il nome della colonna
- * è predefinito) ad una tabella
+ * Il metodo statico per la creazione di colonne statiche in una tabella.
+ * <S> tipo generico per la tabella (in genere Resource, Hall, ecc.)
+ * <T> tipo generico per la colonna (in genere String, Integer, ecc.)
  */
 
 public class StaticCol {

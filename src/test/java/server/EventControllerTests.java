@@ -21,7 +21,7 @@ class EventControllerTests {
 
     @Test
     void testGetEventi() throws Exception {
-        mockMvc.perform(get("/api/eventi"))
+        mockMvc.perform(get("/api/event"))
                 .andExpect(status().isOk());
     }
 }

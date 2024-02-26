@@ -1,32 +1,34 @@
 package client.windows;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import org.springframework.web.client.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import server.AppConfig;
-import server.controller.SystemException;
-import server.model.*;
 import java.util.*;
+import server.model.*;
+import server.controller.SystemException;
 
-public class WEvent extends WEventLayout{
+/**
+ * Classe per la gestione della finestra degli eventi
+ * @extends WEventLayout (a cui affida la parte grafica)
+ * @implements WEventRest (a cui affida le chiamate REST)
+ * ha una sottofinestra per la gestione delle sale (WHall)
+ */
+
+public class WEvent extends WEventLayout implements WEventRest{
 	
-	private String url;
     private RestTemplate restTemplate;
     private Event evento;
 	private WHall wHall;//sottofinestra con le sale
 	private Node nHall;
 	
 	public void start(Stage eventStage, RestTemplate restTemplate) {
-		this.url = AppConfig.getURL() +"api/eventi";
 		this.restTemplate = restTemplate;
 		setFields(eventStage);
 	    eventStage.setTitle("Gestione Eventi");
@@ -34,33 +36,15 @@ public class WEvent extends WEventLayout{
 	    Scene scene = new Scene(grid);
 	    eventStage.setScene(scene);
 	    eventStage.show();
-		getEventi(restTemplate);
+		eventi = getEventi(restTemplate);
 		evento = eventi.get(0);
 		populateFields(evento);
 	}
 
-	@SuppressWarnings("null")
-	public void getEventi(RestTemplate restTemplate) {
-		this.eventi = Arrays.asList(restTemplate.getForObject(url, Event[].class));
-		System.out.printf("EVENTI = %s\n", eventi);
+	public RestTemplate getRestTemplate() {
+		return this.restTemplate;
 	}
 	
-	/** Restituisce l'evento con l'ID specificato */
-	public Event getEvento(String id, RestTemplate restTemplate) {
-		return restTemplate.getForObject(url+"/"+id, Event.class);
-	}
-
-	/** Aggiunge un nuovo evento */
-	private Event addEvento(RestTemplate restTemplate) {
-		return  restTemplate.getForObject(url+"/nuovo", Event.class);	
-	}
-	
-	/** Aggiorna un evento e restituisce l'evento aggiornato */
-	private Event updateEvento(Event evento, RestTemplate restTemplate) {
-		restTemplate.put(url+"/"+evento.getId(), evento);
-		return getEvento(evento.getId(), restTemplate);
-	}
-
 	/** Inizializza i campi */
 	protected void setFields(Stage stage) {
        super.setFields(stage);
@@ -73,42 +57,20 @@ public class WEvent extends WEventLayout{
 		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }
 
-	/** Ottiene l'elenco delle sale libere nel giorno specificato + riga vuota*/
-	public String[] getSaleLibere(LocalDate date) {
-		String urlSaleLibere = AppConfig.getURL() + "api/hall/libere/" + date.toString();
-		List<String> saleNames = new ArrayList<>(Arrays.asList(restTemplate.getForObject(urlSaleLibere, String[].class)));
-		saleNames.add(0, "");
-		return saleNames.toArray(new String[0]);
-	}
-	
-	/** Libera una sala nel giorno specificato */
-	private void liberaSala(String nome, LocalDate data) {
-		if (nome != null && !nome.equals("") && data != null){
-			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
-			restTemplate.put(urlHall, new StateDate(data, State.DISPONIBILE));
-		}
-	}
-
-	/** Occupa una sala nel giorno specificato */
-	private void occupaSala(String nome, LocalDate data) {
-		if (nome != null && !nome.equals("") && data != null){
-			String urlHall = AppConfig.getURL() + "api/hall/" + nome + "/state";
-			restTemplate.put(urlHall, new StateDate(data, State.PRENOTATA));
-		}
-	}
-	
 	/** Gestisce la logica delle sale*/
 	private void impostaSala() {
 		if (evento != null && dataF != null && salaF != null) {
 			if (!Objects.equals(evento.getData(), dataF.getValue())) { //cambia la data
-				liberaSala(evento.getSala(), evento.getData());
+				liberaSala(evento.getSala(), evento.getData(), restTemplate);
+				updateEvento(evento, restTemplate);
 				evento.setSala(null);
 			}
 			String oldSala = evento.getSala();
 			String newSala = salaF.getValue();
 			if (!Objects.equals(oldSala, newSala)) { //cambia la sala
-				liberaSala(oldSala, evento.getData());
-				occupaSala(newSala, dataF.getValue());
+				liberaSala(oldSala, evento.getData(),restTemplate);
+				occupaSala(newSala, dataF.getValue(), restTemplate);
+				updateEvento(evento, restTemplate);
 				evento.setSala(newSala);
 			}
 		}
@@ -129,7 +91,7 @@ public class WEvent extends WEventLayout{
 	
 	/** Popola i campi della finestra*/
 	private void populateFields(Event evento) {
-		idField.setText(evento.getId() != null ? evento.getId() : "");
+		idField.setText(evento.getNome() != null ? evento.getNome() : "");
 		nomeOrgF.setText(evento.getNomeOrganizzatore() != null ? evento.getNomeOrganizzatore() : "");
 		costoParF.setText(evento.getCostoPartecipazione() != null ? String.valueOf(evento.getCostoPartecipazione()) : "");
 		numParPreF.setText(evento.getPartPrevisti() != null ? String.valueOf(evento.getPartPrevisti()) : "");
@@ -159,7 +121,7 @@ public class WEvent extends WEventLayout{
 			this.evento.setCostoPartecipazione(Double.parseDouble(costoParF.getText()));
 			this.evento.setPartPrevisti(Integer.parseInt(numParPreF.getText()));
 			this.evento.setCatering(cateringF.getValue() == null || cateringF.getValue().equals("") ? 
-				TipoCatering.COFFEE_BREAK : TipoCatering.valueOf(cateringF.getValue()));
+				CateringType.COFFEE_BREAK : CateringType.valueOf(cateringF.getValue()));
 			this.evento.setOraInizio(LocalTime.parse(oraIniF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
 			this.evento.setOraFine(LocalTime.parse(oraFinF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
 			this.evento.setData(dataF.getValue());
@@ -215,7 +177,7 @@ public class WEvent extends WEventLayout{
 		dataF.setOnAction(e -> {
 			LocalDate newValue = dataF.getValue();
 			if (newValue != null) {
-				String[] saleOptions = getSaleLibere(newValue);
+				String[] saleOptions = getSaleLibere(newValue, restTemplate);
 				salaF.setValue(null);
 				salaF.setItems(FXCollections.observableArrayList(saleOptions));
 			}
@@ -248,7 +210,7 @@ public class WEvent extends WEventLayout{
 		});
 
 		newSpeech.setOnAction(e -> {
-			Speech speech = new Speech("","","");
+			Speech speech = new Speech();
 			interventiLista.getItems().add(speech);
 			int index = interventiLista.getItems().indexOf(speech);
 			tempSpeeches.put(index, speech);

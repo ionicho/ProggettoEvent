@@ -20,18 +20,19 @@ import server.AppConfig;
 import server.model.*;
 
 /**
- * Classe per la gestione della finestra del calendario
- * @restTemplate è un'istanza per i servizi RESTful
- * @Table raccoglie i dati di calendar.disponibilita
+ * Classe per la gestione della finestra di visualizzazione del calendario.
+ * La classe estende {@link WResource} e ne implementa i metodi astratti.
+ * addContolli() aggiunge i controlli per la selezione delle date di inizio e fine
+ * setCalendario() invia una richiesta PUT al server per aggiornare il calendario
  */
+
 public class WCalendar extends WResource<Calendar> {
 	private Scene scene;
 	private GridPane griglia;
     
 	public WCalendar(RestTemplate restTemplate) {
         super(restTemplate);
-        this.url = AppConfig.getURL() + "api/calendar";
-        this.wResourceClick = new WResourceClick<>(this, restTemplate);
+
         addColonneStatiche();
 		addContolli();
         mettiDati();
@@ -45,7 +46,7 @@ public class WCalendar extends WResource<Calendar> {
 			.orElse(null);
 		if (nomeColumn != null) {nomeColumn.setVisible(false);}
 		if (costoColumn != null) {costoColumn.setVisible(false);}
-        this.scene = new Scene(griglia, 1200, 400);
+        this.scene = new Scene(griglia, 1200, 270);
     }
 
 	public void start(String title, Stage primaryStage) {
@@ -54,20 +55,26 @@ public class WCalendar extends WResource<Calendar> {
         primaryStage.show();
 	}
 	
-	@SuppressWarnings("null")
-	@Override
-	protected Calendar[] getDati() {
-		RestTemplate restTemplate = new RestTemplate();
-		Calendar calendar = restTemplate.getForObject(url, Calendar.class);
-		return new Calendar[]{calendar}; // Restituisci un array con un singolo elemento
-	}
-
 	private void addContolli(){	
 	    griglia = new GridPane();
 		Label startDateL = new Label("Data inizio:");
 	    Label endDateL = new Label("Data fine:");
 	    DatePicker startDatePicker = new DatePicker();
+		startDatePicker.setValue(LocalDate.of(2024, 1, 1)); // Imposta il valore di default a 01/01/2024
+		startDatePicker.setDisable(true); // Blocca il DatePicker
+		startDatePicker.setStyle("-fx-opacity: 1.0;"); // Rende il DatePicker visibile
 	    DatePicker endDatePicker = new DatePicker();
+		endDatePicker.setValue(startDatePicker.getValue().plusDays(1)); // Imposta il valore di default a 02/01/2024
+		// Impedisce la selezione di date precedenti al 2 gennaio 2024
+		endDatePicker.setDayCellFactory(picker -> new DateCell() {
+			@Override
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate minDate = startDatePicker.getValue().plusDays(1);
+
+				setDisable(empty || date.compareTo(minDate) < 0);
+			}
+		});
 	    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		// Usa lo stesso convertitore per entrambi i DatePicker
 	    startDatePicker.setConverter(new StringConverter<>() {
@@ -80,7 +87,8 @@ public class WCalendar extends WResource<Calendar> {
 	    });
 	    endDatePicker.setConverter(startDatePicker.getConverter()); 
 	    // Crea il pulsante e gli associa un evento
-	    Button setCalendarButton = new Button("Crea Calendario");
+	    Button setCalendarButton = new Button("Estendi il Calendario");
+		setCalendarButton.setTooltip(new Tooltip("Modifica il calendario della struttura"));
 	    setCalendarButton.setOnAction(e -> {
 	        LocalDate startDate = startDatePicker.getValue();
 	        LocalDate endDate = endDatePicker.getValue();
@@ -92,8 +100,8 @@ public class WCalendar extends WResource<Calendar> {
 	    griglia.add(startDatePicker, 1, 3);
 	    griglia.add(endDateL, 2, 2);
 	    griglia.add(endDatePicker, 2, 3);
-	    griglia.add(setCalendarButton, 1, 4, 2, 1);
-	    griglia.add(table, 1, 5, 2, 10);
+	    griglia.add(setCalendarButton, 4, 3, 2, 1);
+	    griglia.add(table, 1, 5, 10, 1);
 	    Pane bordoSotto = new Pane();
 	    bordoSotto.setMinHeight(10); //
 	    griglia.add(bordoSotto, 1, 15, 2, 1);
@@ -102,7 +110,8 @@ public class WCalendar extends WResource<Calendar> {
     @SuppressWarnings("null")
     public void setCalendario(LocalDate startDate, LocalDate endDate) {
         // Invia una richiesta PUT al server per aggiornare il calendario
-        String msg  = AppConfig.getURL() + "api/calendar/" + startDate.toString() + "/" + endDate.toString();
+		String name = "Calendar001";
+        String msg  = AppConfig.getURL() + "api/calendar/" + name + "/" + startDate.toString() + "/" + endDate.toString();
         System.out.printf("%s \n", msg);
         ResponseEntity<List<String>> response = restTemplate.exchange(msg, HttpMethod.PUT, null, new ParameterizedTypeReference<List<String>>() {});
         if (response.getStatusCode() == HttpStatus.OK) {

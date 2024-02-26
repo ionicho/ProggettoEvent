@@ -9,6 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 import server.model.*;
 
+/**
+ * Classe di test per i Visitor
+ */
+
 @ExtendWith(MockitoExtension.class)
 class VisitorTest {
 

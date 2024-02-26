@@ -1,33 +1,27 @@
 package server.model;
 
-import java.time.LocalDate;
 import java.util.*;
 
 /**
  * Classe per le risorse CAMERE
- * Il costruttore provvede a definire gli attributi specifici di questa risorsa
- * ed ad accettare tutti i Visitors
  */
 
-public class Room extends Resource {
+public class Room extends Resource implements HasName {
 	
 	private Integer numeroLetti;
 	private RoomType tipo;
 
-	public Room(String nome, Double costo, Integer numeroLetti,RoomType tipo, LocalDate endDate) {
-		super(nome, costo, endDate);
-		this.numeroLetti = numeroLetti;
-		this.tipo = tipo;
+	// Costruttore senza parametri per la deserializzazione con Gson
+    public Room() {
 	}
 	
-	public Room(String nome, Double costo, Integer numeroLetti, RoomType tipo, List<StateDate> disponibilita) {
-	    super(nome, costo, disponibilita);
-	    this.numeroLetti = numeroLetti;
-	    this.tipo = tipo;
-	}
-
-	public Room() { //costruttore di default serve a Spring Boot a deseralizzare
-	}
+    // Costruttore con parametro String per creare nuovi eventi.
+    // Il parametro 's' non viene utilizzato, serve solo per distinguere questo costruttore dal costruttore senza parametri.
+    public Room (String s) { //costruttore per il singleton
+	   this.nome = Singleton.getInstance().getNext(this.getClass().getSimpleName());
+	   this.costo = 0.;
+	   this.disponibilita = new ArrayList <>(); 
+   }
 
     public <T> T accept(Visitor<T> v, StateDate stato) {
         return v.visit(this, stato);

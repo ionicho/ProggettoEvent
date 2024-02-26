@@ -3,30 +3,28 @@ package server.model;
 import java.util.*;
 
 /**
- * Classe per la gestione degli eventi
- * La classe ha due costruttori per evitare che Gson quando serializza e/o
- * deserializza un'istanza, chimando il costruttore, incrementi il contatore
- * degli eventi. 
+ * Classe per la gestione degli eventi.
  */
 
-public class Event extends EventInfo{
-	private String id;
+public class Event extends EventInfo implements HasName {
+	private String nome;
 
     private List<Speech> elencoInterventi;
 
-    // Costruttore, getter e setter    
+    // Costruttore senza parametri per la deserializzazione con Gson
     public Event() {
  	   this.elencoInterventi = new ArrayList <>();
     }
     
-   public Event (String s) {
-	   System.out.printf("COSTRUTTORE EVENT %s\n", s);
-	   this.id = Singleton.getInstance().getNext(this.getClass().getSimpleName());
+    // Costruttore con parametro String per creare nuovi eventi.
+    // Il parametro 's' non viene utilizzato, serve solo per distinguere questo costruttore dal costruttore senza parametri.
+    public Event (String s) {
+	   this.nome = Singleton.getInstance().getNext(this.getClass().getSimpleName());
 	   this.elencoInterventi = new ArrayList <>();
    }
 
-   public String getId() {
-   	return id;
+   public String getNome() {
+   	return nome;
    }
        
     public void addIntervento(Speech intervento) {
@@ -45,7 +43,7 @@ public class Event extends EventInfo{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Evento {\n");
-        sb.append("id: ").append(id).append(",\n");
+        sb.append("nome: ").append(nome).append(",\n");
         sb.append("data: ").append(data).append(",\n");
         sb.append("ora inizio: ").append(oraInizio).append(",\n");
         sb.append("ora fine: ").append(oraFine).append(",\n");
@@ -73,7 +71,7 @@ public class Event extends EventInfo{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(id, event.id) &&
+        return Objects.equals(nome, event.nome) &&
             Objects.equals(data, event.data) &&
             Objects.equals(oraInizio, event.oraInizio) &&
             Objects.equals(oraFine, event.oraFine) &&
@@ -87,7 +85,7 @@ public class Event extends EventInfo{
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, data, oraInizio, oraFine, 
+        return Objects.hash(nome, data, oraInizio, oraFine, 
         nomeOrganizzatore, costoPartecipazione, 
         partPrevisti, catering, sala, elencoInterventi);
     }

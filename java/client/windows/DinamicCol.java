@@ -7,8 +7,10 @@ import javafx.util.Callback;
 import server.model.*;
 
 /**
- * Classe per l'aggiunta di colonne dinamiche (ovvero che il nome della colonna
- * è ricavato da un dato) ad una tabella
+ * Classe che implementa l'interfaccia {@link javafx.util.Callback} per
+ * la gestione di colonne dinamiche in una tabella. La classe è utilizzata
+ * per la visualizzazione della disponibilità delle risorse in una tabella. * 
+ * @param <T> tipo generico che estende {@link server.model.Resource}
  */
 
 public class DinamicCol<T extends Resource> implements Callback<CellDataFeatures<T, String>, ObservableValue<String>> {

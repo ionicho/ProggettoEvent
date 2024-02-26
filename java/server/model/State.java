@@ -1,7 +1,8 @@
 package server.model;
 
 /**
- * Classe con l'elenco degli stati delle risorse
+ * Enumerazione che rappresenta i valori di stato 
+ * di una risorsa per una specifica data.
  */
 
 public enum State {

@@ -36,7 +36,7 @@ class ReceptionistApplicationTests {
         event.setNomeOrganizzatore("Organizzatore");
         event.setCostoPartecipazione(100.);
         event.setPartPrevisti(23);
-        event.setCatering(TipoCatering.BRUNCH);
+        event.setCatering(CateringType.BRUNCH);
         Speech speech1 = new Speech();
         speech1.setTitolo("Titolo1");
         speech1.setRelatore("Relatore1");

@@ -1,4 +1,6 @@
 {
-  "Event": 20,
-  "Room": 5
+  "Event": 2,
+  "Room": 5,
+  "Calendar": 1;
+  "Hall": 3
 }

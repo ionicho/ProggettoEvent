@@ -1,13 +1,14 @@
 [
   {
-    "id": "Event001",
-    "data": "2023-01-01",
-    "oraInizio": "09:00",
-    "oraFine": "17:00",
-    "nomeOrganizzatore": "PAC",
-    "costoPartecipazione": 120.0,
-    "partPrevisti": 25,
-    "catering": "COFFEE_BREAK",
+    "nome": "Event021",
+    "elencoInterventi": []
+  },
+  {
+    "nome": "Event022",
+    "elencoInterventi": []
+  },
+  {
+    "nome": "Event001",
     "elencoInterventi": [
       {
         "titolo": "Intervento 1",
@@ -25,21 +26,21 @@
         "descrizione": "bla bla bla"
       },
       {
-        "titolo": "pipppppo",
-        "relatore": "pluto",
-        "descrizione": "paperino"
+        "titolo": "pippo",
+        "relatore": "pipppoooooo",
+        "descrizione": "pppppppppppppppppppp"
       }
-    ]
-  },
-  {
-    "id": "Event002",
-    "data": "2023-01-02",
+    ],
+    "data": "2024-01-02",
     "oraInizio": "09:00",
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
-    "costoPartecipazione": 150.0,
+    "costoPartecipazione": 120.0,
     "partPrevisti": 25,
-    "catering": "COLAZIONE",
+    "catering": "COLAZIONE"
+  },
+  {
+    "nome": "Event002",
     "elencoInterventi": [
       {
         "titolo": "Intervento 3",
@@ -51,6 +52,13 @@
         "relatore": "Relatore 4",
         "descrizione": "Descrizione dell\u0027intervento 4"
       }
-    ]
+    ],
+    "data": "2024-01-03",
+    "oraInizio": "09:00",
+    "oraFine": "17:00",
+    "nomeOrganizzatore": "PAC",
+    "costoPartecipazione": 150.0,
+    "partPrevisti": 25,
+    "catering": "COLAZIONE"
   }
 ]

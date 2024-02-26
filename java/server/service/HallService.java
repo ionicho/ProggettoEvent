@@ -3,43 +3,50 @@ package server.service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 import java.util.*;
 import server.*;
 import server.model.*;
-import java.lang.reflect.Type;
-import java.time.LocalDate;
 
 /**
- * Questa classe esegue le operazioni di lettura e scrittura
- * del file json che funge da DB per le SALE.
+ * Classe che estende la classe astratta {@link AbstractService}.
+ * Questa classe risponde alle richieste provenienti da HallController 
+ * e gestisce le operazioni relative alle istanze della classe business 
+ * {@link server.model.Hall}.
+ * La classe implementa l'interfaccia {@link Subscriber} per ricevere
+ * notifiche di cambiamento di disponbilità della struttura.
  */
 
 @Service
-public class HallService implements Subscriber, RWjson <Hall>{
-
-    private static final String DBname = AppConfig.DATABASE_ROOT_PATH +"Sale.json";
-    private List<Hall> sale;
-    private final Gson gson;
+public class HallService extends AbstractService <Hall> implements Subscriber {
 
     public HallService(Gson gson) {
-        this.gson = gson;
-        Type typeOfT = new TypeToken<List<Hall>>(){}.getType();
-        this.sale = caricadaDB(DBname, gson, typeOfT);
-        System.out.println("Caricate " + sale.size() + sale.toString());
+        super(AppConfig.DATABASE_ROOT_PATH +"Sale.json",
+        		gson, 
+        		new TypeToken<List<Hall>>(){}.getType());
+    }
+
+    public Hall addRisorsa() {
+    	Hall nuova = new Hall("ciao"); //uso il costruttore che usa il singleton
+    	risorse.add(nuova);
+    	salvaNelDB(DBname, myGson, risorse);
+    	return nuova;
     }
 
     @Override
-    public List<String>  updateState(List<StateDate> disponibilita) {
+    public List<String> changeDisponibilita(List<StateDate> disponibilita) {
         List<String> saleToBeResc = new ArrayList<>();
         State oldStato;
         VisitorSetState setVisitor = new VisitorSetState();
         VisitorGetState getVisitor = new VisitorGetState();
-        for (Hall curr : sale) {
+        for (Hall curr : risorse) {
             for(StateDate sd : disponibilita){
                 oldStato = getVisitor.visit(curr, sd);
                 if (oldStato == State.PRENOTATA && sd.getStato() == State.CHIUSO){
                     saleToBeResc.add(curr.getNome());
                     setVisitor.visit(curr, sd);
+                } else if (oldStato == State.CHIUSO && sd.getStato() == State.DISPONIBILE){
+                    setVisitor.visit(curr, sd); // se la sala era chiusa e ora è disponibile
                 } else if (oldStato != null && sd.getStato() == State.DISPONIBILE){
                     // non fare niente, va bene così
                 } else{ //if oldStato == null
@@ -47,23 +54,26 @@ public class HallService implements Subscriber, RWjson <Hall>{
                 }   
             }
         }
-        salvaSalesuDB();
+        salvaNelDB(DBname, myGson, risorse);
         return saleToBeResc;
     }
-    
-    // Metodo GET per ottenere tutte le sale
-    public List<Hall> getSale() {
-        return sale;
-    }
 
-    // Metodo GET per ottenere una singola sala
-    public Hall getSala(String id) {
-    	for (Hall curr : sale) {
-            if (curr.getNome().compareTo(id)==0) {
-                return curr;
+
+    // Metodo PUT per aggiornare lo stato di una sala
+    public void changeStatoSala(String nome, StateDate statoData) {
+        Hall sala = getRisorsa(nome);
+        VisitorSetState visitor = new VisitorSetState();
+        visitor.visit(sala, statoData);    
+        if (sala != null && sala.getNome() != null && !sala.getNome().isEmpty()) {
+            for (int i = 0; i < risorse.size(); i++) {
+                if (risorse.get(i).getNome().equals(nome)) {
+                    risorse.set(i, sala);
+                    salvaNelDB(DBname, myGson, risorse);
+                    return;
+                }
             }
         }
-        return null;
+        throw new IllegalArgumentException("Sala con nome: " + nome + " non trovata.");
     }
     
     // Metodo GET per ottenere l'elenco dei nomi dell sale libere in una data specifica
@@ -71,7 +81,7 @@ public class HallService implements Subscriber, RWjson <Hall>{
         List<String> saleLibere = new ArrayList<>();
         VisitorGetState visitor = new VisitorGetState();
         StateDate sd = new StateDate(data,null);
-        for (Hall curr : sale) {
+        for (Hall curr : risorse) {
             if (visitor.visit(curr, sd) == State.DISPONIBILE) {
                 saleLibere.add(curr.getNome());
             }
@@ -79,44 +89,5 @@ public class HallService implements Subscriber, RWjson <Hall>{
         return saleLibere;
     }
 
- // Metodo POST per aggiungere una sala
-    public void addSala(Hall sala) {
-        if (sala != null && sala.getNome() != null && !sala.getNome().isEmpty()) {
-            sale.add(sala);
-            salvaSalesuDB();
-        } else {
-            throw new IllegalArgumentException("Sala non valida.");
-        }
-    }
-       
- // Metodo PUT per aggiornare lo stato di una sala
-    public void updateSala(String nome, StateDate statoData) {
-        Hall sala = getSala(nome);
-        VisitorSetState visitor = new VisitorSetState();
-        visitor.visit(sala, statoData);    
-        if (sala != null && sala.getNome() != null && !sala.getNome().isEmpty()) {
-            for (int i = 0; i < sale.size(); i++) {
-                if (sale.get(i).getNome().equals(nome)) {
-                    sale.set(i, sala);
-                    System.out.printf("scritto nel file %s\n\n",sale.toString());
-                    salvaSalesuDB();
-                    return;
-                }
-            }
-        }
-        throw new IllegalArgumentException("Sala con nome: " + nome + " non trovata.");
-    }
-
-    /**
-     *  Metodo DELETE per rimuovere una camera, funz lambda imposta da Sonar Lint
-      */
-    public void deleteSala(String nome) {
-        sale.removeIf(curr-> curr.getNome().equals(nome)); 
-        salvaNelDB(DBname, gson, sale);
-    }
-    
-    private void salvaSalesuDB() {
-        salvaNelDB(DBname, gson, sale);
-    }
 }
 

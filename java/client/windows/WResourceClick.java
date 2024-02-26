@@ -5,55 +5,42 @@ import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.*;
-
 import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import server.model.*;
 
 /**
- *  Classe che gestisce gli eventi della WRoom
- *  Al click destro sulle celle della disponibilità delle camere fa comparire un menu
- *  contestuale consentendo di scegliere il nuovo stato per la camera.
- *  Invia la richesta al servere (con la classe anonima) e quando riceve l'ok aggiorna
- *  schermata.
- */
+* Classe per la gestione degli eventi di click sulle celle della 
+* tabella gestita da {@link WResource}.
+* Qualora serva, la classe utilizza il parametro {@link wResource} per
+* effettuare richieste REST al server con l'attributo {@link WResource#restHandler}.
+*/
 
-public class WResourceClick <T extends Resource> extends WResourceRest implements EventHandler<MouseEvent> {
+public class WResourceClick <T extends Resource> implements EventHandler<MouseEvent> {
 
-
-    private final WRoom wRoom; // Riferimento a WRoom1
-    private final WHall wHall; // Riferimento a WHall
-    private final WCalendar wCalendar; //Riferimento a WCalendar
-
-    private Integer tipo;
+    private WResource <T> wResource;
+    private ResourceType tipo;
     private final State[] statiPossibili;
 
-    public WResourceClick(WRoom wRoom, RestTemplate restTemplate) {
-        super(restTemplate);
-        this.wRoom = wRoom;
-        this.wHall = null;
-        this.wCalendar = null;
-        this.tipo = ROOM;
-        statiPossibili = new State[]{State.INUSO, State.DISPONIBILE, State.PULIZIA, State.PRENOTATA};
+    public WResourceClick(WResource<T> wResource) {
+        this.wResource = wResource;
+        if (wResource instanceof WRoom) {
+            tipo = ResourceType.ROOM;
+            statiPossibili = new State[]{State.INUSO, State.DISPONIBILE, State.PULIZIA, State.PRENOTATA};
+        } else if (wResource instanceof WHall) {
+            tipo = ResourceType.HALL;
+            statiPossibili = new State[]{State.INUSO, State.DISPONIBILE, State.PULIZIA, State.PRENOTATA};
+        } else if (wResource instanceof WCalendar) {
+            tipo = ResourceType.CALENDAR;
+            statiPossibili = new State[]{State.CHIUSO, State.DISPONIBILE};
+        } else {
+            tipo = null;
+            statiPossibili = null;
+        }
     }
 
-    public WResourceClick(WHall wHall, RestTemplate restTemplate) {
-        super(restTemplate);
-        this.wHall = wHall;
-        this.wRoom = null;
-        this.wCalendar = null;
-        this.tipo = HALL;
-        statiPossibili = new State[]{State.INUSO, State.DISPONIBILE, State.PULIZIA, State.PRENOTATA};
-    }
-
-    public WResourceClick(WCalendar wCalendar, RestTemplate restTemplate) {
-        super(restTemplate);
-        this.wCalendar = wCalendar;
-        this.wRoom = null;
-        this.wHall = null;
-        this.tipo = CALENDAR;
-        statiPossibili = new State[]{State.CHIUSO, State.DISPONIBILE};
+    public void configuraClick(TableColumn<T, String> column) {
+        column.setCellFactory(col -> creaCellaColorate());
     }
 
     public TableCell<T, String> creaCellaColorate() {
@@ -83,16 +70,16 @@ public class WResourceClick <T extends Resource> extends WResourceRest implement
                         setStyle("-fx-alignment: CENTER");
                         break;
                 }
-                if (item == "CHIUSO" && (tipo ==ROOM || tipo == HALL)) //NOSONAR
+                if (item == "CHIUSO" && (tipo ==ResourceType.ROOM || tipo == ResourceType.HALL)) //NOSONAR
                     setOnMouseClicked(null);
-                else if(item == "PRENOTATA" && tipo == HALL ) //NOSONAR
-                    setOnMouseClicked(new WResourceClick<>(wHall, restTemplate));
-                else if (tipo == ROOM) //NOSONAR
-                    setOnMouseClicked(new WResourceClick<>(wRoom, restTemplate));
-                else if (tipo == HALL) //NOSONAR
-                    setOnMouseClicked(new WResourceClick<>(wHall, restTemplate));
-                else if (tipo == CALENDAR) //NOSONAR
-                    setOnMouseClicked(new WResourceClick<>(wCalendar, restTemplate));
+                else if(item == "PRENOTATA" && tipo == ResourceType.HALL ) 
+                    setOnMouseClicked(new WResourceClick<>(wResource));
+                else if (tipo == ResourceType.ROOM)
+                    setOnMouseClicked(new WResourceClick<>(wResource));
+                else if (tipo == ResourceType.HALL)
+                    setOnMouseClicked(new WResourceClick<>(wResource));
+                else if (tipo == ResourceType.CALENDAR)
+                    setOnMouseClicked(new WResourceClick<>(wResource));
                 else
                     setOnMouseClicked(null);
             }
@@ -102,7 +89,7 @@ public class WResourceClick <T extends Resource> extends WResourceRest implement
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void handle(MouseEvent event) {
-        if (event.getButton() == MouseButton.PRIMARY && tipo == HALL) { //NOSONAR
+        if (event.getButton() == MouseButton.PRIMARY && tipo == ResourceType.HALL) { //NOSONAR
             System.out.println("CLICK SX");
             TableCell <T, State> cell = (TableCell) event.getSource();
             T resource = cell.getTableRow().getItem();
@@ -110,8 +97,8 @@ public class WResourceClick <T extends Resource> extends WResourceRest implement
             LocalDate date = LocalDate.parse(cell.getTableColumn().getText());
             getEventByDateHall(date, hallName);
         }
-        if (event.getButton() == MouseButton.SECONDARY && tipo != HALL) { //NOSONAR
-           TableCell <T, State >cell = (TableCell) event.getSource();
+        if (event.getButton() == MouseButton.SECONDARY && tipo != ResourceType.HALL) { //NOSONAR
+        TableCell <T, State >cell = (TableCell) event.getSource();
             T resource = cell.getTableRow().getItem();
             String resourceName = resource.getNome();
             LocalDate data = LocalDate.parse(cell.getTableColumn().getText());
@@ -127,12 +114,12 @@ public class WResourceClick <T extends Resource> extends WResourceRest implement
         
     @SuppressWarnings("null")
     private void getEventByDateHall(LocalDate date, String hallName) {
-        ResponseEntity<server.model.Event> response = getEventByDateHallRest(date, hallName);  
+        ResponseEntity<server.model.Event> response = wResource.getRestHandler().getEventByDateHallRest(date, hallName);
         if (response.getStatusCode() == HttpStatus.OK) {
-            server.model.Event event = response.getBody();
-            WEvent wEvent = wHall.getWEvent();
+                server.model.Event event = response.getBody();
+                WEvent wEvent = wResource.getWEvent();
             if (wEvent != null) {
-                wEvent.getEvento(event.getId(), restTemplate);
+                wEvent.getEvento(event.getNome(), wEvent.getRestTemplate());
             }
             Platform.runLater(() -> {
                 Alert alert = new Alert(AlertType.INFORMATION);
@@ -141,19 +128,20 @@ public class WResourceClick <T extends Resource> extends WResourceRest implement
                 alert.setContentText(event.toString());
                 alert.showAndWait();
             });
-        }    }
+        }
+    }
          
     private EventHandler<ActionEvent> cambiaStato(String name, LocalDate data, State stato) {
         return e -> {
-            if (cambiaStatoRest(tipo, name, data, stato)) {
-                if (tipo == ROOM) //NOSONAR
-                    Platform.runLater(wRoom::refresh);
-                else if (tipo == HALL) //NOSONAR
-                    Platform.runLater(wHall::refresh);
-                else if (tipo == CALENDAR) //NOSONAR
-                    Platform.runLater(wCalendar::mettiDati);
+            if (wResource.getRestHandler().cambiaStatoRest(name, data, stato)) {
+                if (tipo == ResourceType.ROOM) //NOSONAR
+                    Platform.runLater(wResource::refresh);
+                else if (tipo == ResourceType.HALL) //NOSONAR
+                    Platform.runLater(wResource::refresh);
+                else if (tipo == ResourceType.CALENDAR) //NOSONAR
+                    Platform.runLater(wResource::mettiDati);
             }
         };
-    }
 
+    }
 }
