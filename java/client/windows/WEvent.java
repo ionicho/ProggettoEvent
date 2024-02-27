@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import java.util.*;
 import server.model.*;
 import server.controller.SystemException;
+import server.AppConfig;
+import java.time.LocalDate;
+
 
 /**
  * Classe per la gestione della finestra degli eventi
@@ -31,6 +34,14 @@ public class WEvent extends WEventLayout implements WEventRest{
 	public void start(Stage eventStage, RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 		setFields(eventStage);
+		LocalDate maxDate = LocalDate.parse(wHall.getTable().getColumns().get(wHall.getTable().getColumns().size() - 1).getText());
+		dataF.setDayCellFactory(picker -> new DateCell() {
+			@Override
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				setDisable(empty || date.compareTo(AppConfig.START_DATE) < 0 || date.compareTo(maxDate) > 0);
+			}
+		});
 	    eventStage.setTitle("Gestione Eventi");
 	    grid = creaGriglia();
 	    Scene scene = new Scene(grid);
@@ -59,25 +70,25 @@ public class WEvent extends WEventLayout implements WEventRest{
 
 	/** Gestisce la logica delle sale*/
 	private void impostaSala() {
-		if (evento != null && dataF != null && salaF != null) {
+		if (evento != null && dataF.getValue() != null) {
 			if (!Objects.equals(evento.getData(), dataF.getValue())) { //cambia la data
 				liberaSala(evento.getSala(), evento.getData(), restTemplate);
-				updateSale(wHall.getDati(), restTemplate);
+				salaF.setValue(null); // Mette a null SalaF
+				evento.setSala(null); // Libera la sala
+				evento.setData(dataF.getValue()); // Aggiorna la data dell'evento
 				updateEvento(evento, restTemplate);
-				eventi = getEventi(restTemplate); //aggiorna la lista degli eventi
-				wHall.refresh();
-				//evento.setSala(null);
+				wHall.refresh(); // Aggiorna la vista di WHall
 			}
 			String oldSala = evento.getSala();
 			String newSala = salaF.getValue();
-			if (!Objects.equals(oldSala, newSala)) { //cambia la sala
-				liberaSala(oldSala, evento.getData(),restTemplate);
+			if (newSala != null && !Objects.equals(oldSala, newSala)) { //cambia la sala
+				if (oldSala != null) {
+					liberaSala(oldSala, evento.getData(), restTemplate);
+				}
 				occupaSala(newSala, dataF.getValue(), restTemplate);
-				updateSale(wHall.getDati(), restTemplate);
+				evento.setSala(newSala); // Aggiorna la sala dell'evento
 				updateEvento(evento, restTemplate);
-				eventi = getEventi(restTemplate);
-				wHall.refresh();
-				//evento.setSala(newSala);
+				wHall.refresh(); // Aggiorna la vista di WHall
 			}
 		}
 	}
@@ -163,11 +174,12 @@ public class WEvent extends WEventLayout implements WEventRest{
 		// Gestisce la logica di creazione di un evento
 		newButton.setOnAction(e -> {
 			try {
-				System.out.printf("WINDOW creaButton\n");
+				System.out.printf("\nW-EVENT newButton.onAction\n");
 				this.evento =  addEvento(restTemplate);
-				cercaF.setText("");
-				clearFields();
-				msgF.setText("Creato nuovo evento.");
+				eventi = getEventi(restTemplate); //aggiorna la lista degli eventi
+				wHall.refresh();
+				evento = eventi.get(eventi.size() - 1);
+				populateFields(this.evento);
 			} catch (SystemException | HttpClientErrorException.NotFound ex) {
 				msgF.setText("La creazione del nuovo evento non è riuscita.");
 			}
@@ -203,7 +215,7 @@ public class WEvent extends WEventLayout implements WEventRest{
 		// Gestisce la logica di salvataggio delle modifiche di un evento
 		saveButton.setOnAction(e -> {
 			try {
-				System.out.printf("SAVE BUTTON evento =%s\n", this.evento.toString());
+				System.out.printf("\nW-EVENT saveButton.onAction: %s\n", this.evento.toString());
 				for (Map.Entry<Integer, Speech> entry : tempSpeeches.entrySet()) {
 					int index = entry.getKey();
 					Speech speech = entry.getValue();

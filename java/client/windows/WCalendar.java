@@ -3,13 +3,11 @@ package client.windows;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -29,6 +27,7 @@ import server.model.*;
 public class WCalendar extends WResource<Calendar> {
 	private Scene scene;
 	private GridPane griglia;
+	LocalDate maxDate = AppConfig.START_DATE;
     
 	public WCalendar(RestTemplate restTemplate) {
         super(restTemplate);
@@ -55,7 +54,7 @@ public class WCalendar extends WResource<Calendar> {
         primaryStage.show();
 	}
 	
-	private void addContolli(){	
+	private void addContolli(){
 	    griglia = new GridPane();
 		Label startDateL = new Label("Data inizio:");
 	    Label endDateL = new Label("Data fine:");
@@ -63,16 +62,21 @@ public class WCalendar extends WResource<Calendar> {
 		startDatePicker.setValue(AppConfig.START_DATE); // Imposta il valore di default a 01/01/2024
 		startDatePicker.setDisable(true); // Blocca il DatePicker
 		startDatePicker.setStyle("-fx-opacity: 1.0;"); // Rende il DatePicker visibile
-	    DatePicker endDatePicker = new DatePicker();
-		endDatePicker.setValue(startDatePicker.getValue().plusDays(1)); // Imposta il valore di default a 02/01/2024
-		// Impedisce la selezione di date precedenti al 2 gennaio 2024
+		// Ottieni la data massima dal caledar
+		for (Calendar c : getDati()) {
+			if (c.getNome().equals("Calendar001")) {
+				maxDate = c.getLastDate();
+				break;
+			}
+		}
+		DatePicker endDatePicker = new DatePicker();
+		endDatePicker.setValue(maxDate);
+		// Impedisce la selezione di date precedenti alla data massima
 		endDatePicker.setDayCellFactory(picker -> new DateCell() {
 			@Override
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
-				LocalDate minDate = startDatePicker.getValue().plusDays(1);
-
-				setDisable(empty || date.compareTo(minDate) < 0);
+				setDisable(empty || date.compareTo(maxDate) < 0);
 			}
 		});
 	    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -112,7 +116,6 @@ public class WCalendar extends WResource<Calendar> {
         // Invia una richiesta PUT al server per aggiornare il calendario
 		String name = "Calendar001"; // per evitare di dover cliccare sulla riga della tabella
         String msg  = AppConfig.getURL() + "api/calendar/" + name + "/" + startDate.toString() + "/" + endDate.toString();
-        System.out.printf("%s \n", msg);
         ResponseEntity<List<String>> response = restTemplate.exchange(msg, HttpMethod.PUT, null, new ParameterizedTypeReference<List<String>>() {});
         if (response.getStatusCode() == HttpStatus.OK) {
             List<String> toReschedule = response.getBody();

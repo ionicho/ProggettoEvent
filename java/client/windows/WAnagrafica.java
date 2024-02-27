@@ -40,7 +40,6 @@ public class WAnagrafica {
 
  private void searchRoom(String nome, TextField responseField, RestTemplate restTemplate) {
 	    String url = AppConfig.getURL() +"api/room/" + nome;
-	    System.out.printf("\n\n%s\n\n", url);
 	    Room room = restTemplate.getForObject(url, Room.class);
 	    if (room != null) {
 	        responseField.setText(room.toString()); // Mostra la risposta del server nel campo di testo

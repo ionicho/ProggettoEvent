@@ -40,6 +40,7 @@ public class WResource<T extends Resource> {
 
     // Metodo per ottenere (una copia) dei dati della tabella
     public List<T> getDati() {
+        refresh();
         return new ArrayList<>(table.getItems());
     }
 

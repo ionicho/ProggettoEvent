@@ -4,11 +4,11 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "DISPONIBILE"
+        "stato": "PRENOTATA"
       },
       {
         "data": "2024-01-02",
-        "stato": "PRENOTATA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-03",
@@ -196,7 +196,7 @@
       },
       {
         "data": "2024-02-26",
-        "stato": "PRENOTATA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-02-15",
@@ -208,6 +208,30 @@
       },
       {
         "data": "2024-02-27",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-17",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-18",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-19",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-20",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-21",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-22",
         "stato": "DISPONIBILE"
       }
     ],
@@ -219,15 +243,15 @@
     "disponibilita": [
       {
         "data": "2024-01-01",
-        "stato": "DISPONIBILE"
+        "stato": "PRENOTATA"
       },
       {
         "data": "2024-01-02",
-        "stato": "PRENOTATA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-03",
-        "stato": "PRENOTATA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-04",
@@ -424,6 +448,30 @@
       {
         "data": "2024-02-27",
         "stato": "PRENOTATA"
+      },
+      {
+        "data": "2024-02-17",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-18",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-19",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-20",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-21",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-22",
+        "stato": "DISPONIBILE"
       }
     ],
     "nome": "Hall002",
@@ -442,7 +490,7 @@
       },
       {
         "data": "2024-01-03",
-        "stato": "PRENOTATA"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-04",
@@ -638,6 +686,30 @@
       },
       {
         "data": "2024-02-27",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-17",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-18",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-19",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-20",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-21",
+        "stato": "DISPONIBILE"
+      },
+      {
+        "data": "2024-02-22",
         "stato": "DISPONIBILE"
       }
     ],

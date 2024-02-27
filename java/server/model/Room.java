@@ -66,21 +66,17 @@ public class Room extends Resource implements HasName {
 	
     @Override
     public String toString() {
-    		StringBuilder sb = new StringBuilder();
-    		sb.append("Camera{");
-    		sb.append("id:");
-    		sb.append(nome);
-    		sb.append("costo:");
-    		sb.append(costo);
-    		sb.append("tipo camera: ");
-    		sb.append(tipo);
-    		sb.append("N. letti: ");
-    		sb.append(numeroLetti);
-    		for (StateDate curr : disponibilita) {
-    			sb.append(curr.data);
-    			sb.append(curr.stato);
-    		}
-    		sb.append("}\n");
-    		return sb.toString();    		
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n{SALA\n");
+		sb.append("id:").append(nome).append(",\n");
+		sb.append("tipo:").append(tipo).append(",\n");
+		sb.append("costo:").append(costo).append(",\n");
+		sb.append("N. Letti: ").append(numeroLetti).append(",\n[");
+		for (StateDate curr : disponibilita) {
+			sb.append(curr.data).append(" ").append(curr.stato).append(",\n");
+		}
+		sb.delete(sb.length() - 2, sb.length());  // Rimuovi l'ultima virgola e spazio
+		sb.append("]}\n");
+		return sb.toString();   		
     }
 }

@@ -61,18 +61,15 @@ public class Hall extends Resource implements HasName {
 	@Override
 	public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append("Salaa{");
-			sb.append("id:");
-			sb.append(nome);
-			sb.append("costo:");
-			sb.append(costo);
-			sb.append("N. Posti: ");
-			sb.append(numeroPosti);
+			sb.append("\n{SALA\n");
+			sb.append("id:").append(nome).append(",\n");
+			sb.append("costo:").append(costo).append(",\n");
+			sb.append("N. Posti: ").append(numeroPosti).append(",\n[");
 			for (StateDate curr : disponibilita) {
-				sb.append(curr.data);
-				sb.append(curr.stato);
+				sb.append(curr.data).append(" ").append(curr.stato).append(",\n");
 			}
-			sb.append("}\n");
+			sb.delete(sb.length() - 2, sb.length());  // Rimuovi l'ultima virgola e spazio
+			sb.append("]}\n");
 			return sb.toString();    		
 	}
 }

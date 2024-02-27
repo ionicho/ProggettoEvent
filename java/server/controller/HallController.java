@@ -73,7 +73,10 @@ public class HallController {
     // Metodo PUT per aggiornare le sale
     @PutMapping("/hall/update")
     public List<Hall> updateSale(@RequestBody List<Hall> sale) {
-        return hallService.updateRisorse(sale);
+        System.out.printf("\nHALL Controller: ricevuto richiesta di update \n%s\n",sale.toString());
+        List<Hall> risposta = hallService.updateRisorse(sale);
+        System.out.printf("\nHALL Controller: inviato risposta di update \n%s\n",sale.toString());
+        return risposta;
     }
 
     // Metodo DELETE per rimuovere una sala

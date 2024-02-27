@@ -1,6 +1,7 @@
 package server.model;
 
 import java.time.LocalDate;
+import server.AppConfig;
 /**
  * Classe che rappresenta il calendario della struttura
  * che ospita gli eventi e le camere.
@@ -12,6 +13,14 @@ public class Calendar extends Resource implements HasName{
     public Calendar() {
 	}
 	
+	public LocalDate getLastDate() {
+		LocalDate lastDate = AppConfig.START_DATE;
+		for (StateDate curr: disponibilita) {
+			if (curr.data.compareTo(lastDate) > 0) lastDate = curr.data;
+		}
+		return lastDate;
+	}
+
 	public void setStatoData(LocalDate data, State stato) {
 		for (StateDate curr: disponibilita) {
 			if (data.compareTo(curr.data) == 0) curr.stato = stato;
