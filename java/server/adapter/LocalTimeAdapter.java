@@ -16,6 +16,9 @@ public class LocalTimeAdapter extends TypeAdapter<LocalTime> {
     @Override
     public LocalTime read(JsonReader reader) throws IOException {
         String text = reader.nextString();
+        if (text.length() == 4) {
+            text = "0" + text;  // aggiunge uno zero iniziale se mancante
+        }
         return LocalTime.parse(text);
     }
 

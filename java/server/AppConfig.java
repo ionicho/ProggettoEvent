@@ -22,6 +22,8 @@ public class AppConfig {
     public static final String DATABASE_ROOT_PATH = "D:\\UniBG\\Event\\DataBase\\";
     // base URL per le chiamate REST
     public static final String URL = "http://localhost:8080/";
+    // Data iniziale per la creazione di eventi
+    public static final LocalDate START_DATE = LocalDate.of(2024, 1,1);
 
     public static String getURL() {
         return URL;

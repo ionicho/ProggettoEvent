@@ -70,6 +70,12 @@ public class HallController {
         return hallService.updateRisorsa(sala);
     }
 
+    // Metodo PUT per aggiornare le sale
+    @PutMapping("/hall/update")
+    public List<Hall> updateSale(@RequestBody List<Hall> sale) {
+        return hallService.updateRisorse(sale);
+    }
+
     // Metodo DELETE per rimuovere una sala
     @DeleteMapping("/hall/{nome}/delete")
     public String deleteSala(@PathVariable String nome) {

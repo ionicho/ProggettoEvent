@@ -1,10 +1,6 @@
 [
   {
-    "nome": "Event022",
-    "elencoInterventi": []
-  },
-  {
-    "nome": "Event002",
+    "nome": "Event004",
     "elencoInterventi": [
       {
         "titolo": "Intervento 3",
@@ -22,15 +18,16 @@
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
     "costoPartecipazione": 150.0,
+    "sala": "Hall002",
     "partPrevisti": 25,
     "catering": "COLAZIONE"
   },
   {
-    "nome": "Event021",
+    "nome": "Event003",
     "elencoInterventi": []
   },
   {
-    "nome": "Event001",
+    "nome": "Event002",
     "elencoInterventi": [
       {
         "titolo": "Intervento 1",
@@ -53,12 +50,31 @@
         "descrizione": "pppppppppppppppppppp"
       }
     ],
-    "data": "2024-01-02",
+    "data": "2024-01-01",
     "oraInizio": "09:00",
     "oraFine": "17:00",
     "nomeOrganizzatore": "PAC",
     "costoPartecipazione": 120.0,
+    "sala": "Hall001",
     "partPrevisti": 25,
     "catering": "COLAZIONE"
+  },
+  {
+    "nome": "Event001",
+    "elencoInterventi": [
+      {
+        "titolo": "Pippo",
+        "relatore": "Pippo",
+        "descrizione": "Pippo si racconta"
+      }
+    ],
+    "data": "2024-01-01",
+    "oraInizio": "09:00",
+    "oraFine": "19:00",
+    "nomeOrganizzatore": "Pippo",
+    "costoPartecipazione": 100.0,
+    "sala": "Hall001",
+    "partPrevisti": 20,
+    "catering": "COFFEE_BREAK"
   }
 ]

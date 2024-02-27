@@ -17,8 +17,9 @@ public interface WEventRest {
 	
 	@SuppressWarnings("null")
 	public default List <Event> getEventi(RestTemplate restTemplate) {
-		return Arrays.asList(restTemplate.getForObject(url, Event[].class));
-	}
+		List<Event> eventi = Arrays.asList(restTemplate.getForObject(url, Event[].class));
+		eventi.sort(Comparator.comparing(Event::getNome)); // ordina gli eventi per nome
+		return eventi;	}
 	
 	/** Restituisce l'evento con l'ID specificato */
 	public default Event getEvento(String nome, RestTemplate restTemplate) {
@@ -34,6 +35,12 @@ public interface WEventRest {
 	public default Event updateEvento(Event evento, RestTemplate restTemplate) {
 		restTemplate.put(url+"/"+evento.getNome()+"/update", evento);
 		return getEvento(evento.getNome(), restTemplate);
+	}
+
+	/** Aggiorna la disponibilità delle sale */
+	public default List <Hall> updateSale(List <Hall> sale, RestTemplate restTemplate) {
+		restTemplate.put(AppConfig.getURL() + "api/hall/update", sale);
+		return Arrays.asList(restTemplate.getForObject(AppConfig.getURL()+"api/hall", Hall[].class));
 	}
 
 	/** Ottiene l'elenco delle sale libere nel giorno specificato + riga vuota*/

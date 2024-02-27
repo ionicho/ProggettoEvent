@@ -42,7 +42,7 @@ public class RoomService extends AbstractService <Room> implements Subscriber {
             for(StateDate sd : disponibilita){
                 oldStato = getVisitor.visit(curr, sd);
                 if (oldStato == State.PRENOTATA && sd.getStato() == State.CHIUSO){
-                    camereToBeResc.add(curr.getNome());
+                    camereToBeResc.add(sd.getData().toString() + ": " + curr.getNome());
                     setVisitor.visit(curr, sd);
                 } else if (oldStato == State.CHIUSO && sd.getStato() == State.DISPONIBILE){
                     setVisitor.visit(curr, sd); // se la camera era chiusa e ora è disponibile

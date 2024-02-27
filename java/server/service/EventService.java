@@ -41,7 +41,7 @@ public class EventService extends AbstractService <Event> implements Subscriber 
             for(StateDate sd : disponibilita){
                 oldData = curr.getData();
                 if (oldData == sd.getData() && sd.getStato() == State.CHIUSO){
-                    eventiToBeResc.add(curr.getNome());
+                    eventiToBeResc.add(sd.getData().toString() + ": " + curr.getNome());
                     curr.setData(null);
                 } else {
                     // non fare niente, va bene così

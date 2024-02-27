@@ -31,7 +31,7 @@
       },
       {
         "data": "2024-01-08",
-        "stato": "CHIUSO"
+        "stato": "DISPONIBILE"
       },
       {
         "data": "2024-01-09",
@@ -39,7 +39,7 @@
       },
       {
         "data": "2024-01-10",
-        "stato": "DISPONIBILE"
+        "stato": "CHIUSO"
       },
       {
         "data": "2024-01-11",
@@ -179,14 +179,6 @@
       },
       {
         "data": "2024-02-14",
-        "stato": "DISPONIBILE"
-      },
-      {
-        "data": "2024-02-15",
-        "stato": "DISPONIBILE"
-      },
-      {
-        "data": "2024-02-16",
         "stato": "DISPONIBILE"
       }
     ],

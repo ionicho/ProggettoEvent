@@ -67,6 +67,12 @@ public abstract class AbstractService <T extends HasName>{
         throw new IllegalArgumentException("Risorsa non esistente");
     }
 
+    public List<T> updateRisorse(List<T> nuove) {
+        risorse = nuove;
+        salvaNelDB(DBname, myGson, risorse);
+        return risorse;
+    }
+
     public List<T> caricadaDB(String DBname, Gson myGson, Type typeOfT) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(DBname));

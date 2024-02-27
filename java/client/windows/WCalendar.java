@@ -60,7 +60,7 @@ public class WCalendar extends WResource<Calendar> {
 		Label startDateL = new Label("Data inizio:");
 	    Label endDateL = new Label("Data fine:");
 	    DatePicker startDatePicker = new DatePicker();
-		startDatePicker.setValue(LocalDate.of(2024, 1, 1)); // Imposta il valore di default a 01/01/2024
+		startDatePicker.setValue(AppConfig.START_DATE); // Imposta il valore di default a 01/01/2024
 		startDatePicker.setDisable(true); // Blocca il DatePicker
 		startDatePicker.setStyle("-fx-opacity: 1.0;"); // Rende il DatePicker visibile
 	    DatePicker endDatePicker = new DatePicker();
@@ -110,7 +110,7 @@ public class WCalendar extends WResource<Calendar> {
     @SuppressWarnings("null")
     public void setCalendario(LocalDate startDate, LocalDate endDate) {
         // Invia una richiesta PUT al server per aggiornare il calendario
-		String name = "Calendar001";
+		String name = "Calendar001"; // per evitare di dover cliccare sulla riga della tabella
         String msg  = AppConfig.getURL() + "api/calendar/" + name + "/" + startDate.toString() + "/" + endDate.toString();
         System.out.printf("%s \n", msg);
         ResponseEntity<List<String>> response = restTemplate.exchange(msg, HttpMethod.PUT, null, new ParameterizedTypeReference<List<String>>() {});
@@ -121,7 +121,7 @@ public class WCalendar extends WResource<Calendar> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Sale da rischedulare");
                 alert.setHeaderText(null);
-                alert.setContentText("Le seguenti sale devono essere rischedulate: " + String.join(", ", toReschedule));
+                alert.setContentText("Le seguenti sale devono essere rischedulate: \n" + String.join(", ", toReschedule));
                 alert.showAndWait();
             });
             Platform.runLater(this::mettiDati);

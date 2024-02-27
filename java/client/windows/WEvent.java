@@ -52,7 +52,7 @@ public class WEvent extends WEventLayout implements WEventRest{
 		Stage hallStage = new Stage();
 		hallStage.initOwner(stage); // Imposta la finestra principale come proprietaria
 		wHall = new WHall(restTemplate);
-		wHall.start("Visualizzazione Sale", hallStage);
+		//wHall.start("Visualizzazione Sale", hallStage);
 		nHall = wHall.getTable();
 		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }
@@ -62,16 +62,22 @@ public class WEvent extends WEventLayout implements WEventRest{
 		if (evento != null && dataF != null && salaF != null) {
 			if (!Objects.equals(evento.getData(), dataF.getValue())) { //cambia la data
 				liberaSala(evento.getSala(), evento.getData(), restTemplate);
+				updateSale(wHall.getDati(), restTemplate);
 				updateEvento(evento, restTemplate);
-				evento.setSala(null);
+				eventi = getEventi(restTemplate); //aggiorna la lista degli eventi
+				wHall.refresh();
+				//evento.setSala(null);
 			}
 			String oldSala = evento.getSala();
 			String newSala = salaF.getValue();
 			if (!Objects.equals(oldSala, newSala)) { //cambia la sala
 				liberaSala(oldSala, evento.getData(),restTemplate);
 				occupaSala(newSala, dataF.getValue(), restTemplate);
+				updateSale(wHall.getDati(), restTemplate);
 				updateEvento(evento, restTemplate);
-				evento.setSala(newSala);
+				eventi = getEventi(restTemplate);
+				wHall.refresh();
+				//evento.setSala(newSala);
 			}
 		}
 	}
@@ -114,6 +120,13 @@ public class WEvent extends WEventLayout implements WEventRest{
 		wHall.refresh();
 	}
 	
+	private LocalTime parseTime(String time) {
+		if (time.length() == 4) {
+			time = "0" + time;
+		}
+		return LocalTime.parse(time, DateTimeFormatter.ofPattern(ORAMINUTI));
+	}
+	
 	/** Popola l'evento con i dati della finestra*/
 	private void populateEvent() {
 		if (this.evento != null) {
@@ -122,8 +135,8 @@ public class WEvent extends WEventLayout implements WEventRest{
 			this.evento.setPartPrevisti(Integer.parseInt(numParPreF.getText()));
 			this.evento.setCatering(cateringF.getValue() == null || cateringF.getValue().equals("") ? 
 				CateringType.COFFEE_BREAK : CateringType.valueOf(cateringF.getValue()));
-			this.evento.setOraInizio(LocalTime.parse(oraIniF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
-			this.evento.setOraFine(LocalTime.parse(oraFinF.getText(), DateTimeFormatter.ofPattern(ORAMINUTI)));
+			this.evento.setOraInizio(parseTime(oraIniF.getText()));
+			this.evento.setOraFine(parseTime(oraFinF.getText()));
 			this.evento.setData(dataF.getValue());
 			this.evento.setSala(salaF.getValue() == null || salaF.getValue().equals("") ? null : salaF.getValue()); 
 			this.evento.getElencoInterventi().clear();
@@ -202,6 +215,8 @@ public class WEvent extends WEventLayout implements WEventRest{
 				}
 				populateEvent();
 				this.evento = updateEvento(this.evento,restTemplate);
+				eventi = getEventi(restTemplate); //aggiorna la lista degli eventi
+				wHall.refresh();
 				populateFields(this.evento);
 			} catch (SystemException | HttpClientErrorException.NotFound ex) {
 				msgF.setText("Il salvataggio dell'evento non è riuscita.");

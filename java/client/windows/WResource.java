@@ -38,6 +38,11 @@ public class WResource<T extends Resource> {
         return table;
     }
 
+    // Metodo per ottenere (una copia) dei dati della tabella
+    public List<T> getDati() {
+        return new ArrayList<>(table.getItems());
+    }
+
     public WResourceRest <T> getRestHandler() {
         return restHandler;
     }
