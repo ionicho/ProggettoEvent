@@ -1,0 +1,193 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" version="24.7.5">
+  <diagram name="Pagina-1" id="dSSKuTilj4-GlvIkG2sL">
+    <mxGraphModel dx="2386" dy="1432" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cy61umw2MCx2Vh4moxnK-8" value="RoomController" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-1110" y="-800" width="370" height="250" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-20" value="- roomService: RoomService {final}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="26" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-11" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="52" width="370" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-13" value="+ RoomController(roomService: RoomService)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="60" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-14" value="+ getCamera(nome: String): Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="86" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-21" value="+ getCamere(): List&lt;Room&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="112" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-15" value="+ addRisorsa:(camera: Room): Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="138" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-22" value="+ updateCamera(nome: String, statoData: StateDate): String" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="164" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-40" value="+ updateRisorsa(camera: Room): Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="190" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-41" value="+ deleteCamera(nome: String): String" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="216" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-39" value="" style="endArrow=none;html=1;rounded=0;startArrow=diamondThin;startFill=0;startSize=18;exitX=1.005;exitY=0.079;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.005;entryY=-0.117;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="cy61umw2MCx2Vh4moxnK-44">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-738.1499999999999" y="-771.946" as="sourcePoint" />
+            <mxPoint x="-570" y="-780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-42" value="RoomService" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-650" y="-802" width="351" height="150" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-43" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-42">
+          <mxGeometry y="26" width="351" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-44" value="+ RoomService(gson: Gson)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-42">
+          <mxGeometry y="34" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-45" value="+ addRisorsa(): Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-42">
+          <mxGeometry y="60" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-46" value="+ changeDisponibilita(disponibilita: List&lt;StateDate): List &lt;String)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-42">
+          <mxGeometry y="86" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-47" value="+ changeStatoCamera(nome: String, statoData: StateDate): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-42">
+          <mxGeometry y="112" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-48" value="HallController" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-1110" y="-508" width="370" height="294" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-49" value="- hallService: HallService {final}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="26" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-50" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="52" width="370" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-66" value="+ HallController(hallService: HallService)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="60" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-51" value="+ getSaleLibere(date: String): List &lt;String&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="86" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-52" value="+ getSala(nome: String): Hall" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="112" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-53" value="+ getSale(): List&lt;Hall&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="138" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-54" value="+ addSala:(sala: Hall): Hall" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="164" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-55" value="+ updateSala(nome: String, statoData: StateDate): String" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="190" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-56" value="+ updateRisorsa(sala: Hall): Hall" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="216" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-67" value="+ updateSale(sale: List&lt;Hall&gt;): List&lt;Hall&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="242" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-57" value="+ deleteSala(nome: String): String" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-48">
+          <mxGeometry y="268" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-58" value="" style="endArrow=none;html=1;rounded=0;startArrow=diamondThin;startFill=0;startSize=18;exitX=1.005;exitY=0.079;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-738.1499999999999" y="-479.946" as="sourcePoint" />
+            <mxPoint x="-652" y="-479" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-68" value="HallService" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-650" y="-508" width="351" height="164" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-69" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-68">
+          <mxGeometry y="26" width="351" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-70" value="+ HallService(gson: Gson)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-68">
+          <mxGeometry y="34" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-71" value="+ addRisorsa(): Hall" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-68">
+          <mxGeometry y="60" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-72" value="+ changeDisponibilita(disponibilita: List&lt;StateDate): List &lt;String)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-68">
+          <mxGeometry y="86" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-73" value="+ changeStatoSala(nome: String, statoData: StateDate): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-68">
+          <mxGeometry y="112" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-74" value="+ getSaleLibere(data: LoclData): List &lt;String&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-68">
+          <mxGeometry y="138" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-75" value="EventController" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-1110" y="-170" width="370" height="250" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-76" value="- eventService: EventService {final}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="26" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-77" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="52" width="370" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-78" value="+ EventController(eventlService: EventService)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="60" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-79" value="+ getEventoByDateHall(date: String, hallName:String): Event" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="86" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-80" value="+ getEvento(nome: String): Event" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="112" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-81" value="+ getEventi(): List&lt;Event&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="138" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-82" value="+ addEvento:(): Event" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="164" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-83" value="+ updateEvento(evento: Event): Event" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="190" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-86" value="+ deleteEvento(nome: String): String" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-75">
+          <mxGeometry y="216" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-87" value="EventService" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-650" y="-170" width="351" height="140" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-88" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-87">
+          <mxGeometry y="26" width="351" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-89" value="+ EventService(gson: Gson)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-87">
+          <mxGeometry y="34" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-90" value="+ addEvento(): Event" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-87">
+          <mxGeometry y="60" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-91" value="+ changeDisponibilita(disponibilita: List&lt;StateDate): List &lt;String)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-87">
+          <mxGeometry y="86" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-92" value="+ getEventoByDateHall(date: LocalDate, slaName: String): Event" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-87">
+          <mxGeometry y="112" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-93" value="" style="endArrow=none;html=1;rounded=0;startArrow=diamondThin;startFill=0;startSize=18;exitX=0.993;exitY=0.239;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.002;entryY=0.64;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cy61umw2MCx2Vh4moxnK-76" target="cy61umw2MCx2Vh4moxnK-88">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-736.1499999999999" y="-119.99600000000004" as="sourcePoint" />
+            <mxPoint x="-650" y="-119.05000000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

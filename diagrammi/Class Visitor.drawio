@@ -1,0 +1,120 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" version="24.7.5">
+  <diagram name="Pagina-1" id="mxpA3ZBj34N2peBBIZw5">
+    <mxGraphModel dx="2306" dy="908" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="k76mF_GYhNFwXuyQEZio-1" value="&lt;&lt;interface&gt;&gt; &#xa;Visitor &lt;T&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="393" y="40" width="250" height="191" as="geometry">
+            <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-2" value="+ visit( Room o, StateDate sd): T" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-1" vertex="1">
+          <mxGeometry y="35" width="250" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-3" value="+ visit( Room o): T" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-1" vertex="1">
+          <mxGeometry y="61" width="250" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-4" value="+ visit( Hall o, StateDate sd): T" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-1" vertex="1">
+          <mxGeometry y="87" width="250" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-5" value="+ visit(Hall o): T" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-1" vertex="1">
+          <mxGeometry y="113" width="250" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-6" value="+ visit( Calendar o, StateDate sd): T" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-1" vertex="1">
+          <mxGeometry y="139" width="250" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-7" value="+ visit( Calendar o): T" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-1" vertex="1">
+          <mxGeometry y="165" width="250" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-21" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" parent="1" source="k76mF_GYhNFwXuyQEZio-22" target="k76mF_GYhNFwXuyQEZio-1" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="160.06508135168974" y="370" as="sourcePoint" />
+            <mxPoint x="312" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-22" value="VisitorGetPrice" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="330" width="330" height="191" as="geometry">
+            <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-23" value="+ visit( Room o, StateDate sd): Double {return NULL}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-22" vertex="1">
+          <mxGeometry y="35" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-24" value="+ visit( Room o): Double" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-22" vertex="1">
+          <mxGeometry y="61" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-25" value="+ visit( Hall o, StateDate sd): Double {return NULL}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-22" vertex="1">
+          <mxGeometry y="87" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-26" value="+ visit(Hall o): Double" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-22" vertex="1">
+          <mxGeometry y="113" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-27" value="+ visit( Calendar o, StateDate sd): Double {return NULL}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-22" vertex="1">
+          <mxGeometry y="139" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-28" value="+ visit( Calendar o): Double" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-22" vertex="1">
+          <mxGeometry y="165" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-29" value="VisitorGetState" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="398" y="330" width="240" height="191" as="geometry">
+            <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-30" value="+ visit( Room o, StateDate sd): State" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-29" vertex="1">
+          <mxGeometry y="35" width="240" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-31" value="+ visit( Room o): State {return NULL}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-29" vertex="1">
+          <mxGeometry y="61" width="240" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-32" value="+ visit( Hall o, StateDate sd): State" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-29" vertex="1">
+          <mxGeometry y="87" width="240" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-33" value="+ visit(Hall o): State {return NULL}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-29" vertex="1">
+          <mxGeometry y="113" width="240" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-34" value="+ visit( Calendar o, StateDate sd): State" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-29" vertex="1">
+          <mxGeometry y="139" width="240" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-35" value="+ visit( Calendar o): State {return NULL}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-29" vertex="1">
+          <mxGeometry y="165" width="240" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-36" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="k76mF_GYhNFwXuyQEZio-29" target="k76mF_GYhNFwXuyQEZio-1" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="173" y="340" as="sourcePoint" />
+            <mxPoint x="173" y="241" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-37" value="VisitorSetState" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="662" y="330" width="330" height="191" as="geometry">
+            <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-38" value="+ visit( Room o, StateDate sd): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-37" vertex="1">
+          <mxGeometry y="35" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-39" value="+ visit( Room o): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-37" vertex="1">
+          <mxGeometry y="61" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-40" value="+ visit( Hall o, StateDate sd): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-37" vertex="1">
+          <mxGeometry y="87" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-41" value="+ visit(Hall o): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-37" vertex="1">
+          <mxGeometry y="113" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-42" value="+ visit( Calendar o, StateDate sd): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-37" vertex="1">
+          <mxGeometry y="139" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-43" value="+ visit( Calendar o): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k76mF_GYhNFwXuyQEZio-37" vertex="1">
+          <mxGeometry y="165" width="330" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k76mF_GYhNFwXuyQEZio-44" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="k76mF_GYhNFwXuyQEZio-37" target="k76mF_GYhNFwXuyQEZio-1" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="528" y="340" as="sourcePoint" />
+            <mxPoint x="528" y="241" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
