@@ -18,9 +18,10 @@ public class EventInfo {
     protected Integer partPrevisti;
     protected CateringType catering;
 
-    // Costruttore senza parametri per la deserializzazione con Gson
+
     public EventInfo() {
-    }
+        // Costruttore senza parametri per la deserializzazione con Gson
+    	}
 
     public void setNomeOrganizzatore(String nome) {
     	nomeOrganizzatore = nome;

@@ -18,7 +18,7 @@ import server.model.*;
 @Service
 public class CalendarService extends AbstractService <server.model.Calendar>{
 
-    private static final String DBname = AppConfig.DATABASE_ROOT_PATH +"Calendario.json";;
+    private static final String DBNAME = AppConfig.DATABASE_ROOT_PATH +"Calendario.json";
 
     public CalendarService(Gson gson) {
         super(AppConfig.DATABASE_ROOT_PATH +"Calendario.json",
@@ -30,7 +30,7 @@ public class CalendarService extends AbstractService <server.model.Calendar>{
     	for (server.model.Calendar curr : risorse) {
             if (curr.getNome().compareTo(nome)==0) {
             	curr.setCalendario(start, end);
-            	salvaNelDB(DBname, myGson, risorse);
+            	salvaNelDB(DBNAME, myGson, risorse);
             }
     	}
     }
@@ -43,7 +43,7 @@ public class CalendarService extends AbstractService <server.model.Calendar>{
             for (int i = 0; i < risorse.size(); i++) {
                 if (risorse.get(i).getNome().equals(nome)) {
                 	risorse.set(i, calendario);
-                    salvaNelDB(DBname, myGson, risorse);
+                    salvaNelDB(DBNAME, myGson, risorse);
                     return;
                 }
             }

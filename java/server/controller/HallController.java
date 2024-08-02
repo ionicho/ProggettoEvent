@@ -65,7 +65,7 @@ public class HallController {
     }
     
     // Metodo PUT per aggiornare una sala   
-    @PutMapping("/hall/{nome}/update")
+    @PutMapping("/hall/{nome}/update") //NOSONAR
     public Hall updateRisorsa(@RequestBody Hall sala) {
         return hallService.updateRisorsa(sala);
     }
@@ -73,9 +73,9 @@ public class HallController {
     // Metodo PUT per aggiornare le sale
     @PutMapping("/hall/update")
     public List<Hall> updateSale(@RequestBody List<Hall> sale) {
-        System.out.printf("\nHALL Controller: ricevuto richiesta di update \n%s\n",sale.toString());
+        System.out.printf("%nHALL Controller: ricevuto richiesta di update %n%s%n",sale.toString());
         List<Hall> risposta = hallService.updateRisorse(sale);
-        System.out.printf("\nHALL Controller: inviato risposta di update \n%s\n",sale.toString());
+        System.out.printf("%nHALL Controller: inviato risposta di update %n%s%n",sale.toString());
         return risposta;
     }
 

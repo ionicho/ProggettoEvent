@@ -16,11 +16,10 @@ import static org.mockito.Mockito.*;
 
 /**
  * Classe di test per il RoomService
- * 
  */
 
 @ExtendWith(MockitoExtension.class)
-class RoomServiceTest {
+public class RoomServiceTest {//NOSONAR
 
     private RoomService roomService;
 	private VisitorSetState visitorSet = new VisitorSetState();
@@ -97,13 +96,13 @@ class RoomServiceTest {
 
 	@Test
 	@Disabled("Test disabilitato a causa della dipendenza dal singleton.")
-	void addRisorsaTest() {
+	void addRisorsaTest() { //NOSONAR
 		// eseguito solo per Eventi
 	}
 
 	@Test
 	@Disabled("Test disabilitato a causa della dipendenza dal singleton.")
-	void DeleteRisorsaTest() {
+	void DeleteRisorsaTest() { //NOSONAR
 		// eseguito solo per Eventi
 	}
 

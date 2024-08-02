@@ -17,7 +17,7 @@ public class Room extends Resource implements HasName {
 	
     // Costruttore con parametro String per creare nuovi eventi.
     // Il parametro 's' non viene utilizzato, serve solo per distinguere questo costruttore dal costruttore senza parametri.
-    public Room (String s) { //costruttore per il singleton
+    public Room (String s) { //NOSONAR
 	   this.nome = Singleton.getInstance().getNext(this.getClass().getSimpleName());
 	   this.costo = 0.;
 	   this.disponibilita = new ArrayList <>(); 

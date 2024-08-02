@@ -12,7 +12,7 @@ import server.model.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {ReceptionistApplication.class, server.AppConfig.class})
-class ReceptionistApplicationTests {
+public class ReceptionistApplicationTests { //NOSONAR
 
     @Autowired
     private RestTemplate restTemplate;

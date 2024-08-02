@@ -36,6 +36,7 @@ public class WHall extends WResource<Hall> {
         primaryStage.show();
     }
 
+    @Override
     public WEvent getWEvent() {
         return wEvent;
     }

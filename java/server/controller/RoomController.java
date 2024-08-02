@@ -55,7 +55,7 @@ public class RoomController {
     }
     
     // Metodo PUT per aggiornare una sala   
-    @PutMapping("/room/{nome}/update")
+    @PutMapping("/room/{nome}/update") //NOSONAR
     public Room updateRisorsa(@RequestBody Room camera) {
         return roomService.updateRisorsa(camera);
     }

@@ -18,7 +18,7 @@ public class Event extends EventInfo implements HasName {
     
     // Costruttore con parametro String per creare nuovi eventi.
     // Il parametro 's' non viene utilizzato, serve solo per distinguere questo costruttore dal costruttore senza parametri.
-    public Event (String s) {
+    public Event (String s) {//NOSONAR
 	   this.nome = Singleton.getInstance().getNext(this.getClass().getSimpleName());
 	   this.elencoInterventi = new ArrayList <>();
    }

@@ -58,12 +58,11 @@ public class WEvent extends WEventLayout implements WEventRest{
 	
 	/** Inizializza i campi */
 	protected void setFields(Stage stage) {
-       super.setFields(stage);
+       super.setFields();
 		setElimina();
 		Stage hallStage = new Stage();
 		hallStage.initOwner(stage); // Imposta la finestra principale come proprietaria
 		wHall = new WHall(restTemplate);
-		//wHall.start("Visualizzazione Sale", hallStage);
 		nHall = wHall.getTable();
 		stage.setOnCloseRequest(event -> hallStage.close());//chiude la finestra delle sale quando si chiude la finestra principale
     }
@@ -156,6 +155,7 @@ public class WEvent extends WEventLayout implements WEventRest{
 	}
 
 	/** Imposta il layout */
+    @Override
     protected void setLayout() {
     	super.setLayout();        
 		grid.add(nHall, 2, 0, 4, 11);
@@ -174,7 +174,7 @@ public class WEvent extends WEventLayout implements WEventRest{
 		// Gestisce la logica di creazione di un evento
 		newButton.setOnAction(e -> {
 			try {
-				System.out.printf("\nW-EVENT newButton.onAction\n");
+				System.out.printf("%nW-EVENT newButton.onAction%n");
 				this.evento =  addEvento(restTemplate);
 				eventi = getEventi(restTemplate); //aggiorna la lista degli eventi
 				wHall.refresh();
@@ -215,7 +215,7 @@ public class WEvent extends WEventLayout implements WEventRest{
 		// Gestisce la logica di salvataggio delle modifiche di un evento
 		saveButton.setOnAction(e -> {
 			try {
-				System.out.printf("\nW-EVENT saveButton.onAction: %s\n", this.evento.toString());
+				System.out.printf("%nW-EVENT saveButton.onAction: %s%n", this.evento.toString());
 				for (Map.Entry<Integer, Speech> entry : tempSpeeches.entrySet()) {
 					int index = entry.getKey();
 					Speech speech = entry.getValue();

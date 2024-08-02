@@ -28,7 +28,7 @@ public class RoomService extends AbstractService <Room> implements Subscriber {
     public Room addRisorsa() {
     	Room nuova = new Room("ciao"); //uso il costruttore che usa il singleton
     	risorse.add(nuova);
-    	salvaNelDB(DBname, myGson, risorse);
+    	salvaNelDB(myDBname, myGson, risorse);
     	return nuova;
     }
 
@@ -53,7 +53,7 @@ public class RoomService extends AbstractService <Room> implements Subscriber {
                 }   
             }
         }
-        salvaNelDB(DBname, myGson, risorse);
+        salvaNelDB(myDBname, myGson, risorse);
         return camereToBeResc;
     }
     
@@ -66,7 +66,7 @@ public class RoomService extends AbstractService <Room> implements Subscriber {
             for (int i = 0; i < risorse.size(); i++) {
                 if (risorse.get(i).getNome().equals(nome)) {
                     risorse.set(i, camera);
-                    salvaNelDB(DBname, myGson, risorse);
+                    salvaNelDB(myDBname, myGson, risorse);
                     return;
                 }
             }

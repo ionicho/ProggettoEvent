@@ -4,7 +4,6 @@ import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import java.util.*;
 import server.model.*;
 
@@ -27,7 +26,7 @@ public class WEventLayout {
     protected Button firstButton, prevButton, nextButton, lastButton, newButton, saveButton, newSpeech;
 
 	/** Inizializza i campi */
-	protected void setFields(Stage stage) {
+	protected void setFields() {
         cercaF = creaTextField();
         idField = creaTextField();
         msgF = creaTextField();
@@ -180,7 +179,7 @@ public class WEventLayout {
         TextField field = new TextField();
         field.setPrefWidth(WIDTH);
         field.setText("");
-        field.setPromptText("HH:mm");
+        field.setPromptText(ORAMINUTI);
         field.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("([01]?\\d|2[0-3])?(:[0-5]?\\d?)?") || newValue.length() > 5) {
                 field.setText(oldValue);

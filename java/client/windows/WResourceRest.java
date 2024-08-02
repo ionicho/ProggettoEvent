@@ -46,7 +46,7 @@ public class WResourceRest <T extends Resource>{
             url = AppConfig.getURL() + "api/calendar";
             return (T[]) restTemplate.getForObject(url, Calendar[].class);
         } else {
-            return null;
+            return null; //NOSONAR
         }
     }
 
@@ -54,11 +54,11 @@ public class WResourceRest <T extends Resource>{
     public boolean cambiaStatoRest(String name, LocalDate data, State stato) {
         String url;
         if (tipo == ResourceType.ROOM)
-                url = AppConfig.getURL() + "api/room/" + name + "/state";
+                url = AppConfig.getURL() + "api/room/" + name + "/state"; //NOSONAR
             else if (tipo == ResourceType.HALL)
-                url = AppConfig.getURL() + "api/hall/" + name + "/state";
+                url = AppConfig.getURL() + "api/hall/" + name + "/state"; //NOSONAR
             else if (tipo == ResourceType.CALENDAR)
-                url = AppConfig.getURL() + "api/calendar/" + name + "/state";
+                url = AppConfig.getURL() + "api/calendar/" + name + "/state"; //NOSONAR
             else //ERRORE
                 return false;
         return restTemplate.exchange(

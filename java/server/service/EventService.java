@@ -29,7 +29,7 @@ public class EventService extends AbstractService <Event> implements Subscriber 
     public Event addEvento() {
     	Event evento = new Event("ciao"); //uso il costruttore che usa il singleton
     	risorse.add(evento);
-    	salvaNelDB(DBname, myGson, risorse);
+    	salvaNelDB(myDBname, myGson, risorse);
     	return evento;
     }
 
@@ -48,7 +48,7 @@ public class EventService extends AbstractService <Event> implements Subscriber 
                 }   
             }
         }
-        salvaNelDB(DBname, myGson, risorse);
+        salvaNelDB(myDBname, myGson, risorse);
         return eventiToBeResc;
     }
 

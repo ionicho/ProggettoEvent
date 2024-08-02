@@ -72,7 +72,7 @@ public class WResourceClick <T extends Resource> implements EventHandler<MouseEv
                 }
                 if (item == "CHIUSO" && (tipo ==ResourceType.ROOM || tipo == ResourceType.HALL)) //NOSONAR
                     setOnMouseClicked(null);
-                else if(item == "PRENOTATA" && tipo == ResourceType.HALL ) 
+                else if(item.compareTo("PRENOTATA")==0 && tipo == ResourceType.HALL ) 
                     setOnMouseClicked(new WResourceClick<>(wResource));
                 else if (tipo == ResourceType.ROOM)
                     setOnMouseClicked(new WResourceClick<>(wResource));

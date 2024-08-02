@@ -15,7 +15,7 @@ import java.util.*;
  @Service
  public class SingletonService {
  
-    private static final String DATABASE_FILE = AppConfig.DATABASE_ROOT_PATH +"Singleton.json";
+    private static final String DBNAME = AppConfig.DATABASE_ROOT_PATH +"Singleton.json";
  
     // Costruttore privato per evitare che venga istanziata
     private SingletonService() {
@@ -31,7 +31,7 @@ import java.util.*;
     public static HashMap<String, Integer> caricaCountdaDB() {//NOSONAR 
         try {
             Gson gson = getGson();
-            BufferedReader br = new BufferedReader(new FileReader(DATABASE_FILE));
+            BufferedReader br = new BufferedReader(new FileReader(DBNAME));
             return gson.fromJson(br, new TypeToken<HashMap<String, Integer>>(){}.getType());
         } catch (IOException e) {
             return new HashMap<>(); //Inizia da un HashMap vuoto se non è possibile caricare da DB
@@ -42,7 +42,7 @@ import java.util.*;
      public static void salvaCountsuDB(Map<String, Integer> counters) {
          try {
              Gson gson = getGson();
-             PrintWriter pw = new PrintWriter(new FileWriter(DATABASE_FILE));
+             PrintWriter pw = new PrintWriter(new FileWriter(DBNAME));
              pw.println(gson.toJson(counters));
              pw.close();
          } catch (IOException e) {

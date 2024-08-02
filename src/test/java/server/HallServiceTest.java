@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 @ExtendWith(MockitoExtension.class)
-class HallServiceTest {
+public class HallServiceTest {//NOSONAR
     
     private HallService hallService;
 	private List <StateDate> disp = new ArrayList <>();
@@ -61,7 +61,7 @@ class HallServiceTest {
 
 	@Test
 	void loadFromDbTest() {
-		List<Hall> sale = hallService.getRisorse();
+		sale = hallService.getRisorse();
 		assertFalse(sale.isEmpty());
 		for (Hall sala : sale) {
 			assertNotNull(sala.getNome());
@@ -71,8 +71,8 @@ class HallServiceTest {
 
     @SuppressWarnings("null")
 	@Test
-    void getSaleLibereTest() throws Exception {
-		List<Hall> sale = hallService.getRisorse();
+    void getSaleLibereTest(){
+		sale = hallService.getRisorse();
 		List<String> saleLibere= null;
 		boolean found = false;
 		LocalDate dataTest=null;

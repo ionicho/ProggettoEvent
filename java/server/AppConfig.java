@@ -19,7 +19,7 @@ import server.adapter.*;
 public class AppConfig {
 
     //  Directory in cui verranno salvati i file JSON e URL per le chiamate REST
-    public static final String DATABASE_ROOT_PATH = "D:\\UniBG\\Event\\DataBase\\";
+    public static final String DATABASE_ROOT_PATH = "D:\\UniBG\\Event\\DataBase\\";  // NOSONAR
     // base URL per le chiamate REST
     public static final String URL = "http://localhost:8080/";
     // Data iniziale per la creazione di eventi

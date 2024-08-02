@@ -14,21 +14,21 @@ import server.model.*;
  * getRisorsa(String id) restituisce la risorsa con l'id specificato
  * deleteRisorsa(String id) elimina la risorsa con l'id specificato
  * updateRisorsa(T nuova) aggiorna la risorsa con i dati della risorsa passata
- * caricadaDB(String DBname, Gson myGson, Type typeOfT) carica la lista di risorse dal DB
- * salvaNelDB(String DBname, Gson myGson, List<T> myList) salva la lista di risorse nel DB
- * salvaNelDB(String DBname, Gson myGson, T myObj) salva la risorsa nel DB
+ * caricadaDB(String myDBname, Gson myGson, Type typeOfT) carica la lista di risorse dal DB
+ * salvaNelDB(String myDBname, Gson myGson, List<T> myList) salva la lista di risorse nel DB
+ * salvaNelDB(String myDBname, Gson myGson, T myObj) salva la risorsa nel DB
  */
 
 public abstract class AbstractService <T extends HasName>{
 
-    protected String DBname;
+    protected String myDBname;
     protected List<T> risorse;
     protected Gson myGson;
 
-    public AbstractService(String DBname, Gson myGson, Type typeOfT) {
-    	this.DBname = DBname;
+    protected AbstractService(String myDBname, Gson myGson, Type typeOfT) {
+    	this.myDBname = myDBname;
         this.myGson = myGson;
-        this.risorse = caricadaDB(DBname, myGson, typeOfT);
+        this.risorse = caricadaDB(myDBname, myGson, typeOfT);
     }
 
     public List<T> getRisorse() {
@@ -48,7 +48,7 @@ public abstract class AbstractService <T extends HasName>{
         for (T curr : risorse) {
             if (curr.getNome().compareTo(id)==0) {
                 risorse.remove(curr);
-                salvaNelDB(DBname, myGson, risorse);
+                salvaNelDB(myDBname, myGson, risorse);
                 return;
             }
         }
@@ -60,7 +60,7 @@ public abstract class AbstractService <T extends HasName>{
             if (curr.getNome().compareTo(nuova.getNome())==0) {
                 risorse.remove(curr);
                 risorse.add(nuova);
-                salvaNelDB(DBname, myGson, risorse);
+                salvaNelDB(myDBname, myGson, risorse);
                 return nuova;
             }
         }
@@ -69,22 +69,22 @@ public abstract class AbstractService <T extends HasName>{
 
     public List<T> updateRisorse(List<T> nuove) {
         risorse = nuove;
-        salvaNelDB(DBname, myGson, risorse);
+        salvaNelDB(myDBname, myGson, risorse);
         return risorse;
     }
 
-    public List<T> caricadaDB(String DBname, Gson myGson, Type typeOfT) {
+    public List<T> caricadaDB(String myDBname, Gson myGson, Type typeOfT) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(DBname));
+            BufferedReader br = new BufferedReader(new FileReader(myDBname));
             return myGson.fromJson(br, typeOfT);
         } catch (IOException e) {
             return new ArrayList<>();
         }
     }
 
-    public void salvaNelDB(String DBname, Gson myGson, List<T> myList) {
+    public void salvaNelDB(String myDBname, Gson myGson, List<T> myList) {
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter(DBname));
+            PrintWriter pw = new PrintWriter(new FileWriter(myDBname));
             myList.removeAll(Collections.singleton(null));
             pw.println(myGson.toJson(myList));
             pw.close();
@@ -93,9 +93,9 @@ public abstract class AbstractService <T extends HasName>{
         }
     }
 
-    public void salvaNelDB(String DBname, Gson myGson, T myObj) {
+    public void salvaNelDB(String myDBname, Gson myGson, T myObj) {
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter(DBname));
+            PrintWriter pw = new PrintWriter(new FileWriter(myDBname));
             pw.println(myGson.toJson(myObj));
             pw.close();
         } catch (IOException e) {

@@ -58,18 +58,16 @@ public class EventController {
     }
 
     // Metodo PUT per aggiornare un evento   
-    @PutMapping("/event/{nome}/update")
+    @PutMapping("/event/{nome}/update") //NOSONAR
     public Event updateEvento(@RequestBody Event evento) {
-        System.out.printf("\nEVENT Controller: ricevuto richiesta di update %s\n",evento.toString());
+        System.out.printf("%nEVENT Controller: ricevuto richiesta di update %s%n",evento.toString());
         Event updatedEvent = eventService.updateRisorsa(evento);
-        System.out.printf("\nEVENT Controller: inviato risposta ad update %s\n",updatedEvent.toString());
+        System.out.printf("%nEVENT Controller: inviato risposta ad update %s%n",updatedEvent.toString());
         return updatedEvent;
-
-        //return eventService.updateRisorsa(evento);
     }
 
     // Metodo DELETE per rimuovere un evento
-    @DeleteMapping("/event/{nome}/delete")
+    @DeleteMapping("/event/{nome}/delete") //NOSONAR
     public String deleteEvento(@PathVariable String nome) {
         eventService.deleteRisorsa(nome);
         return "Evento con ID: " + nome + " rimosso con successo.";

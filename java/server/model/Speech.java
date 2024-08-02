@@ -11,10 +11,11 @@ public class Speech {
     private String relatore;
     private String descrizione;
 
-    // Costruttore senza parametri per la deserializzazione con Gson
-    // e per la creazione di un oggetto vuoto
+
     public Speech() {
-    }
+        // Costruttore senza parametri per la deserializzazione con Gson
+        // e per la creazione di un oggetto vuoto
+    	}
 
     public String getTitolo() {
         return titolo;

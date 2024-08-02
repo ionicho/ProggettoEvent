@@ -14,7 +14,7 @@ import server.model.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class EventServiceTest {
+public class EventServiceTest { //NOSONAR
 
     private EventService eventService;
 
@@ -60,7 +60,7 @@ class EventServiceTest {
 
     @Test
 	void loadFromDbTest() {
-		List<Event> eventi = eventService.getRisorse();
+		eventi = eventService.getRisorse();
 		assertFalse(eventi.isEmpty());
 		for (Event evento : eventi) {
 			assertNotNull(evento.getNome());

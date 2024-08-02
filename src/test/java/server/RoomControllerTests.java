@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RoomController.class)
-class RoomControllerTests {
+public class RoomControllerTests {//NOSONAR
 
     @Autowired
     private MockMvc mockMvc;

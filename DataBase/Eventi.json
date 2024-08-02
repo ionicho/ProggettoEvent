@@ -39,24 +39,6 @@
     "sala": ""
   },
   {
-    "nome": "Event001",
-    "elencoInterventi": [
-      {
-        "titolo": "Pippo",
-        "relatore": "Pippo",
-        "descrizione": "Pippo si racconta"
-      }
-    ],
-    "data": "2024-01-01",
-    "oraInizio": "09:00",
-    "oraFine": "19:00",
-    "nomeOrganizzatore": "Pippo",
-    "costoPartecipazione": 100.0,
-    "sala": "Hall002",
-    "partPrevisti": 50,
-    "catering": "COFFEE_BREAK"
-  },
-  {
     "nome": "Event004",
     "elencoInterventi": [
       {
@@ -95,6 +77,25 @@
   {
     "nome": "Event007",
     "elencoInterventi": [],
-    "data": "2024-02-27"
+    "data": "2024-02-27",
+    "sala": "Hall001"
+  },
+  {
+    "nome": "Event001",
+    "elencoInterventi": [
+      {
+        "titolo": "Pippo",
+        "relatore": "Pippo",
+        "descrizione": "Pippo si racconta"
+      }
+    ],
+    "data": "2024-01-01",
+    "oraInizio": "09:00",
+    "oraFine": "19:00",
+    "nomeOrganizzatore": "Pippo",
+    "costoPartecipazione": 100.0,
+    "sala": "Hall002",
+    "partPrevisti": 100,
+    "catering": "COFFEE_BREAK"
   }
 ]

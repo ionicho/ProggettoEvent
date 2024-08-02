@@ -13,27 +13,27 @@ import server.model.*;
 
 public interface WEventRest {
 	
-	public String url = AppConfig.getURL() +"api/event";
+	public String URL = AppConfig.getURL() +"api/event";
 	
 	@SuppressWarnings("null")
 	public default List <Event> getEventi(RestTemplate restTemplate) {
-		List<Event> eventi = Arrays.asList(restTemplate.getForObject(url, Event[].class));
+		List<Event> eventi = Arrays.asList(restTemplate.getForObject(URL, Event[].class));
 		eventi.sort(Comparator.comparing(Event::getNome)); // ordina gli eventi per nome
 		return eventi;	}
 	
 	/** Restituisce l'evento con l'ID specificato */
 	public default Event getEvento(String nome, RestTemplate restTemplate) {
-		return restTemplate.getForObject(url+"/"+nome, Event.class);
+		return restTemplate.getForObject(URL+"/"+nome, Event.class);
 	}
 	
 	/** Aggiunge un nuovo evento */
 	public default Event addEvento(RestTemplate restTemplate) {
-		return  restTemplate.getForObject(url+"/add", Event.class);	
+		return  restTemplate.getForObject(URL+"/add", Event.class);	
 	}
 	
 	/** Aggiorna un evento e restituisce l'evento aggiornato */
 	public default Event updateEvento(Event evento, RestTemplate restTemplate) {
-		restTemplate.put(url+"/"+evento.getNome()+"/update", evento);
+		restTemplate.put(URL+"/"+evento.getNome()+"/update", evento);
 		return getEvento(evento.getNome(), restTemplate);
 	}
 

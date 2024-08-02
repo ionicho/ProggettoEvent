@@ -29,7 +29,7 @@ public class HallService extends AbstractService <Hall> implements Subscriber {
     public Hall addRisorsa() {
     	Hall nuova = new Hall("ciao"); //uso il costruttore che usa il singleton
     	risorse.add(nuova);
-    	salvaNelDB(DBname, myGson, risorse);
+    	salvaNelDB(myDBname, myGson, risorse);
     	return nuova;
     }
 
@@ -54,7 +54,7 @@ public class HallService extends AbstractService <Hall> implements Subscriber {
                 }   
             }
         }
-        salvaNelDB(DBname, myGson, risorse);
+        salvaNelDB(myDBname, myGson, risorse);
         return saleToBeResc;
     }
 
@@ -68,7 +68,7 @@ public class HallService extends AbstractService <Hall> implements Subscriber {
             for (int i = 0; i < risorse.size(); i++) {
                 if (risorse.get(i).getNome().equals(nome)) {
                     risorse.set(i, sala);
-                    salvaNelDB(DBname, myGson, risorse);
+                    salvaNelDB(myDBname, myGson, risorse);
                     return;
                 }
             }

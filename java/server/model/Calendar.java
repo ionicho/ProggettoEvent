@@ -9,9 +9,10 @@ import server.AppConfig;
 
 public class Calendar extends Resource implements HasName{
 	
-	// Costruttore senza parametri per la deserializzazione con Gson
+
     public Calendar() {
-	}
+    	// Costruttore senza parametri per la deserializzazione con Gson
+    	}
 	
 	public LocalDate getLastDate() {
 		LocalDate lastDate = AppConfig.START_DATE;

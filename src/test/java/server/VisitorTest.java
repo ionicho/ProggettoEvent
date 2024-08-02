@@ -14,7 +14,7 @@ import server.model.*;
  */
 
 @ExtendWith(MockitoExtension.class)
-class VisitorTest {
+public class VisitorTest {//NOSONAR
 
     private VisitorSetState visitorSet;
     private VisitorGetState visitorGet;
