@@ -1,0 +1,7 @@
+client
+client.windows
+server
+server.adapter
+server.controller
+server.model
+server.service

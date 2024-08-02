@@ -1,0 +1,148 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" version="24.7.5">
+  <diagram name="Pagina-1" id="dSSKuTilj4-GlvIkG2sL">
+    <mxGraphModel dx="2386" dy="1432" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-23" value="&lt;&lt;interface&gt;&gt; &#xa;Subscriber" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="-585" y="-610" width="380" height="70" as="geometry">
+            <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-24" value="+ changeDisponibilita(disponibilita: List&lt;StateDate&gt;): List &lt;String&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="v0eN1lc9TINNruY0Dgxv-23" vertex="1">
+          <mxGeometry y="35" width="380" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-61" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.333;entryY=0.973;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="cy61umw2MCx2Vh4moxnK-23" target="v0eN1lc9TINNruY0Dgxv-24" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="-659.4069999999999" y="-367" as="sourcePoint" />
+            <mxPoint x="-490" y="-690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-62" value="HallService" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="-620" y="-240" width="351" height="86" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-63" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="v0eN1lc9TINNruY0Dgxv-62" vertex="1">
+          <mxGeometry y="26" width="351" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-66" value="+ changeDisponibilita(disponibilita: List&lt;StateDate): List &lt;String)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="v0eN1lc9TINNruY0Dgxv-62" vertex="1">
+          <mxGeometry y="34" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-68" value="+ ....." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="v0eN1lc9TINNruY0Dgxv-62" vertex="1">
+          <mxGeometry y="60" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-69" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" parent="1" source="v0eN1lc9TINNruY0Dgxv-62" target="v0eN1lc9TINNruY0Dgxv-23" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="-190" y="18" as="sourcePoint" />
+            <mxPoint x="-492" y="133" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v0eN1lc9TINNruY0Dgxv-129" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;entryX=0.705;entryY=1.184;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="cy61umw2MCx2Vh4moxnK-27" target="v0eN1lc9TINNruY0Dgxv-24" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="-240" y="-370" as="sourcePoint" />
+            <mxPoint x="20" y="-260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bbv8pxsKWFmuD9a9kniN-17" value="" style="endArrow=none;html=1;rounded=0;startArrow=diamondThin;startFill=0;startSize=18;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="cy61umw2MCx2Vh4moxnK-10" target="v0eN1lc9TINNruY0Dgxv-24" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-750" y="-705" as="sourcePoint" />
+            <mxPoint x="-590" y="-710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-8" value="CalendarController" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-1120" y="-770" width="370" height="330" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-9" value="- calendarService: CalendarService {final}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="26" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-19" value="- hallService: HallService {final}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="52" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-20" value="- roomService: RoomService {final}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="78" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-10" value="- subscribers: List&lt;Subscriber&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="104" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-11" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="130" width="370" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-12" value="+ CalendarController( calendarService:CalendarService, &#xa;                                      hallService: HallService,&#xa;                                      roomService: RoomService)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="138" width="370" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-13" value="+ notificaAggiornamento(disponbilità: List &lt;StateDate&gt;):List &lt;String&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="190" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-14" value="+ getCalendari(): List &lt;server.model.Calendar&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="216" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-21" value="+ getCalendario(nome: String): server.model.Calendar" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="242" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-15" value="+ updateCalendario(nome:String,  statoData: StateDate): String: " style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="268" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-22" value="+ setCalendario(nome:String,  statoData: StateDate): List &lt;String&gt;: " style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-8">
+          <mxGeometry y="294" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-23" value="RoomService" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-820" y="-380" width="351" height="86" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-24" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-23">
+          <mxGeometry y="26" width="351" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-25" value="+ changeDisponibilita(disponibilita: List&lt;StateDate): List &lt;String)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-23">
+          <mxGeometry y="34" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-26" value="+ ....." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-23">
+          <mxGeometry y="60" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-27" value="EventService" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-360" y="-360" width="351" height="86" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-28" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-27">
+          <mxGeometry y="26" width="351" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-29" value="+ changeDisponibilita(disponibilita: List&lt;StateDate): List &lt;String)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-27">
+          <mxGeometry y="34" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-30" value="+ ....." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-27">
+          <mxGeometry y="60" width="351" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-33" value="CalendarService" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-585" y="-790" width="370" height="150" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-34" value="- DBname: String" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" vertex="1" parent="cy61umw2MCx2Vh4moxnK-33">
+          <mxGeometry y="26" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-35" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-33">
+          <mxGeometry y="52" width="370" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-36" value="+ CalendarService(gson: Gson)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-33">
+          <mxGeometry y="60" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-37" value="+ setCalendario(nome: String, start: LocalDate, end: LocalDate): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-33">
+          <mxGeometry y="86" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-38" value="+ changeStatoCalendario(nome: String, statoData: StateDate): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="cy61umw2MCx2Vh4moxnK-33">
+          <mxGeometry y="112" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cy61umw2MCx2Vh4moxnK-39" value="" style="endArrow=none;html=1;rounded=0;startArrow=diamondThin;startFill=0;startSize=18;entryX=0.002;entryY=1.085;entryDx=0;entryDy=0;exitX=1.005;exitY=0.079;exitDx=0;exitDy=0;entryPerimeter=0;exitPerimeter=0;" edge="1" parent="1" source="cy61umw2MCx2Vh4moxnK-9" target="cy61umw2MCx2Vh4moxnK-34">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-740" y="-643" as="sourcePoint" />
+            <mxPoint x="-575" y="-522" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
