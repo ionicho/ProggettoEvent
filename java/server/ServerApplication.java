@@ -17,6 +17,7 @@ public class ServerApplication {
 		
      // Avvia il client dopo che il server è stato avviato
         Application.launch(ReceptionistApplication.class, args);
+
 	}
 
 }

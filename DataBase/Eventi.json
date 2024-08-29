@@ -1,38 +1,5 @@
 [
   {
-    "nome": "Event002",
-    "elencoInterventi": [
-      {
-        "titolo": "Intervento 1",
-        "relatore": "Relatore 1",
-        "descrizione": "Descrizione dell\u0027intervento 1111"
-      },
-      {
-        "titolo": "Intervento 2",
-        "relatore": "Relatore 2",
-        "descrizione": "Descrizione dell\u0027intervento 2"
-      },
-      {
-        "titolo": "qwqwqw",
-        "relatore": "Relatoreeeee",
-        "descrizione": "bla bla bla"
-      },
-      {
-        "titolo": "pippo",
-        "relatore": "pipppoooooo",
-        "descrizione": "pppppppppppppppppppp"
-      }
-    ],
-    "data": "2024-01-01",
-    "oraInizio": "09:00",
-    "oraFine": "17:00",
-    "nomeOrganizzatore": "PAC",
-    "costoPartecipazione": 120.0,
-    "sala": "Hall001",
-    "partPrevisti": 25,
-    "catering": "COLAZIONE"
-  },
-  {
     "nome": "Event003",
     "elencoInterventi": [],
     "data": "2024-01-01",
@@ -97,5 +64,38 @@
     "sala": "Hall002",
     "partPrevisti": 100,
     "catering": "COFFEE_BREAK"
+  },
+  {
+    "nome": "Event002",
+    "elencoInterventi": [
+      {
+        "titolo": "Intervento 1",
+        "relatore": "Relatore 1",
+        "descrizione": "Descrizione dell\u0027intervento 1111"
+      },
+      {
+        "titolo": "Intervento 2",
+        "relatore": "Relatore 2",
+        "descrizione": "Descrizione dell\u0027intervento 2"
+      },
+      {
+        "titolo": "pippo",
+        "relatore": "pipppoooooo",
+        "descrizione": "pppppppppppppppppppp"
+      },
+      {
+        "titolo": "Intervento 3",
+        "relatore": "Gaetano",
+        "descrizione": "come sono diventato papà"
+      }
+    ],
+    "data": "2024-01-01",
+    "oraInizio": "09:00",
+    "oraFine": "17:00",
+    "nomeOrganizzatore": "PAC",
+    "costoPartecipazione": 120.0,
+    "sala": "Hall001",
+    "partPrevisti": 25,
+    "catering": "COLAZIONE"
   }
 ]

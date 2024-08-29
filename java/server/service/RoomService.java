@@ -2,6 +2,8 @@ package server.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import server.*;
@@ -19,10 +21,13 @@ import server.model.*;
 @Service
 public class RoomService extends AbstractService <Room> implements Subscriber {
 
-    public RoomService(Gson gson) {
-        super(AppConfig.DATABASE_ROOT_PATH +"Camere.json",
+    public RoomService(Gson gson, MongoTemplate mongoDB) {
+        super("Camere",
             gson, 
-            new TypeToken<List<Room>>(){}.getType());
+            mongoDB,
+            AppConfig.useMongoDB()? 
+            		new TypeToken<Room>(){}.getType():
+            		new TypeToken<List<Room>>(){}.getType());
     }
     
     public Room addRisorsa() {

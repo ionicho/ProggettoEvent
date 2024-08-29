@@ -34,7 +34,7 @@ public interface WEventRest {
 	/** Aggiorna un evento e restituisce l'evento aggiornato */
 	public default Event updateEvento(Event evento, RestTemplate restTemplate) {
 		restTemplate.put(URL+"/"+evento.getNome()+"/update", evento);
-		return getEvento(evento.getNome(), restTemplate);
+		return getEvento(evento.getNome(), restTemplate); 
 	}
 
 	/** Aggiorna la disponibilità delle sale */

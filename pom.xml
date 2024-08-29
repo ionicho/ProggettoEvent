@@ -17,6 +17,16 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+	<!-- Spring Data MongoDB (API alto livello)-->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-mongodb</artifactId>
+	</dependency>
+	<!-- Dipendenze per MongoDB (Driver) -->
+    	<dependency>
+		<groupId>org.mongodb</groupId>
+		<artifactId>mongodb-driver-sync</artifactId>
+	</dependency>
 	<!-- Dipendenze per Spring Boot (lato Server)-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -49,7 +59,7 @@
 		        <groupId>com.google.code.gson</groupId>
 		        <artifactId>gson</artifactId>
    		</dependency>
-       <!-- Dipendenze per l'anaisi dei msg scmabiati via WEB' -->	   	   		
+       <!-- Dipendenze per l'analisi dei msg scmabiati via WEB' -->	   	   		
    		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 		 	<artifactId>jackson-databind</artifactId>
@@ -66,10 +76,24 @@
 
 	<build>
 		<plugins>
+			<!-- plugin di Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			 <!-- plugin exec-maven-plugin per lanciare da TTY un client-->
+		        <plugin>
+		            <groupId>org.codehaus.mojo</groupId>
+		            <artifactId>exec-maven-plugin</artifactId>
+		            <version>3.0.0</version>
+		            <executions>
+		                <execution>
+		                    <goals>
+		                        <goal>java</goal>
+		                    </goals>
+		                </execution>
+		            </executions>
+		        </plugin>
 		</plugins>
 	</build>
 

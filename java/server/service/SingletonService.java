@@ -1,52 +1,79 @@
 package server.service;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import server.AppConfig;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
+import server.AppConfig;
+
 import java.io.*;
 import java.util.*;
 
-/**
- * Questa classe esegue le operazioni di lettura e scrittura
- * del file json che funge da DB per il Singleton.
- */
+@Service
+public class SingletonService {
 
- @Service
- public class SingletonService {
- 
-    private static final String DBNAME = AppConfig.DATABASE_ROOT_PATH +"Singleton.json";
- 
-    // Costruttore privato per evitare che venga istanziata
-    private SingletonService() {
+    private static final String myColl = "Singleton"; //NOSONAR
+    private static final String myDBname = AppConfig.DATABASE_ROOT_PATH + myColl + ".json"; //NOSONAR
+    private final MongoTemplate myMongoDB;
+    private final boolean useMongoDB;
+
+    // Costruttore per l'iniezione di MongoTemplate
+    public SingletonService(MongoTemplate mongoTemplate) {
+        this.myMongoDB = mongoTemplate;
+        this.useMongoDB = AppConfig.useMongoDB();
     }
 
-     private static Gson getGson() {
-         return new GsonBuilder()
-             .setPrettyPrinting()  // inserisce i CR
-             .create();
-     }
- 
+    private Gson getGson() {
+        return new GsonBuilder().setPrettyPrinting().create();
+    }
+
     // Metodo per caricare i contatori da DB
-    public static HashMap<String, Integer> caricaCountdaDB() {//NOSONAR 
-        try {
-            Gson gson = getGson();
-            BufferedReader br = new BufferedReader(new FileReader(DBNAME));
-            return gson.fromJson(br, new TypeToken<HashMap<String, Integer>>(){}.getType());
-        } catch (IOException e) {
-            return new HashMap<>(); //Inizia da un HashMap vuoto se non è possibile caricare da DB
+    public HashMap<String, Integer> caricaCountdaDB() {
+        if (useMongoDB) {
+            MongoCollection<Document> collection = myMongoDB.getDb().getCollection(myColl);   
+            List<Document> documents = collection.find().into(new ArrayList<>());
+
+            HashMap<String, Integer> counters = new HashMap<>();
+            for (Document doc : documents) {
+                String tipoRisorsa = doc.getString("tipoRisorsa");
+                Integer count = doc.getInteger("count", 0);
+                counters.put(tipoRisorsa, count);
+            }
+            return counters;
+        } else {
+            try {
+                Gson gson = getGson();
+                BufferedReader br = new BufferedReader(new FileReader(myDBname));
+                return gson.fromJson(br, new TypeToken<HashMap<String, Integer>>(){}.getType());
+            } catch (IOException e) {
+                return new HashMap<>();
+            }
         }
     }
- 
-     // Metodo per salvare i contatori su DB
-     public static void salvaCountsuDB(Map<String, Integer> counters) {
-         try {
-             Gson gson = getGson();
-             PrintWriter pw = new PrintWriter(new FileWriter(DBNAME));
-             pw.println(gson.toJson(counters));
-             pw.close();
-         } catch (IOException e) {
-             e.printStackTrace();
-         }
-     }
- }
+
+    // Metodo per salvare i contatori su DB
+    public void salvaCountsuDB(Map<String, Integer> counters) {
+        if (useMongoDB) {
+            MongoCollection<Document> collection = myMongoDB.getDb().getCollection(myColl);   
+            collection.drop(); // Opzionale: Pulisce la collezione esistente
+
+            for (Map.Entry<String, Integer> entry : counters.entrySet()) {
+                Document doc = new Document("tipoRisorsa", entry.getKey())
+                                .append("count", entry.getValue());
+                collection.insertOne(doc);
+            }
+        } else {
+            try {
+                Gson gson = getGson();
+                PrintWriter pw = new PrintWriter(new FileWriter(myDBname));
+                pw.println(gson.toJson(counters));
+                pw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

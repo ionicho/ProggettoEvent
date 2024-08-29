@@ -2,6 +2,8 @@ package server.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
@@ -20,10 +22,13 @@ import server.model.*;
 @Service
 public class HallService extends AbstractService <Hall> implements Subscriber {
 
-    public HallService(Gson gson) {
-        super(AppConfig.DATABASE_ROOT_PATH +"Sale.json",
-        		gson, 
-        		new TypeToken<List<Hall>>(){}.getType());
+    public HallService(Gson gson, MongoTemplate mongoDB) {
+        super("Sale",
+        		gson,
+                mongoDB,
+                AppConfig.useMongoDB()? 
+                		new TypeToken<Hall>(){}.getType():
+                		new TypeToken<List<Hall>>(){}.getType()  );
     }
 
     public Hall addRisorsa() {

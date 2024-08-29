@@ -7,6 +7,8 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
 import com.google.gson.Gson;
 import server.service.*;
 import server.model.*;
@@ -30,12 +32,13 @@ public class RoomServiceTest {//NOSONAR
 
     @Mock
     private List<Room> sale;
-    private Gson gson = AppConfig.configureGson();
+    private Gson gson = AppConfig.configureGson();    
+    private MongoTemplate mongoDB= AppConfig.configureMongoDB();
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        roomService = new RoomService(gson);
+        roomService = new RoomService(gson, mongoDB);
     }
 
 	Room creaRoom(RoomType tipo, State oggiStato, State domaniStato) {

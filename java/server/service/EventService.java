@@ -2,6 +2,8 @@ package server.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
@@ -20,10 +22,13 @@ import server.model.*;
 @Service
 public class EventService extends AbstractService <Event> implements Subscriber {
 
-    public EventService(Gson gson) {
-        super(AppConfig.DATABASE_ROOT_PATH +"Eventi.json",
-            gson, 
-            new TypeToken<List<Event>>(){}.getType());
+    public EventService(Gson gson, MongoTemplate mongoDB) {
+        super("Eventi",
+            gson,
+            mongoDB,
+            AppConfig.useMongoDB()? 
+            		new TypeToken<Event>(){}.getType():
+            		new TypeToken<List<Event>>(){}.getType());
     }
     
     public Event addEvento() {

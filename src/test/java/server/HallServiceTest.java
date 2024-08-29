@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
 import com.google.gson.Gson;
 import server.service.*;
 import server.model.*;
@@ -30,11 +32,12 @@ public class HallServiceTest {//NOSONAR
     @Mock
     private List<Hall> sale;
     private Gson gson = AppConfig.configureGson();
+    private MongoTemplate mongoDB= AppConfig.configureMongoDB();
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        hallService = new HallService(gson);
+        hallService = new HallService(gson, mongoDB);
     }
 	
 	Hall creaSala(Integer nPosti, State oggiStato, State domaniStato) {

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
 import com.google.gson.Gson;
 import server.service.*;
 import server.model.*;
@@ -21,11 +23,11 @@ public class EventServiceTest { //NOSONAR
     @Mock
     private List<Event> eventi;
     private Gson gson = AppConfig.configureGson();
+    private MongoTemplate mongoDB= AppConfig.configureMongoDB();
 
     @BeforeEach
     void setUp() {
-        gson = AppConfig.configureGson();
-        eventService = new EventService(gson);
+        eventService = new EventService(gson, mongoDB);
     }
 
     Event creaEvent(){
