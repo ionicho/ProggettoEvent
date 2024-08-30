@@ -33,7 +33,7 @@ public class AppConfig {
     public static final String URL = "http://localhost:8080/";
     // Configurazione MongoDB
     //private static final String MONGODB_URI = "mongodb://localhost:27017/Event";
-    private static final String MONGODB_URI = "mongodb+srv://gcomandatore:gigia@clusterfree.b0tyh.mongodb.net/?retryWrites=true&w=majority&appName=ClusterFree";
+    private static final String MONGODB_URI = "mongodb+srv://XXXXXXXXXXXXX@clusterfree.b0tyh.mongodb.net/?retryWrites=true&w=majority&appName=ClusterFree";
     private static final boolean USE_MONGODB = true; // Cambia a false se non vuoi usare MongoDB
     // Data iniziale per la creazione di eventi
     public static final LocalDate START_DATE = LocalDate.of(2024, 1,1);
